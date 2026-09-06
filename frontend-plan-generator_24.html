@@ -59,14 +59,79 @@
     z-index:-1;
     border-radius:14px;
   }
+  .panel-title-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:0.4rem;
+  }
   .panel h1{
-    font-size:18px;
-    margin:0 0 4px;
+    font-size:24px;
     color:var(--navy);
+    margin:0;
+  }
+  .tips-help-wrap{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    min-width:0;
+  }
+  .tips-nudge{
+    margin:0;
+    font-size:11px;
+    font-weight:400;
+    color:#a8b0bb;
+    line-height:1.35;
+    max-width:118px;
+    text-align:start;
+  }
+  .tips-nudge-arrow{
+    width:22px;
+    height:12px;
+    position:relative;
+    flex-shrink:0;
+    color:#b4bcc6;
+  }
+  .tips-nudge-arrow::before{
+    content:'';
+    position:absolute;
+    top:50%;
+    left:3px;
+    right:1px;
+    height:1.5px;
+    background:currentColor;
+    transform:translateY(-50%);
+  }
+  .tips-nudge-arrow::after{
+    content:'';
+    position:absolute;
+    top:50%;
+    left:0;
+    width:7px;
+    height:7px;
+    border-left:1.5px solid currentColor;
+    border-bottom:1.5px solid currentColor;
+    transform:translateY(-52%) rotate(45deg);
+  }
+  .tips-help-btn{
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:9px;
+    cursor:pointer;
+    font-size:16px;
+    line-height:1;
+    flex-shrink:0;
+  }
+  .tips-help-btn:hover{
+    border-color:#c5d4ea;
+    background:#f5f8fc;
   }
   .panel-logo{
     display:block;
-    max-height:32px;
+    max-height:60px;
     margin-bottom:20px;
   }
   .panel p.sub{
@@ -165,6 +230,19 @@
     gap:8px;
   }
   .req-dates-fields .req-meta-field{flex:1; min-width:0;}
+  .date-error{
+    display:none;
+    margin-top:8px;
+    font-size:12.5px;
+    font-weight:700;
+    color:#c0392b;
+    line-height:1.5;
+  }
+  .date-error.show{display:block;}
+  input[type=date].date-invalid{
+    border-color:#c0392b;
+    background:#fff6f5;
+  }
   .req-item-top{display:flex; align-items:center; gap:6px; margin-bottom:8px;}
   .req-item-top input[type=text]{flex:1;}
   .req-item-meta{
@@ -691,6 +769,14 @@
     font-size:15px;
     color:var(--navy);
     font-weight:500;
+    text-align:right;
+  }
+  .doc-created{
+    margin-top:4px;
+    font-size:11.5px;
+    font-weight:500;
+    color:#5b6470;
+    letter-spacing:.2px;
   }
   .doc-body{padding:8px 46px 0;}
   .doc-section-title{
@@ -848,6 +934,907 @@
     font-family:inherit;
   }
 
+  .tips-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.48);
+    align-items:center;
+    justify-content:center;
+    z-index:150;
+    padding:20px;
+  }
+  .tips-overlay.open{display:flex;}
+  .tips-modal{
+    background:#fff;
+    border-radius:18px;
+    width:min(560px, 100%);
+    max-height:min(88vh, 820px);
+    display:flex;
+    flex-direction:column;
+    direction:rtl;
+    font-family:'Tajawal', sans-serif;
+    box-shadow:0 14px 44px rgba(15,17,71,.22);
+    animation:popIn .25s ease;
+    overflow:hidden;
+  }
+  .tips-modal-head{
+    padding:22px 22px 14px;
+    border-bottom:1px solid var(--border);
+    position:relative;
+  }
+  .tips-modal-head h2{
+    margin:0 0 6px;
+    color:var(--navy);
+    font-size:19px;
+    padding-inline-end:28px;
+  }
+  .tips-modal-head p{
+    margin:0;
+    color:#6b7280;
+    font-size:13px;
+    line-height:1.7;
+  }
+  .tips-close{
+    position:absolute;
+    top:14px;
+    left:14px;
+    width:32px;
+    height:32px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:8px;
+    color:var(--navy);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .tips-scroll{
+    overflow:auto;
+    padding:14px 18px 8px;
+    flex:1;
+  }
+  .clickup-announce{
+    position:relative;
+    overflow:visible;
+    direction:rtl;
+    background:linear-gradient(100deg, #0c0e3a 0%, #0f1147 42%, #163a86 100%);
+    color:#e8eef8;
+    pointer-events:none;
+    animation:announceDrop .7s ease-out;
+  }
+  .clickup-announce::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(110deg, transparent 0%, rgba(255,255,255,.08) 45%, transparent 70%);
+    background-size:220% 100%;
+    animation:announceShine 4.8s ease-in-out 1s infinite;
+    pointer-events:none;
+  }
+  .clickup-announce-inner{
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px 28px;
+    max-width:1180px;
+    margin:0 auto;
+    padding:12px 24px;
+  }
+  .clickup-announce-lead{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-shrink:0;
+  }
+  .clickup-announce-badge{
+    display:inline-flex;
+    align-items:center;
+    background:#fff;
+    color:var(--navy);
+    font-size:10.5px;
+    font-weight:700;
+    padding:3px 8px;
+    border-radius:20px;
+    letter-spacing:.2px;
+    animation:announceBadge 2.4s ease-in-out 1s infinite;
+  }
+  .clickup-brands{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    font-weight:700;
+    color:#fff;
+  }
+  .clickup-brand{
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:8px;
+    padding:4px 8px;
+    line-height:1.3;
+  }
+  .clickup-link{
+    width:22px;
+    height:2px;
+    background:linear-gradient(90deg, #fff, #7eb0ff);
+    border-radius:2px;
+    position:relative;
+    flex-shrink:0;
+  }
+  .clickup-link::before,
+  .clickup-link::after{
+    content:'';
+    position:absolute;
+    top:50%;
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#7eb0ff;
+    transform:translateY(-50%);
+    animation:announceDot 1.8s ease-in-out infinite;
+  }
+  .clickup-link::before{right:-2px;}
+  .clickup-link::after{left:-2px; background:#fff; animation-delay:.9s;}
+  .clickup-announce-copy{
+    min-width:0;
+    flex:1;
+  }
+  .clickup-announce .tips-help-wrap{
+    pointer-events:auto;
+    flex-shrink:0;
+    position:relative;
+    z-index:2;
+  }
+  .clickup-announce .tips-nudge{
+    color:rgba(255,255,255,.88);
+    max-width:168px;
+    font-size:12px;
+    font-weight:500;
+    line-height:1.45;
+  }
+  .clickup-announce .tips-nudge-arrow{
+    color:rgba(255,214,130,.55);
+  }
+  .clickup-announce .tips-help-btn{
+    position:relative;
+    isolation:isolate;
+    display:grid;
+    place-items:center;
+    background:rgba(18,22,68,.55);
+    border-color:rgba(255,214,130,.55);
+    box-shadow:
+      0 0 0 3px rgba(255,196,80,.1),
+      0 0 12px rgba(255,196,70,.4),
+      inset 0 0 9px rgba(255,226,150,.16);
+    animation:bulbPulse 2.4s ease-in-out infinite;
+  }
+  .clickup-announce .tips-help-icon{
+    display:block;
+    line-height:1;
+    filter:
+      drop-shadow(0 0 3px rgba(255,236,180,.95))
+      drop-shadow(0 0 8px rgba(255,196,70,.7));
+    animation:bulbIcon 2.4s ease-in-out infinite;
+  }
+  .clickup-announce .tips-help-btn::before{
+    content:'';
+    position:absolute;
+    inset:-10px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(255,214,120,.32) 0%, rgba(255,186,64,.1) 46%, transparent 68%);
+    z-index:-1;
+    pointer-events:none;
+    animation:bulbHalo 2.4s ease-in-out infinite;
+  }
+  .clickup-announce .tips-help-btn:hover{
+    border-color:rgba(255,226,160,.85);
+    box-shadow:
+      0 0 0 4px rgba(255,206,96,.16),
+      0 0 16px rgba(255,204,80,.55),
+      inset 0 0 10px rgba(255,230,160,.24);
+  }
+  .clickup-announce .tips-help-btn:hover .tips-help-icon{
+    filter:
+      drop-shadow(0 0 4px rgba(255,242,200,1))
+      drop-shadow(0 0 10px rgba(255,206,90,.85));
+  }
+  .clickup-announce h3{
+    margin:0 0 2px;
+    font-size:15px;
+    color:#fff;
+    letter-spacing:-.2px;
+  }
+  .clickup-announce p{
+    margin:0;
+    font-size:12.5px;
+    line-height:1.6;
+    color:#c9d4e8;
+  }
+  .clickup-announce p + p{margin-top:2px;}
+  .clickup-announce .easter{
+    margin-top:3px;
+    font-size:11px;
+    color:#9aa8c4;
+    font-weight:400;
+  }
+  @keyframes announceDrop{
+    from{transform:translateY(-18px); opacity:0;}
+    to{transform:none; opacity:1;}
+  }
+  @keyframes announceShine{
+    0%{background-position:160% 0;}
+    50%{background-position:-60% 0;}
+    100%{background-position:160% 0;}
+  }
+  @keyframes announceBadge{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.06);}
+  }
+  @keyframes announceDot{
+    0%,100%{opacity:.45; transform:translateY(-50%) scale(.9);}
+    50%{opacity:1; transform:translateY(-50%) scale(1.15);}
+  }
+  @keyframes bulbPulse{
+    0%,100%{
+      box-shadow:
+        0 0 0 3px rgba(255,196,80,.07),
+        0 0 10px rgba(255,196,70,.28),
+        inset 0 0 8px rgba(255,226,150,.1);
+    }
+    50%{
+      box-shadow:
+        0 0 0 4px rgba(255,206,96,.16),
+        0 0 16px rgba(255,204,80,.5),
+        inset 0 0 10px rgba(255,230,160,.22);
+    }
+  }
+  @keyframes bulbIcon{
+    0%,100%{
+      filter:
+        drop-shadow(0 0 2px rgba(255,236,180,.7))
+        drop-shadow(0 0 6px rgba(255,196,70,.45));
+    }
+    50%{
+      filter:
+        drop-shadow(0 0 4px rgba(255,242,200,1))
+        drop-shadow(0 0 10px rgba(255,206,90,.8));
+    }
+  }
+  @keyframes bulbHalo{
+    0%,100%{opacity:.45; transform:scale(.88);}
+    50%{opacity:.9; transform:scale(1);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .clickup-announce,
+    .clickup-announce::before,
+    .clickup-announce-badge,
+    .clickup-link::before,
+    .clickup-link::after,
+    .clickup-announce .tips-help-btn,
+    .clickup-announce .tips-help-btn::before,
+    .clickup-announce .tips-help-icon{
+      animation:none !important;
+    }
+  }
+  .tip-row{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:9px 8px;
+    border-radius:10px;
+  }
+  .tip-row + .tip-row{border-top:1px solid #f0f2f6;}
+  .tip-icon{
+    width:28px;
+    flex-shrink:0;
+    text-align:center;
+    font-size:16px;
+    line-height:1.4;
+  }
+  .tip-copy h3{
+    margin:0 0 2px;
+    font-size:13.5px;
+    color:var(--navy);
+  }
+  .tip-copy p{
+    margin:0;
+    font-size:12.5px;
+    line-height:1.65;
+    color:#5b6470;
+  }
+  .tips-modal-foot{
+    padding:14px 22px 18px;
+    border-top:1px solid var(--border);
+    text-align:center;
+  }
+  .tips-modal-foot .closing{
+    margin:0 0 12px;
+    color:var(--navy);
+    font-size:14px;
+    font-weight:700;
+  }
+  .tips-cta{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:11px 18px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .tips-helper{
+    margin:8px 0 0;
+    font-size:12px;
+    color:#8a8d9a;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .tips-modal{animation:none;}
+  }
+
+  .welcome-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.48);
+    align-items:center;
+    justify-content:center;
+    z-index:160;
+    padding:20px;
+  }
+  .welcome-overlay.open{display:flex;}
+  .welcome-modal{
+    position:relative;
+    background:#fff;
+    border-radius:18px;
+    width:min(440px, 100%);
+    direction:rtl;
+    font-family:'Tajawal', sans-serif;
+    box-shadow:0 14px 44px rgba(15,17,71,.22);
+    padding:28px 26px 22px;
+    animation:welcomeIn .32s ease;
+    text-align:center;
+  }
+  .welcome-close{
+    position:absolute;
+    top:14px;
+    left:14px;
+    width:32px;
+    height:32px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:8px;
+    color:var(--navy);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .welcome-modal h2{
+    margin:0 0 8px;
+    color:var(--navy);
+    font-size:22px;
+    padding-inline-end:20px;
+    padding-inline-start:20px;
+  }
+  .welcome-tagline{
+    margin:0 0 14px;
+    color:var(--navy);
+    font-size:17px;
+    font-weight:700;
+    line-height:1.55;
+    letter-spacing:-.2px;
+  }
+  .welcome-desc{
+    margin:0 0 8px;
+    color:#5b6470;
+    font-size:13px;
+    line-height:1.75;
+  }
+  .welcome-support{
+    margin:0;
+    color:#8a8d9a;
+    font-size:12.5px;
+    line-height:1.7;
+  }
+  .welcome-points{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:8px 16px;
+    list-style:none;
+    margin:16px 0 0;
+    padding:0;
+    color:#6b7280;
+    font-size:12px;
+  }
+  .welcome-points li{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    white-space:nowrap;
+  }
+  .welcome-play{
+    margin:16px 0 14px;
+    color:#8a8d9a;
+    font-size:12.5px;
+    line-height:1.6;
+  }
+  .welcome-cta{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:11px 18px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  @keyframes welcomeIn{
+    from{transform:translateY(10px) scale(.98); opacity:0;}
+    to{transform:none; opacity:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .welcome-modal{animation:none;}
+  }
+
+  .confetti-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:130;
+  }
+  .milestone-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.48);
+    align-items:center;
+    justify-content:center;
+    z-index:140;
+    padding:20px;
+  }
+  .milestone-overlay.open{display:flex;}
+  .milestone-modal{
+    background:#fff;
+    border-radius:18px;
+    padding:30px 26px 24px;
+    text-align:center;
+    max-width:360px;
+    width:100%;
+    font-family:'Tajawal', sans-serif;
+    direction:rtl;
+    box-shadow:0 14px 44px rgba(15,17,71,.22);
+    animation:popIn .28s ease;
+    position:relative;
+  }
+  .milestone-modal.large{
+    max-width:400px;
+    padding:36px 28px 26px;
+  }
+  .milestone-close{
+    position:absolute;
+    top:10px;
+    left:10px;
+    width:32px;
+    height:32px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:8px;
+    color:var(--navy);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .milestone-emoji{
+    font-size:40px;
+    margin-bottom:8px;
+    display:inline-block;
+    animation:iconBounce .45s ease;
+  }
+  .milestone-counter{
+    font-family:'Poppins',sans-serif;
+    font-size:42px;
+    font-weight:700;
+    color:var(--navy);
+    margin:0 0 8px;
+    letter-spacing:-1px;
+  }
+  .milestone-modal h2{
+    color:var(--navy);
+    font-size:19px;
+    margin:0 0 10px;
+    line-height:1.45;
+  }
+  .milestone-modal.large h2{font-size:22px;}
+  .milestone-message{
+    color:#5b5e6e;
+    font-size:14.5px;
+    line-height:1.7;
+    margin:0 0 8px;
+  }
+  .milestone-note{
+    color:#8a8d9a;
+    font-size:12.5px;
+    margin:0 0 14px;
+    min-height:18px;
+  }
+  .milestone-reveal{
+    color:#33364a;
+    font-size:14px;
+    font-weight:700;
+    min-height:22px;
+    margin:0 0 10px;
+  }
+  .milestone-badge{
+    display:none;
+    margin:8px auto 16px;
+    width:fit-content;
+    background:linear-gradient(180deg, #f8fafc 0%, #eef3fb 100%);
+    border:1px solid #d5deec;
+    color:var(--navy);
+    font-size:13px;
+    font-weight:700;
+    padding:8px 14px;
+    border-radius:999px;
+    animation:badgeIn .35s ease;
+  }
+  .milestone-badge.show{display:inline-flex;}
+  .milestone-actions{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:8px;
+  }
+  .milestone-actions button{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .milestone-actions button.ghost{
+    background:#fff;
+    color:var(--navy);
+    border:1px solid var(--border);
+  }
+  @keyframes iconBounce{
+    0%{transform:scale(.7); opacity:0;}
+    70%{transform:scale(1.08);}
+    100%{transform:scale(1); opacity:1;}
+  }
+  @keyframes badgeIn{
+    from{transform:translateY(8px) scale(.94); opacity:0;}
+    to{transform:translateY(0) scale(1); opacity:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .milestone-modal,
+    .milestone-emoji,
+    .milestone-badge{
+      animation:none !important;
+    }
+  }
+
+  /* ---- Saved plans ---- */
+  .saved-home{
+    direction:rtl;
+    margin:0;
+    background:#fff;
+    border-radius:14px;
+    padding:22px 20px 20px;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+    position:relative;
+    overflow:hidden;
+    width:340px;
+    flex-shrink:0;
+    align-self:flex-start;
+  }
+  .saved-home::after{
+    content:'';
+    position:absolute;
+    bottom:8px;
+    left:8px;
+    width:120px;
+    height:120px;
+    background-image:var(--pattern);
+    background-repeat:no-repeat;
+    background-size:contain;
+    opacity:.05;
+    pointer-events:none;
+  }
+  .saved-home-head{
+    margin-bottom:16px;
+    position:relative;
+    z-index:1;
+  }
+  .saved-home-head h2,
+  .saved-empty h2{
+    margin:0 0 6px;
+    color:var(--navy);
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:-.2px;
+  }
+  .saved-home-head p,
+  .saved-empty p{
+    margin:0;
+    font-size:13px;
+    line-height:1.7;
+    color:#6b7280;
+    max-width:640px;
+  }
+  .saved-kicker{
+    display:block;
+    margin:0 0 10px;
+    font-size:11px;
+    font-weight:700;
+    color:var(--blue);
+    letter-spacing:.3px;
+  }
+  .saved-empty{
+    text-align:center;
+    padding:28px 16px;
+    position:relative;
+    z-index:1;
+    border:1px dashed #d5dbe6;
+    border-radius:12px;
+    background:linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+  }
+  .saved-empty h2{font-size:18px;}
+  .saved-empty p{
+    margin:6px auto 0;
+    max-width:220px;
+  }
+  .saved-view-all,
+  .plan-card-cta,
+  .plan-action-btn{
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .saved-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    position:relative;
+    z-index:1;
+  }
+  .plan-card{
+    border:1px solid var(--border);
+    background:linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    border-radius:12px;
+    padding:14px 14px 13px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-height:168px;
+    transition:border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+    cursor:pointer;
+  }
+  .plan-card:hover{
+    border-color:#c5d4ea;
+    box-shadow:0 8px 20px rgba(15,17,71,.08);
+    transform:translateY(-1px);
+  }
+  .plan-card.is-active{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(31,111,209,.12);
+  }
+  .plan-card-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .plan-card-title{
+    margin:0;
+    color:var(--navy);
+    font-size:14.5px;
+    font-weight:700;
+    line-height:1.45;
+  }
+  .plan-card-code{
+    flex-shrink:0;
+    background:var(--blue-light);
+    color:var(--blue);
+    font-size:10.5px;
+    font-weight:700;
+    padding:3px 7px;
+    border-radius:20px;
+    letter-spacing:.2px;
+    direction:ltr;
+    unicode-bidi:isolate;
+  }
+  .plan-card-meta{
+    margin:0;
+    font-size:12.5px;
+    color:#5b6470;
+    line-height:1.55;
+  }
+  .plan-card-updated{
+    margin:auto 0 0;
+    font-size:11.5px;
+    font-weight:700;
+    color:#8a8d9a;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .plan-card-cta{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:8px 12px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:700;
+  }
+  .plan-card-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin-top:2px;
+  }
+  .plan-action-btn{
+    border:1px solid var(--border);
+    background:#fff;
+    color:var(--navy);
+    padding:7px 8px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:700;
+  }
+  .plan-action-btn.primary{
+    background:var(--navy);
+    color:#fff;
+    border-color:var(--navy);
+    grid-column:1 / -1;
+  }
+  .plan-action-btn.danger{
+    color:#c0392b;
+    border-color:#f0d4d1;
+    background:#fff8f7;
+  }
+  .saved-view-all,
+  .new-plan-btn{
+    background:transparent;
+    border:none;
+    color:var(--blue);
+    font-size:13.5px;
+    font-weight:700;
+    padding:6px 8px;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .saved-view-all:hover,
+  .new-plan-btn:hover{text-decoration:underline;}
+  .saved-home-foot{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:4px 12px;
+    margin-top:14px;
+    position:relative;
+    z-index:1;
+  }
+  .editing-banner{
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin:0 0 16px;
+    padding:10px 12px;
+    background:#f5f8fc;
+    border:1px solid #e4ebf3;
+    border-inline-start:3px solid var(--blue);
+    border-radius:8px;
+  }
+  .editing-banner.show{display:flex;}
+  .editing-banner p{
+    margin:0;
+    font-size:12.5px;
+    line-height:1.55;
+    color:#5b6470;
+  }
+  .editing-banner button{
+    flex-shrink:0;
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--navy);
+    border-radius:8px;
+    padding:6px 10px;
+    font-family:inherit;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  .plans-library-overlay,
+  .delete-plan-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.45);
+    align-items:center;
+    justify-content:center;
+    z-index:120;
+    padding:20px;
+  }
+  .plans-library-overlay.open,
+  .delete-plan-overlay.open{display:flex;}
+  .plans-library{
+    background:#fff;
+    border-radius:16px;
+    width:min(920px, 100%);
+    max-height:min(86vh, 820px);
+    overflow:auto;
+    direction:rtl;
+    box-shadow:0 10px 40px rgba(0,0,0,.2);
+    padding:26px 24px 22px;
+    animation:popIn .25s ease;
+  }
+  .plans-library-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:18px;
+  }
+  .plans-library-head h2{
+    margin:0 0 6px;
+    color:var(--navy);
+    font-size:22px;
+  }
+  .plans-library-head p{
+    margin:0;
+    color:#6b7280;
+    font-size:13px;
+    line-height:1.7;
+    max-width:520px;
+  }
+  .plans-library-close{
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:9px;
+    color:var(--navy);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+    flex-shrink:0;
+  }
+  .plans-library .saved-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+  .plans-library .plan-card{cursor:default; min-height:0;}
+  .plans-library .plan-card:hover{transform:none;}
+  .delete-plan-overlay .success-modal .modal-actions{
+    display:flex;
+    gap:8px;
+    justify-content:center;
+  }
+  .delete-plan-overlay .success-modal button.ghost{
+    background:#fff;
+    color:var(--navy);
+    border:1px solid var(--border);
+  }
+  .delete-plan-overlay .success-modal button.danger{
+    background:#c0392b;
+  }
+
   @media print{
     body *{visibility:hidden;}
     #docPreview, #docPreview *{visibility:visible;}
@@ -857,6 +1844,24 @@
 
   /* ---- Responsive ---- */
   @media (max-width: 900px){
+    .saved-home{
+      width:100%;
+      margin:0;
+    }
+    .saved-grid,
+    .plans-library .saved-grid{
+      grid-template-columns:1fr;
+    }
+    .clickup-announce-inner{
+      flex-direction:column;
+      align-items:flex-start;
+      padding:12px 16px;
+      gap:8px;
+    }
+    .clickup-announce .tips-help-wrap{
+      order:-1;
+      align-self:flex-start;
+    }
     .app{
       flex-direction:column;
       padding:14px;
@@ -891,9 +1896,17 @@
     }
   }
   @media (max-width: 560px){
+    .saved-home{
+      padding:16px 14px;
+      border-radius:10px;
+    }
     .panel{
       padding:16px 14px;
       border-radius:10px;
+    }
+    .tips-nudge{
+      max-width:86px;
+      font-size:10px;
     }
     .row2{
       flex-direction:column;
@@ -933,11 +1946,41 @@
 </head>
 <body>
 
+<div class="clickup-announce" aria-label="خُطّة و ClickUp قريبًا">
+  <div class="clickup-announce-inner">
+    <div class="clickup-announce-lead">
+      <span class="clickup-announce-badge">قريبًا 🚀</span>
+      <div class="clickup-brands">
+        <span class="clickup-brand">خُطّة</span>
+        <span class="clickup-link" aria-hidden="true"></span>
+        <span class="clickup-brand">ClickUp</span>
+      </div>
+    </div>
+    <div class="clickup-announce-copy">
+      <h3>خُطّة × ClickUp</h3>
+      <p>قريبًا تقدر ترسل خطتك من خُطّة إلى ClickUp مباشرة 👀</p>
+      <p>نشتغل عليها… بس الشغل الزين يبي له وقت، اصبروا علينا والخير جاي 🤝</p>
+      <!-- <p class="easter">حاليًا خلّونا نمشي الـSLA بس… لا يزعل علينا أبو طلال 😂</p> -->
+    </div>
+    <div class="tips-help-wrap">
+      <p class="tips-nudge">اقرأ التعليمات من هنا قبل ما تبدأ</p>
+      <span class="tips-nudge-arrow" aria-hidden="true"></span>
+        <button type="button" class="tips-help-btn" id="openTipsBtn" title="نصائح خُطّة" aria-label="نصائح خُطّة"><span class="tips-help-icon" aria-hidden="true">💡</span></button>
+    </div>
+  </div>
+</div>
+
 <div class="app">
   <div class="panel">
     <img id="panelLogo" class="panel-logo" alt="شعار">
-    <h1>خُطّة</h1>
+    <div class="panel-title-row">
+      <h1>خُطّة</h1>
+    </div>
     <p class="sub">أداة ذكية تُحوّل متطلبات المشروع إلى خطة تنفيذ احترافية، تشمل المهام، المدة، الفريق، المراحل والاعتماديات، وتُخرجها في نموذج موحّد جاهز للمشاركة.</p>
+    <div class="editing-banner" id="editingBanner">
+      <p>قاعدين نكمّل على خطة محفوظة. لو ودك خطة ثانية، ابدء من جديد والخطة القديمة تبقى مكانها.</p>
+      <button type="button" id="startNewPlanBtn">خطة جديدة</button>
+    </div>
 
     <div class="field">
       <label>شعار المنتج (اختياري)</label>
@@ -1021,6 +2064,7 @@
         </div>
       </div>
     </div>
+    <div class="date-error" id="projectDateError">سلامات شيك ع التواريخ</div>
 
     <div class="field optional-field">
       <label>أيام الإجازات ضمن الفترة <span class="optional-badge">اختياري</span></label>
@@ -1075,6 +2119,8 @@
       <div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>
     </div>
   </div>
+
+  <section class="saved-home" id="savedHome" aria-label="خططك"></section>
 </div>
 
 <footer class="app-footer">
@@ -1082,6 +2128,51 @@
   <span class="year">2026</span>
   ELM
 </footer>
+
+<div id="welcomeOverlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="welcome-modal">
+    <button type="button" class="welcome-close" id="welcomeClose" aria-label="إغلاق">×</button>
+    <h2 id="welcomeTitle">حياك الله في خُطّة 👋</h2>
+    <p class="welcome-tagline">الـEstimation منك…<br>والخُطّة علينا 😎</p>
+    <p class="welcome-desc">أنت تعرف مشروعك أكثر من أي أحد، عطنا المتطلبات، الـEstimation، الفريق والتواريخ… وإحنا نرتبها لك في خُطّة واضحة وموحّدة وجاهزة للمشاركة.</p>
+    <!-- <p class="welcome-support">بدل ما كل مشروع يبدأ بخطة من راس صاحبه… خلّنا نتفق من البداية كيف نخطط 🤝</p> -->
+    <ul class="welcome-points">
+      <li><span aria-hidden="true">📋</span> رتّب متطلباتك</li>
+      <!-- <li><span aria-hidden="true">👥</span> وزّع فريقك</li> -->
+      <li><span aria-hidden="true">🗓️</span> وطلّع خُطّتك</li>
+    </ul>
+    <p class="welcome-play">لا تشيل هم التنسيق… أنت جيب المشروع بس 👀</p>
+    <button type="button" class="welcome-cta" id="welcomeStartBtn">يلا نخطط ←</button>
+  </div>
+</div>
+
+<div id="tipsOverlay" class="tips-overlay" role="dialog" aria-modal="true" aria-labelledby="tipsTitle">
+  <div class="tips-modal">
+    <div class="tips-modal-head">
+      <button type="button" class="tips-close" id="tipsClose" aria-label="إغلاق">×</button>
+      <h2 id="tipsTitle">قبل لا تبدأ… خذها من خُطّة 💡</h2>
+      <p>كم حركة بسيطة تخلي خطتك أضبط من البداية.</p>
+    </div>
+    <div class="tips-scroll">
+      <div class="tip-row"><div class="tip-icon">🎯</div><div class="tip-copy"><h3>البزنس يحب الوضوح</h3><p>كل ما كان نطاق العمل أوضح، كان التقدير أدق والمفاجآت أقل.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">📅</div><div class="tip-copy"><h3>لا تبدأ بالتاريخ</h3><p>حدد النطاق أول، وبعدين حط وقت يعكس حجم الشغل فعلًا.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">👀</div><div class="tip-copy"><h3>«بسيطة» مو Estimation</h3><p>فكّك المتطلب إلى Features واضحة، بعدها نقدر نحسب المدة صح.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">🤝</div><div class="tip-copy"><h3>الاتفاق المكتوب يوفر عليك كثير</h3><p>اعتماد النطاق والتصميم قبل التطوير يقلل التغييرات والمفاجآت بالنص.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">🧩</div><div class="tip-copy"><h3>كل اعتماد له صاحب</h3><p>API، تصميم، موافقة، Security أو QA — حدد مين مسؤول ومتى تحتاجه.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">🏖️</div><div class="tip-copy"><h3>الإجازة جزء من الخطة</h3><p>لا تحسب الموظف متاح وهو أصلًا مخطط يشوف الدنيا 😂</p></div></div>
+      <div class="tip-row"><div class="tip-icon">🚨</div><div class="tip-copy"><h3>كل شيء أولوية = مافيه أولوية</h3><p>حدد وش لازم يطلع أول فعلًا، والباقي ياخذ دوره.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">🔄</div><div class="tip-copy"><h3>الـScope تغيّر؟ الخطة تتغيّر</h3><p>ما نزيد المتطلبات ونتمسك بنفس التاريخ كأن ما صار شيء 👀</p></div></div>
+      <div class="tip-row"><div class="tip-icon">🎨</div><div class="tip-copy"><h3>التصميم الواضح يفرق</h3><p>كل ما كان الـFlow والتصميم معتمدين من البداية، قلّت المفاجآت وقت التطوير.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">🧠</div><div class="tip-copy"><h3>خلك كريم بالمعلومات</h3><p>كل ما أعطيت خُطّة تفاصيل أكثر عن المشروع، عطتك خطة أدق.</p></div></div>
+      <div class="tip-row"><div class="tip-icon">☕</div><div class="tip-copy"><h3>وخلك واقعي</h3><p>27 Feature + مطور واحد + الأسبوع الجاي؟ حتى خُطّة بتطالع فيك شوي 😂</p></div></div>
+    </div>
+    <div class="tips-modal-foot">
+      <p class="closing">أعطنا التفاصيل… والباقي علينا 🤝</p>
+      <button type="button" class="tips-cta" id="tipsStartBtn">يلا نخطط ←</button>
+      <p class="tips-helper">وتقدر ترجع لنصائح خُطّة بأي وقت من 💡</p>
+    </div>
+  </div>
+</div>
 
 <div id="successOverlay" class="success-overlay">
   <div class="success-modal">
@@ -1092,7 +2183,47 @@
   </div>
 </div>
 
+<canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+<div id="milestoneOverlay" class="milestone-overlay" role="dialog" aria-modal="true" aria-labelledby="milestoneTitle">
+  <div class="milestone-modal" id="milestoneModal">
+    <button type="button" class="milestone-close" id="milestoneClose" aria-label="إغلاق">×</button>
+    <div class="milestone-emoji" id="milestoneEmoji"></div>
+    <div class="milestone-counter" id="milestoneCounter" hidden></div>
+    <h2 id="milestoneTitle"></h2>
+    <p class="milestone-message" id="milestoneMessage"></p>
+    <p class="milestone-reveal" id="milestoneReveal"></p>
+    <div class="milestone-badge" id="milestoneBadge"></div>
+    <p class="milestone-note" id="milestoneNote"></p>
+    <div class="milestone-actions" id="milestoneActions"></div>
+  </div>
+</div>
+
 <div id="updateToast" class="update-toast">✅ تم تحديث الخطة</div>
+
+<div id="plansLibraryOverlay" class="plans-library-overlay" role="dialog" aria-modal="true" aria-labelledby="plansLibraryTitle">
+  <div class="plans-library">
+    <div class="plans-library-head">
+      <div>
+        <h2 id="plansLibraryTitle">خططك جاهزة 👋</h2>
+        <p>كل خطة طلّعتها من خُطّة تلقاها هنا، ارجع لها، عدّل عليها، أو كمّل من وين وقفت.</p>
+      </div>
+      <button type="button" class="plans-library-close" id="plansLibraryClose" aria-label="إغلاق">×</button>
+    </div>
+    <div class="saved-grid" id="plansLibraryGrid"></div>
+  </div>
+</div>
+
+<div id="deletePlanOverlay" class="delete-plan-overlay success-overlay" role="dialog" aria-modal="true" aria-labelledby="deletePlanTitle">
+  <div class="success-modal">
+    <div class="success-emoji">🗂️</div>
+    <h2 id="deletePlanTitle">نحذف هالخطة؟</h2>
+    <p>بتختفي من قائمتك، وما نقدر نرجعها بعد كذا.</p>
+    <div class="modal-actions">
+      <button type="button" class="ghost" id="deletePlanCancel">أبقِها</button>
+      <button type="button" class="danger" id="deletePlanConfirm">نعم، احذفها</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const ELM_LOGO_FIXED = "data:image/png;base64,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";
@@ -1148,7 +2279,11 @@ function renderReqList(){
     const startInput = document.createElement('input');
     startInput.type = 'date';
     startInput.value = item.startDate;
-    startInput.addEventListener('input', () => { reqItems[i].startDate = startInput.value; });
+    startInput.addEventListener('input', () => {
+      reqItems[i].startDate = startInput.value;
+      syncAllDateLimits();
+      validateAllDates();
+    });
     startWrap.appendChild(startLabel);
     startWrap.appendChild(startInput);
 
@@ -1159,7 +2294,11 @@ function renderReqList(){
     const endInput = document.createElement('input');
     endInput.type = 'date';
     endInput.value = item.endDate;
-    endInput.addEventListener('input', () => { reqItems[i].endDate = endInput.value; });
+    endInput.addEventListener('input', () => {
+      reqItems[i].endDate = endInput.value;
+      syncAllDateLimits();
+      validateAllDates();
+    });
     endWrap.appendChild(endLabel);
     endWrap.appendChild(endInput);
 
@@ -1167,8 +2306,12 @@ function renderReqList(){
     datesFields.className = 'req-dates-fields';
     datesFields.appendChild(startWrap);
     datesFields.appendChild(endWrap);
+    const itemDateError = document.createElement('div');
+    itemDateError.className = 'date-error';
+    itemDateError.textContent = 'سلامات شيك ع التواريخ';
     datesCol.appendChild(datesTitle);
     datesCol.appendChild(datesFields);
+    datesCol.appendChild(itemDateError);
 
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
@@ -1190,6 +2333,7 @@ function renderReqList(){
     card.appendChild(removeBtn);
     box.appendChild(card);
   });
+  if(typeof syncAllDateLimits === 'function') syncAllDateLimits();
 }
 
 document.getElementById('addReqBtn').addEventListener('click', () => {
@@ -1271,7 +2415,7 @@ const ELM_PRODUCT_NAMES = [
   {ar:"تصنيف الورش", en:"Workshop Classification"},
   {ar:"الفحص الفني الدوري", en:"Periodic Technical Inspection"},
   {ar:"مدارس القيادة", en:"Driving Schools"},
-  {ar:"مياه", en:"Miyah"},
+  {ar:"مياه", en:"Meyah"},
   {ar:"تصريح", en:"Tasreeh"},
   {ar:"قيمة", en:"Qeemah"},
   {ar:"عدادي", en:"Addadi"},
@@ -1743,6 +2887,89 @@ function renderCostTable(){
   document.getElementById('costAmount').value = hasAnyCost ? String(total) : '';
 }
 
+function itemDatesOutOfOrder(item){
+  if(!item || !item.startDate || !item.endDate) return false;
+  return item.startDate > item.endDate;
+}
+
+function setDateBound(el, attr, value){
+  if(!el) return;
+  if(value) el.setAttribute(attr, value);
+  else el.removeAttribute(attr);
+}
+
+function syncDatePair(startEl, endEl, lockStartMax){
+  if(!startEl || !endEl) return;
+  setDateBound(endEl, 'min', startEl.value || '');
+  setDateBound(startEl, 'max', lockStartMax && endEl.value ? endEl.value : '');
+}
+
+function syncAllDateLimits(){
+  const projectStartEl = document.getElementById('startDate');
+  const projectEndEl = document.getElementById('endDate');
+  if(!projectStartEl || !projectEndEl) return;
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  syncDatePair(projectStartEl, projectEndEl, !tbdEnd);
+
+  document.querySelectorAll('#reqList .req-item-card').forEach((card) => {
+    const dateInputs = card.querySelectorAll('.req-dates-fields input[type=date]');
+    syncDatePair(dateInputs[0], dateInputs[1], true);
+  });
+}
+
+function projectDatesOutOfOrder(){
+  const start = document.getElementById('startDate').value;
+  const end = document.getElementById('endDate').value;
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  if(start && end && !tbdEnd && start > end) return true;
+  return reqItems.some(itemDatesOutOfOrder);
+}
+
+function showDateOrderError(){
+  const statusEl = document.getElementById('status');
+  statusEl.textContent = 'سلامات شيك ع التواريخ';
+  statusEl.className = 'error';
+  paintDateErrors();
+}
+
+function clearDateOrderError(){
+  const statusEl = document.getElementById('status');
+  if(statusEl && statusEl.textContent === 'سلامات شيك ع التواريخ'){
+    statusEl.textContent = '';
+    statusEl.className = '';
+  }
+  paintDateErrors();
+}
+
+function paintDateErrors(){
+  const startEl = document.getElementById('startDate');
+  const endEl = document.getElementById('endDate');
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  const projectInvalid = !!(startEl.value && endEl.value && !tbdEnd && startEl.value > endEl.value);
+  const projectError = document.getElementById('projectDateError');
+  if(projectError) projectError.classList.toggle('show', projectInvalid);
+  startEl.classList.toggle('date-invalid', projectInvalid);
+  endEl.classList.toggle('date-invalid', projectInvalid);
+
+  document.querySelectorAll('#reqList .req-item-card').forEach((card, i) => {
+    const dateInputs = card.querySelectorAll('.req-dates-fields input[type=date]');
+    const err = card.querySelector('.date-error');
+    const invalid = itemDatesOutOfOrder(reqItems[i]);
+    if(err) err.classList.toggle('show', invalid);
+    dateInputs.forEach(input => input.classList.toggle('date-invalid', invalid));
+  });
+}
+
+function validateAllDates(){
+  syncAllDateLimits();
+  if(projectDatesOutOfOrder()){
+    showDateOrderError();
+    return false;
+  }
+  clearDateOrderError();
+  return true;
+}
+
 ['startDate','endDate','tbdEnd'].forEach(id => {
   document.getElementById(id).addEventListener('change', () => {
     pruneHolidaysOutsideRange();
@@ -1752,6 +2979,7 @@ function renderCostTable(){
     }
     renderLeaveCalendar();
     renderCostTable();
+    validateAllDates();
   });
 });
 
@@ -1915,7 +3143,7 @@ const TEAM_NAME_EN = {
   'فريق تطوير الموبايل': 'Mobile Development'
 };
 
-function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCount, includeFeatures, startDate, endDate, tbdEnd, assigned, totalWorkingDays, feedbackDays, costAmount, dependencies, lang}){
+function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCount, includeFeatures, startDate, endDate, tbdEnd, assigned, totalWorkingDays, feedbackDays, costAmount, dependencies, lang, createdDate}){
   const L = lang === 'ar' ? {
     planTitle: 'خطة تنفيذ الفرونت-إند',
     working: 'خطة العمل',
@@ -1932,7 +3160,8 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
     feedback: 'وقت الفيدباك',
     deps: 'التبعيات / الملاحظات',
     tbd: 'غير محدد',
-    days: 'يوم عمل'
+    days: 'يوم عمل',
+    created: 'تاريخ الإنشاء'
   } : {
     planTitle: 'Frontend Implementation Plan',
     working: 'Working Plan',
@@ -1949,7 +3178,8 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
     feedback: 'Feedback Time',
     deps: 'Dependencies / Buffer Notes',
     tbd: 'TBD',
-    days: 'Working Days'
+    days: 'Working Days',
+    created: 'Created'
   };
 
   const productLogoHtml = logoDataUrl ? `<img class="doc-logo-left" src="${logoDataUrl}">` : '<span></span>';
@@ -2002,7 +3232,10 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
       </div>
       <div class="doc-titlebar">
         <h1 class="doc-title"><span class="ticket">${escapeHtml(ticketId || 'TBD')}</span> <span class="project-name">${escapeHtml(projectName || '')}</span></h1>
-        <div class="doc-subtitle">${escapeHtml(planSubtitle)}</div>
+        <div class="doc-subtitle">
+          ${escapeHtml(planSubtitle)}
+          <div class="doc-created">${escapeHtml(L.created)}: ${fmtDate(createdDate || toIsoDate(new Date()))}</div>
+        </div>
       </div>
     </div>
     <div class="doc-body">
@@ -2043,7 +3276,1063 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
   `;
 }
 
+const SAVED_PLANS_KEY = 'khutta_saved_plans';
+const SAVED_PLANS_LIMIT = 10;
+let activeSavedPlanId = null;
+let isRestoringPlan = false;
+let pendingDeletePlanId = null;
+
+function createPlanId(){
+  return 'plan_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+}
+
+function getSavedPlans(){
+  try{
+    const raw = localStorage.getItem(SAVED_PLANS_KEY);
+    const plans = raw ? JSON.parse(raw) : [];
+    return Array.isArray(plans) ? plans : [];
+  }catch(err){
+    return [];
+  }
+}
+
+function persistPlans(plans){
+  const sorted = [...plans]
+    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    .slice(0, SAVED_PLANS_LIMIT);
+  try{
+    localStorage.setItem(SAVED_PLANS_KEY, JSON.stringify(sorted));
+  }catch(err){
+    const slim = sorted.map(plan => ({
+      ...plan,
+      form: plan.form ? {...plan.form, logoDataUrl: null} : plan.form
+    }));
+    try{
+      localStorage.setItem(SAVED_PLANS_KEY, JSON.stringify(slim));
+    }catch(e){
+      console.warn('تعذّر حفظ الخطط محليًا', e);
+    }
+  }
+  return getSavedPlans();
+}
+
+function formatRelativeAr(iso){
+  if(!iso) return 'قبل شوي';
+  const d = new Date(iso);
+  if(isNaN(d)) return 'قبل شوي';
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfThat = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const diffDays = Math.round((startOfToday - startOfThat) / 86400000);
+  if(diffDays === 0) return 'اليوم';
+  if(diffDays === 1) return 'أمس';
+  if(diffDays === 2) return 'أول أمس';
+  if(diffDays < 7) return `قبل ${diffDays} أيام`;
+  if(diffDays < 30) return `قبل ${Math.floor(diffDays / 7)} أسابيع`;
+  return fmtShortDate(iso.slice(0, 10));
+}
+
+function sprintCardLabel(sprintNum){
+  if(!sprintNum) return '';
+  const match = String(sprintNum).match(/(\d+)/);
+  if(match) return `${match[1]} Sprints`;
+  return sprintNum;
+}
+
+function collectFormSnapshot(){
+  return {
+    logoDataUrl,
+    teamTag: document.getElementById('teamTag').value,
+    ticketNum: document.getElementById('ticketId').value.trim(),
+    sprintNum: document.getElementById('sprintNum').value.trim(),
+    productNameValue,
+    projectName: document.getElementById('projectName').value.trim(),
+    reqItems: reqItems.map(item => ({...item})),
+    includeFeatures: document.getElementById('includeFeatures').checked,
+    featuresManual: document.getElementById('featuresManual').value.trim(),
+    startDate: document.getElementById('startDate').value,
+    endDate: document.getElementById('endDate').value,
+    tbdEnd: document.getElementById('tbdEnd').checked,
+    selectedHolidays: selectedHolidays.slice(),
+    selectedAssignees: selectedAssignees.slice(),
+    assigneeGrades: {...assigneeGrades},
+    feedbackDays: document.getElementById('feedbackDays').value,
+    dependencies: document.getElementById('depsNotes').value.trim()
+  };
+}
+
+function applyFormSnapshot(form){
+  const data = form || {};
+  isRestoringPlan = true;
+  try{
+    logoDataUrl = data.logoDataUrl || null;
+    const mini = document.getElementById('logoPreviewMini');
+    if(logoDataUrl){
+      mini.src = logoDataUrl;
+      mini.style.display = 'block';
+    }else{
+      mini.removeAttribute('src');
+      mini.style.display = 'none';
+    }
+
+    document.getElementById('teamTag').value = data.teamTag || '';
+    document.getElementById('ticketId').value = data.ticketNum || '';
+    document.getElementById('sprintNum').value = data.sprintNum || '';
+
+    productNameValue = data.productNameValue || '';
+    document.getElementById('projectName').value = data.projectName || '';
+    updateProductTrigger();
+
+    reqItems = (data.reqItems && data.reqItems.length)
+      ? data.reqItems.map(item => ({
+          text: item.text || '',
+          features: item.features ?? 1,
+          startDate: item.startDate || '',
+          endDate: item.endDate || ''
+        }))
+      : [{text:'', features:1, startDate:'', endDate:''}];
+    renderReqList();
+
+    document.getElementById('includeFeatures').checked = !!data.includeFeatures;
+    document.getElementById('featuresManual').value = data.featuresManual || '';
+    syncFeaturesManualState();
+
+    document.getElementById('startDate').value = data.startDate || '';
+    document.getElementById('endDate').value = data.endDate || '';
+    document.getElementById('tbdEnd').checked = !!data.tbdEnd;
+    document.getElementById('endDate').disabled = !!data.tbdEnd;
+
+    selectedHolidays = Array.isArray(data.selectedHolidays) ? data.selectedHolidays.slice() : [];
+    selectedAssignees = Array.isArray(data.selectedAssignees) ? data.selectedAssignees.slice() : [];
+    assigneeGrades = data.assigneeGrades && typeof data.assigneeGrades === 'object'
+      ? {...data.assigneeGrades}
+      : {};
+
+    document.getElementById('feedbackDays').value = data.feedbackDays || '';
+    document.getElementById('depsNotes').value = data.dependencies || '';
+
+    const start = parseIsoDate(data.startDate);
+    if(start) calendarView = {year: start.getFullYear(), month: start.getMonth()};
+
+    syncAssignedHidden();
+    renderAssignedTags();
+    updateTriggerText();
+    renderMultiselectList();
+    renderLeaveCalendar();
+    renderCostTable();
+    syncAllDateLimits();
+  }finally{
+    isRestoringPlan = false;
+  }
+  updateGenerateBtnState();
+}
+
+function findExistingSavedPlan(plans, payload){
+  if(activeSavedPlanId){
+    const current = plans.find(plan => plan.id === activeSavedPlanId);
+    if(current) return current;
+  }
+  if(payload.projectCode){
+    return plans.find(plan => plan.projectCode === payload.projectCode) || null;
+  }
+  if(payload.projectNameEn){
+    return plans.find(plan =>
+      plan.projectNameEn === payload.projectNameEn || plan.projectName === payload.projectName
+    ) || null;
+  }
+  return null;
+}
+
+function saveGeneratedPlan(meta){
+  const now = new Date().toISOString();
+  const form = collectFormSnapshot();
+  const payload = {
+    projectName: form.productNameValue || form.projectName || 'خطة بدون اسم',
+    projectNameEn: form.projectName,
+    projectCode: meta.ticketId || '',
+    generatedDate: now,
+    startDate: form.startDate || '',
+    targetDate: form.tbdEnd ? '' : (form.endDate || ''),
+    tbdEnd: !!form.tbdEnd,
+    featureCount: Number(meta.featureCount) || 0,
+    teamCount: selectedAssignees.length,
+    duration: meta.totalWorkingDays,
+    sprints: form.sprintNum || '',
+    scope: form.reqItems,
+    team: {
+      tag: form.teamTag,
+      assignees: form.selectedAssignees.slice(),
+      grades: {...form.assigneeGrades}
+    },
+    vacations: form.selectedHolidays.slice(),
+    dependencies: form.dependencies,
+    risks: Array.isArray(meta.risks) ? meta.risks : [],
+    cost: meta.costAmountVal,
+    planHtml: document.getElementById('docPreview').innerHTML,
+    form
+  };
+
+  const plans = getSavedPlans();
+  const existing = findExistingSavedPlan(plans, payload);
+  let planId;
+  if(existing){
+    Object.assign(existing, payload, {
+      id: existing.id,
+      createdAt: existing.createdAt || now,
+      updatedAt: now
+    });
+    planId = existing.id;
+    activeSavedPlanId = existing.id;
+  }else{
+    const plan = {
+      id: createPlanId(),
+      createdAt: now,
+      updatedAt: now,
+      ...payload
+    };
+    plans.unshift(plan);
+    planId = plan.id;
+    activeSavedPlanId = plan.id;
+  }
+  persistPlans(plans);
+  renderSavedPlansUI();
+  return { planId };
+}
+
+function planCardMeta(plan){
+  const features = `${plan.featureCount || 0} ميزة`;
+  const sprint = sprintCardLabel(plan.sprints);
+  const duration = (plan.duration === null || plan.duration === undefined || plan.duration === '')
+    ? 'المدة غير محددة'
+    : `${plan.duration} يوم عمل`;
+  const members = `${plan.teamCount || 0} أعضاء`;
+  return {
+    line1: sprint ? `${features} · ${sprint}` : features,
+    line2: `${duration} · ${members}`
+  };
+}
+
+function planCardDateHtml(plan){
+  const created = formatRelativeAr(plan.createdAt || plan.generatedDate || plan.updatedAt);
+  const updated = formatRelativeAr(plan.updatedAt);
+  const createdDay = String(plan.createdAt || plan.generatedDate || '').slice(0, 10);
+  const updatedDay = String(plan.updatedAt || '').slice(0, 10);
+  const updatedLine = updatedDay && createdDay && updatedDay !== createdDay
+    ? `<span>آخر تحديث: ${escapeHtml(updated)}</span>`
+    : '';
+  return `<p class="plan-card-updated"><span>أُنشئت: ${escapeHtml(created)}</span>${updatedLine}</p>`;
+}
+
+function renderHomePlanCard(plan){
+  const meta = planCardMeta(plan);
+  const active = plan.id === activeSavedPlanId ? ' is-active' : '';
+  const code = plan.projectCode
+    ? `<span class="plan-card-code">${escapeHtml(plan.projectCode)}</span>`
+    : '';
+  return `<article class="plan-card${active}" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="continue">
+    <div class="plan-card-top">
+      <h3 class="plan-card-title">${escapeHtml(plan.projectName || 'خطة بدون اسم')}</h3>
+      ${code}
+    </div>
+    <p class="plan-card-meta">${escapeHtml(meta.line1)}</p>
+    <p class="plan-card-meta">${escapeHtml(meta.line2)}</p>
+    ${planCardDateHtml(plan)}
+    <button type="button" class="plan-card-cta" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="continue">كمّل عليها ←</button>
+  </article>`;
+}
+
+function renderLibraryPlanCard(plan){
+  const meta = planCardMeta(plan);
+  const active = plan.id === activeSavedPlanId ? ' is-active' : '';
+  const code = plan.projectCode
+    ? `<span class="plan-card-code">${escapeHtml(plan.projectCode)}</span>`
+    : '';
+  return `<article class="plan-card${active}" data-plan-id="${escapeHtml(plan.id)}">
+    <div class="plan-card-top">
+      <h3 class="plan-card-title">${escapeHtml(plan.projectName || 'خطة بدون اسم')}</h3>
+      ${code}
+    </div>
+    <p class="plan-card-meta">${escapeHtml(meta.line1)}</p>
+    <p class="plan-card-meta">${escapeHtml(meta.line2)}</p>
+    ${planCardDateHtml(plan)}
+    <div class="plan-card-actions">
+      <button type="button" class="plan-action-btn primary" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="continue">كمّل عليها</button>
+      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="view">عرض الخطة</button>
+      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="duplicate">خذ منها نسخة</button>
+      <button type="button" class="plan-action-btn danger" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="delete">حذف</button>
+    </div>
+  </article>`;
+}
+
+function renderSavedHome(){
+  const box = document.getElementById('savedHome');
+  if(!box) return;
+  const plans = getSavedPlans();
+  if(!plans.length){
+    box.innerHTML = `
+      <div class="saved-empty">
+        <h2>خططك بتكون هنا 🫶</h2>
+        <p>بالحفظ والصون</p>
+      </div>`;
+    return;
+  }
+
+  const recent = plans.slice(0, 3);
+  box.innerHTML = `
+    <div class="saved-home-head">
+      <h2>خططك جاهزة 👋</h2>
+      <p>كل خطة طلّعتها من خُطّة تلقاها هنا، ارجع لها وعدّل عليها بأي وقت.</p>
+    </div>
+    <div class="saved-kicker">آخر خططك</div>
+    <div class="saved-grid">${recent.map(renderHomePlanCard).join('')}</div>
+    <div class="saved-home-foot">
+      <button type="button" class="new-plan-btn" id="newPlanFromHomeBtn">خطة جديدة</button>
+      <button type="button" class="saved-view-all" id="viewAllPlansBtn">عرض كل خططي</button>
+    </div>`;
+}
+
+function renderPlansLibrary(){
+  const grid = document.getElementById('plansLibraryGrid');
+  if(!grid) return;
+  const plans = getSavedPlans();
+  if(!plans.length){
+    grid.innerHTML = `<div class="saved-empty" style="grid-column:1 / -1">
+      <h2>خططك بتكون هنا 🫶</h2>
+      <p>بالحفظ والصون</p>
+    </div>`;
+    return;
+  }
+  grid.innerHTML = plans.map(renderLibraryPlanCard).join('');
+}
+
+function syncEditingBanner(){
+  const banner = document.getElementById('editingBanner');
+  if(!banner) return;
+  banner.classList.toggle('show', !!activeSavedPlanId);
+}
+
+function startNewPlan(){
+  activeSavedPlanId = null;
+  applyFormSnapshot({
+    startDate: toIsoDate(new Date()),
+    reqItems: [{text:'', features:1, startDate:'', endDate:''}]
+  });
+  document.getElementById('logoInput').value = '';
+  document.getElementById('docPreview').innerHTML = '<div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>';
+  document.getElementById('downloadBtn').disabled = true;
+  document.getElementById('generateBtn').textContent = 'توليد الخطة';
+  document.getElementById('status').textContent = '';
+  document.getElementById('status').className = '';
+  closePlansLibrary();
+  renderSavedPlansUI();
+  document.querySelector('.panel').scrollIntoView({behavior:'smooth', block:'start'});
+  const ticket = document.getElementById('ticketId');
+  if(ticket) ticket.focus();
+  showAppToast('تمام، هذي خطة جديدة والقديمة بمكانها ✓');
+}
+
+function renderSavedPlansUI(){
+  renderSavedHome();
+  renderPlansLibrary();
+  syncEditingBanner();
+}
+
+function openPlansLibrary(){
+  renderPlansLibrary();
+  document.getElementById('plansLibraryOverlay').classList.add('open');
+}
+
+function closePlansLibrary(){
+  document.getElementById('plansLibraryOverlay').classList.remove('open');
+}
+
+function revealGeneratedPlan(planHtml){
+  if(!planHtml) return;
+  document.getElementById('docPreview').innerHTML = planHtml;
+  document.getElementById('downloadBtn').disabled = false;
+  document.getElementById('generateBtn').textContent = 'تحديث الخطة';
+}
+
+function openSavedPlan(id, mode){
+  const plan = getSavedPlans().find(item => item.id === id);
+  if(!plan) return;
+  activeSavedPlanId = id;
+  applyFormSnapshot(plan.form || {});
+  revealGeneratedPlan(plan.planHtml);
+  closePlansLibrary();
+  renderSavedPlansUI();
+  const target = mode === 'view'
+    ? document.getElementById('docPreview')
+    : document.querySelector('.panel');
+  if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function duplicateSavedPlan(id){
+  const plans = getSavedPlans();
+  const src = plans.find(item => item.id === id);
+  if(!src) return;
+  const now = new Date().toISOString();
+  const copy = JSON.parse(JSON.stringify(src));
+  copy.id = createPlanId();
+  copy.createdAt = now;
+  copy.updatedAt = now;
+  copy.generatedDate = now;
+  copy.projectName = (src.projectName || src.projectNameEn || 'خطة') + ' — نسخة';
+  copy.projectCode = '';
+  if(copy.form){
+    copy.form.ticketNum = '';
+    copy.form.productNameValue = copy.projectName;
+    copy.form.projectName = src.form && src.form.projectName
+      ? src.form.projectName + ' — Copy'
+      : copy.projectName;
+  }
+  plans.unshift(copy);
+  persistPlans(plans);
+  activeSavedPlanId = copy.id;
+  applyFormSnapshot(copy.form || {});
+  revealGeneratedPlan(copy.planHtml);
+  closePlansLibrary();
+  renderSavedPlansUI();
+  document.querySelector('.panel').scrollIntoView({behavior:'smooth', block:'start'});
+  showAppToast('خذيت منها نسخة، عدّل براحتك ✓');
+}
+
+function openDeletePlanConfirm(id){
+  pendingDeletePlanId = id;
+  document.getElementById('deletePlanOverlay').classList.add('open');
+}
+
+function closeDeletePlanConfirm(){
+  pendingDeletePlanId = null;
+  document.getElementById('deletePlanOverlay').classList.remove('open');
+}
+
+function confirmDeleteSavedPlan(){
+  const id = pendingDeletePlanId;
+  if(!id) return;
+  const plans = getSavedPlans().filter(plan => plan.id !== id);
+  persistPlans(plans);
+  if(activeSavedPlanId === id) activeSavedPlanId = null;
+  closeDeletePlanConfirm();
+  renderSavedPlansUI();
+  if(!getSavedPlans().length) closePlansLibrary();
+  showAppToast('تم، حذفنا الخطة');
+}
+
+function handleSavedPlanAction(action, id){
+  if(!action || !id) return;
+  if(action === 'continue') openSavedPlan(id, 'edit');
+  else if(action === 'view') openSavedPlan(id, 'view');
+  else if(action === 'duplicate') duplicateSavedPlan(id);
+  else if(action === 'delete') openDeletePlanConfirm(id);
+}
+
+document.getElementById('startNewPlanBtn').addEventListener('click', startNewPlan);
+document.getElementById('savedHome').addEventListener('click', (e) => {
+  if(e.target.id === 'newPlanFromHomeBtn'){
+    startNewPlan();
+    return;
+  }
+  if(e.target.id === 'viewAllPlansBtn'){
+    openPlansLibrary();
+    return;
+  }
+  const btn = e.target.closest('[data-plan-action]');
+  if(!btn) return;
+  e.preventDefault();
+  handleSavedPlanAction(btn.dataset.planAction, btn.dataset.planId);
+});
+
+document.getElementById('plansLibraryGrid').addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-plan-action]');
+  if(!btn) return;
+  e.preventDefault();
+  handleSavedPlanAction(btn.dataset.planAction, btn.dataset.planId);
+});
+
+document.getElementById('plansLibraryClose').addEventListener('click', closePlansLibrary);
+document.getElementById('plansLibraryOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'plansLibraryOverlay') closePlansLibrary();
+});
+document.getElementById('deletePlanCancel').addEventListener('click', closeDeletePlanConfirm);
+document.getElementById('deletePlanConfirm').addEventListener('click', confirmDeleteSavedPlan);
+document.getElementById('deletePlanOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'deletePlanOverlay') closeDeletePlanConfirm();
+});
+const ONBOARDING_KEY = 'khuttaOnboardingSeen';
+const WELCOME_KEY = 'khuttaWelcomeSeen';
+function markOnboardingSeen(){
+  localStorage.setItem(ONBOARDING_KEY, 'true');
+}
+function markWelcomeSeen(){
+  localStorage.setItem(WELCOME_KEY, 'true');
+}
+function hasWelcomeSeen(){
+  return localStorage.getItem(WELCOME_KEY) === 'true';
+}
+function showKhuttaTips(){
+  document.getElementById('tipsOverlay').classList.add('open');
+  const closeBtn = document.getElementById('tipsClose');
+  if(closeBtn) closeBtn.focus();
+}
+function hideKhuttaTips(){
+  markOnboardingSeen();
+  document.getElementById('tipsOverlay').classList.remove('open');
+}
+function showKhuttaWelcome(){
+  document.getElementById('welcomeOverlay').classList.add('open');
+  const startBtn = document.getElementById('welcomeStartBtn');
+  if(startBtn) startBtn.focus();
+}
+function hideKhuttaWelcome(){
+  markWelcomeSeen();
+  document.getElementById('welcomeOverlay').classList.remove('open');
+}
+document.getElementById('openTipsBtn').addEventListener('click', showKhuttaTips);
+document.getElementById('tipsClose').addEventListener('click', hideKhuttaTips);
+document.getElementById('tipsStartBtn').addEventListener('click', () => {
+  hideKhuttaTips();
+  document.getElementById('ticketId').focus();
+});
+document.getElementById('tipsOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'tipsOverlay') hideKhuttaTips();
+});
+document.getElementById('welcomeClose').addEventListener('click', hideKhuttaWelcome);
+document.getElementById('welcomeStartBtn').addEventListener('click', hideKhuttaWelcome);
+document.getElementById('welcomeOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'welcomeOverlay') hideKhuttaWelcome();
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key !== 'Escape') return;
+  if(document.getElementById('welcomeOverlay').classList.contains('open')){
+    hideKhuttaWelcome();
+    return;
+  }
+  if(document.getElementById('tipsOverlay').classList.contains('open')){
+    hideKhuttaTips();
+    return;
+  }
+  if(document.getElementById('milestoneOverlay').classList.contains('open')){
+    hideMilestoneModal();
+    return;
+  }
+  if(document.getElementById('deletePlanOverlay').classList.contains('open')){
+    closeDeletePlanConfirm();
+    return;
+  }
+  if(document.getElementById('plansLibraryOverlay').classList.contains('open')){
+    closePlansLibrary();
+  }
+});
+
+const GAMIFICATION_KEY = 'khuttaGamification';
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NORMAL_TOASTS = [
+  'الخطة جاهزة… باقي التنفيذ بس 👀',
+  'تمت! وحدة أقل من قائمة المشاريع 😎',
+  'خُطّة جاهزة… أرسلها قبل لا يتغير الـScope 😂',
+  'تم الحفظ… قبل لا يجي Change Request جديد.',
+  'خلصنا التخطيط، الحين دور ClickUp 👀',
+  'أمورك تحت السيطرة… تقريبًا.',
+  'خُطّة جديدة انضمت للمجموعة ✓',
+  'التواريخ محسوبة… الأعذار ما عاد لها مكان 😂',
+  'جاهزة للإرسال… لا أحد يغير المتطلبات الحين.',
+  'خلصناها. اللي بعدها؟',
+  'Scope ✓ Timeline ✓ Team ✓ يلا.'
+];
+const GENERIC_MILESTONE_TEMPLATES = [
+  (n) => ({
+    emoji: '✨',
+    title: `${n} خُطّة؟ ما شاء الله.`,
+    message: 'الاستمرارية واضحة، وهذا اللي يعجبنا.',
+    actions: [{label: 'كمّل التخطيط', action: 'close'}]
+  }),
+  (n) => ({
+    emoji: '👀',
+    title: `${n}… وأنت للحين تخطط.`,
+    message: 'خُطّة لسه مستمتعة، وأنت لسه في الجو.',
+    actions: [{label: 'يلا نكمّل', action: 'close'}]
+  }),
+  (n) => ({
+    emoji: '🫡',
+    title: `${n} خُطّة.`,
+    message: 'نحترم الجدول، ونحترم اللي يلتزم فيه.',
+    actions: [{label: 'تم', action: 'close'}]
+  }),
+  (n) => ({
+    emoji: '😎',
+    title: `${n}؟ واضح صارت روتين.`,
+    message: 'هذي المرحلة اللي فيها خُطّة تصير عادة، مو أداة.',
+    actions: [{label: 'عندي وحدة ثانية', action: 'newPlan'}]
+  })
+];
+const MILESTONES = {
+  1: {
+    emoji: '🎉',
+    title: 'يا رهيب! أول خُطّة لك جاهزة 🎉',
+    message: 'كذا الكلام! يلا نزّلها وشاركها مع التيم 😎',
+    note: 'وهذي بس البداية...',
+    confetti: 'small',
+    actions: [
+      {label: 'نزّل الخطة', action: 'download'},
+      {label: 'يلا على اللي بعدها ←', action: 'newPlan', ghost: true}
+    ]
+  },
+  2: {
+    emoji: '🔥',
+    title: 'واضح إنك دخلت الجو 🔥',
+    message: 'خطتين ورا بعض؟ شكلك ناوي ترتّب الدنيا اليوم.',
+    note: 'كمّل… الوضع بدأ يعجبنا 👀',
+    actions: [{label: 'يلا نكمّل', action: 'close'}]
+  },
+  3: {
+    emoji: '👀',
+    title: 'لحظة لحظة… ثالث خُطّة؟ 👀',
+    message: 'بس سؤال… التيم يعرف عن كل هالمشاريع؟ 👀😂',
+    actions: [{label: 'لا تعلمهم 🤫', action: 'close'}]
+  },
+  5: {
+    emoji: '🍬',
+    title: 'خمس خطط؟! ما شاء الله عليك 🍬',
+    message: 'كمّل وأعطيك حلاوة.',
+    reveals: [{delay: 1000, text: 'لا صدق… كمّل أول 😂'}],
+    confetti: 'small',
+    actions: [{label: 'أبي أشوف وش عندكم بعد', action: 'close'}]
+  },
+  10: {
+    emoji: '🍽️',
+    title: '10 خطط!! خلاص وقف 😂🏆',
+    message: 'غداء الشهر علينا ولا يهمك.',
+    reveals: [
+      {delay: 1000, text: 'بس المحاسبة للحين ما تدري 👀'},
+      {delay: 2200, text: 'إذا سألوك… قل خُطّة قالت 🤝'}
+    ],
+    confetti: 'medium',
+    actions: [
+      {label: '😂 تم', action: 'close'},
+      {label: 'عندي خُطّة ثانية', action: 'newPlan', ghost: true}
+    ]
+  },
+  15: {
+    emoji: '😎',
+    title: '15 خُطّة؟ شكلك صرت تجي هنا أكثر من ClickUp 😂',
+    message: 'على كذا بنحجز لك مكتب عندنا.',
+    actions: [{label: 'كمّل التخطيط', action: 'close'}]
+  },
+  20: {
+    emoji: '🏆',
+    title: '20 خُطّة؟ الموضوع صار شخصي 😂',
+    message: 'أنت ما تخطط للمشاريع… أنت مخطط للشركة كلها.',
+    badge: 'مخطط محترف 🏆',
+    confetti: 'medium',
+    actions: [{label: 'نكمّل السيطرة', action: 'close'}]
+  },
+  25: {
+    emoji: '☕',
+    title: '25 خُطّة؟ تستاهل بريك ☕',
+    message: 'روح خذ لك قهوة… المشاريع ما راح تهرب.',
+    reveals: [{delay: 1000, text: 'غالبًا 👀'}],
+    actions: [{label: 'آخر وحدة بس', action: 'close'}]
+  },
+  30: {
+    emoji: '🫡',
+    title: '30 خُطّة؟ 🫡',
+    message: 'خلاص إذا اختلفوا على الـTimeline، بنقول لهم يرجعون لك.',
+    badge: 'معتمد من خُطّة ✓',
+    actions: [{label: 'تم، حولهم علي', action: 'close'}]
+  },
+  35: {
+    emoji: '👀',
+    title: '35 خُطّة؟ وش قاعد يصير هنا؟ 😂',
+    message: 'أنت تستخدم خُطّة ولا فاتح PMO لحالك؟',
+    actions: [{label: 'لا تسأل 👀', action: 'close'}]
+  },
+  40: {
+    emoji: '📊',
+    title: '40 خُطّة؟!',
+    message: 'في هالمرحلة المفروض أنت اللي تعطينا Estimation 😂',
+    badge: 'Senior Planner 📊',
+    actions: [{label: 'أرسلوا المتطلبات', action: 'close'}]
+  },
+  45: {
+    emoji: '🤝',
+    title: '45 خُطّة… قربنا من الخمسين 👀',
+    message: 'لا توقف الحين، عندنا شيء لك هناك.',
+    actions: [{label: 'يلا للخمسين →', action: 'close'}]
+  },
+  50: {
+    emoji: '👑',
+    title: '50 خُطّة؟ لحظة بس 👑',
+    message: 'نضيف اسمك في About Us ولا وش؟ 😂',
+    reveals: [{delay: 900, text: 'Founder of Planning'}],
+    badge: 'أسطورة خُطّة 👑',
+    badgeDelay: 1600,
+    confetti: 'large',
+    size: 'large',
+    actions: [{label: 'عندي مشروع ثاني', action: 'newPlan'}]
+  },
+  55: {
+    emoji: '😂',
+    title: '55 خُطّة؟ أنت للحين هنا؟ 😂',
+    message: 'نحترم الالتزام الصراحة.',
+    actions: [{label: 'كمّل', action: 'close'}]
+  },
+  60: {
+    emoji: '👀',
+    title: '60 خُطّة… الـPMO يبي موقعك 👀',
+    message: 'قلنا لهم آخر مرة شفناك كنت تخطط.',
+    actions: [{label: 'قل لهم مشغول', action: 'close'}]
+  },
+  65: {
+    emoji: '😂',
+    title: '65 خُطّة؟',
+    message: 'خلاص ما عاد نحسب… بس مستمتعين 😂',
+    actions: [{label: 'خلونا نستمتع', action: 'close'}]
+  },
+  70: {
+    emoji: '🫶',
+    title: '70 خُطّة؟',
+    message: 'خُطّة رسميًا صارت فرد من العائلة.',
+    actions: [{label: 'أهلًا وسهلًا', action: 'close'}]
+  },
+  75: {
+    emoji: '👀',
+    title: '75 خُطّة! 👀',
+    message: 'باقي ربع ونوصل 100.',
+    note: 'الحين الموضوع صار تحدي.',
+    actions: [{label: 'نكمّل التحدي', action: 'close'}]
+  },
+  80: {
+    emoji: '👀',
+    title: '80 خُطّة…',
+    message: 'نبدأ نجهز احتفال الـ100 ولا بدري؟ 👀',
+    actions: [{label: 'جهّزوا', action: 'close'}]
+  },
+  85: {
+    emoji: '😂',
+    title: '85 خُطّة؟',
+    message: 'لا توقف… وصلنا مرحلة لازم نعرف النهاية 😂',
+    actions: [{label: 'بنعرف', action: 'close'}]
+  },
+  90: {
+    emoji: '👀',
+    title: '90 خُطّة!! 👀',
+    message: 'باقي 10.',
+    note: 'لا تخربها الحين.',
+    actions: [{label: 'ما نخربها', action: 'close'}]
+  },
+  95: {
+    emoji: '😂',
+    title: '95!! لا أحد يكلمه… 😂',
+    message: 'خلوه يكمل.',
+    note: 'باقي خمس ونوصل شيء ما كنا متوقعين أحد يوصله أصلًا 👀',
+    actions: [{label: 'خلاص بكمل', action: 'close'}]
+  },
+  100: {
+    emoji: '🏆',
+    title: '100 خُطّة!! 🏆👑',
+    message: 'خلاص… أنت فزت في خُطّة.',
+    reveals: [{delay: 900, text: 'ما ندري وش فزت بالضبط، بس فزت 😂'}],
+    badge: 'أسطورة التخطيط 👑',
+    badgeDelay: 1700,
+    note: '100 خُطّة انبنت معك. نحترم الالتزام 🫡',
+    noteDelay: 2300,
+    confetti: 'xlarge',
+    size: 'large',
+    counter: {from: 99, to: 100},
+    actions: [
+      {label: 'استلمت الجائزة 😂', action: 'close'},
+      {label: 'يلا على 105', action: 'newPlan', ghost: true}
+    ]
+  },
+  105: {
+    emoji: '😂',
+    title: '105؟ حتى بعد الـ100 ما وقفت؟ 😂',
+    message: 'واضح إن الفوز ما كان كفاية.',
+    actions: [{label: 'عندي زيادة', action: 'close'}]
+  },
+  110: {
+    emoji: '👀',
+    title: '110 خُطّة… واضح إن الـ100 ما كانت النهاية.',
+    message: 'طيب، خلّنا نشوف وين تقف هالمرة.',
+    actions: [{label: 'بعدنا بدري', action: 'close'}]
+  },
+  115: {
+    emoji: '🫡',
+    title: '115؟ خلاص أنت جزء من النظام.',
+    message: 'خُطّة تعتبرك موظف رسمي الحين.',
+    actions: [{label: 'تم التثبيت', action: 'close'}]
+  },
+  120: {
+    emoji: '📊',
+    title: '120 خُطّة… نحتاج Dashboard خاص لك.',
+    message: 'هالمرحلة تستاهل شاشة لحاله.',
+    actions: [{label: 'جهّزوا الداشبورد', action: 'close'}]
+  }
+};
+
+function defaultGamification(){
+  return { totalUniquePlans: 0, achievedMilestones: [], countedPlanIds: [], lastToastIndex: -1 };
+}
+
+function loadGamification(){
+  try{
+    const raw = localStorage.getItem(GAMIFICATION_KEY);
+    const data = raw ? JSON.parse(raw) : defaultGamification();
+    return {
+      totalUniquePlans: Number(data.totalUniquePlans) || 0,
+      achievedMilestones: Array.isArray(data.achievedMilestones) ? data.achievedMilestones : [],
+      countedPlanIds: Array.isArray(data.countedPlanIds) ? data.countedPlanIds : [],
+      lastToastIndex: Number.isFinite(Number(data.lastToastIndex)) ? Number(data.lastToastIndex) : -1
+    };
+  }catch(err){
+    return defaultGamification();
+  }
+}
+
+function persistGamification(state){
+  localStorage.setItem(GAMIFICATION_KEY, JSON.stringify(state));
+}
+
+function milestonesUpTo(count){
+  const list = [];
+  if(count >= 1) list.push(1);
+  if(count >= 2) list.push(2);
+  if(count >= 3) list.push(3);
+  for(let n = 5; n <= count; n += 5) list.push(n);
+  return list;
+}
+
+function syncGamificationWithSavedPlans(){
+  const state = loadGamification();
+  const saved = getSavedPlans();
+  saved.forEach(plan => {
+    if(plan.id && !state.countedPlanIds.includes(plan.id)){
+      state.countedPlanIds.push(plan.id);
+    }
+  });
+  if(state.totalUniquePlans === 0 && saved.length){
+    state.totalUniquePlans = saved.length;
+    state.achievedMilestones = Array.from(new Set([
+      ...state.achievedMilestones,
+      ...milestonesUpTo(saved.length)
+    ]));
+  }else{
+    state.totalUniquePlans = Math.max(state.totalUniquePlans, state.countedPlanIds.length, saved.length);
+  }
+  persistGamification(state);
+  return state;
+}
+
+function isMilestoneCount(count){
+  if(count === 1 || count === 2 || count === 3) return true;
+  return count >= 5 && count % 5 === 0;
+}
+
+function getMilestoneConfig(count){
+  if(MILESTONES[count]) return MILESTONES[count];
+  const template = GENERIC_MILESTONE_TEMPLATES[Math.floor(count / 5) % GENERIC_MILESTONE_TEMPLATES.length];
+  return template(count);
+}
+
+function registerUniquePlan(planId){
+  const state = loadGamification();
+  if(!planId || state.countedPlanIds.includes(planId)){
+    return { isNewUnique: false, count: state.totalUniquePlans };
+  }
+  state.countedPlanIds.push(planId);
+  state.totalUniquePlans += 1;
+  persistGamification(state);
+  return { isNewUnique: true, count: state.totalUniquePlans };
+}
+
+function markMilestoneAchieved(count){
+  const state = loadGamification();
+  if(!state.achievedMilestones.includes(count)){
+    state.achievedMilestones.push(count);
+    persistGamification(state);
+  }
+}
+
+function hasAchievedMilestone(count){
+  return loadGamification().achievedMilestones.includes(count);
+}
+
+let confettiAnim = null;
+function stopConfetti(){
+  if(confettiAnim) cancelAnimationFrame(confettiAnim);
+  confettiAnim = null;
+  const canvas = document.getElementById('confettiCanvas');
+  if(canvas){
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function burstConfetti(level){
+  if(prefersReducedMotion || !level || level === 'none') return;
+  const canvas = document.getElementById('confettiCanvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const amount = level === 'xlarge' ? 140 : level === 'large' ? 90 : level === 'medium' ? 55 : 28;
+  const colors = ['#0f1147', '#1f6fd1', '#7c3aed', '#f59e0b', '#fff'];
+  const pieces = Array.from({length: amount}, () => ({
+    x: Math.random() * window.innerWidth,
+    y: -20 - Math.random() * 80,
+    r: 3 + Math.random() * 4,
+    c: colors[Math.floor(Math.random() * colors.length)],
+    v: 1.6 + Math.random() * 3.2,
+    s: Math.random() * 6,
+    a: 1
+  }));
+  const start = performance.now();
+  const life = level === 'xlarge' ? 2600 : 1800;
+  const tick = (now) => {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    const t = now - start;
+    pieces.forEach(p => {
+      p.y += p.v;
+      p.x += Math.sin((p.y + p.s) / 18);
+      p.a = Math.max(0, 1 - t / life);
+      ctx.globalAlpha = p.a;
+      ctx.fillStyle = p.c;
+      ctx.fillRect(p.x, p.y, p.r, p.r * 0.7);
+    });
+    ctx.globalAlpha = 1;
+    if(t < life) confettiAnim = requestAnimationFrame(tick);
+    else stopConfetti();
+  };
+  stopConfetti();
+  confettiAnim = requestAnimationFrame(tick);
+}
+
+let milestoneTimers = [];
+let milestoneLastFocus = null;
+function clearMilestoneTimers(){
+  milestoneTimers.forEach(id => clearTimeout(id));
+  milestoneTimers = [];
+}
+
+function hideMilestoneModal(){
+  clearMilestoneTimers();
+  stopConfetti();
+  document.getElementById('milestoneOverlay').classList.remove('open');
+  if(milestoneLastFocus && typeof milestoneLastFocus.focus === 'function'){
+    milestoneLastFocus.focus();
+  }
+}
+
+function runMilestoneAction(action){
+  hideMilestoneModal();
+  if(action === 'download'){
+    document.getElementById('downloadBtn').click();
+  }else if(action === 'newPlan'){
+    startNewPlan();
+  }
+}
+
+function showMilestone(count){
+  const config = getMilestoneConfig(count);
+  const overlay = document.getElementById('milestoneOverlay');
+  const modal = document.getElementById('milestoneModal');
+  const emoji = document.getElementById('milestoneEmoji');
+  const counter = document.getElementById('milestoneCounter');
+  const title = document.getElementById('milestoneTitle');
+  const message = document.getElementById('milestoneMessage');
+  const reveal = document.getElementById('milestoneReveal');
+  const badge = document.getElementById('milestoneBadge');
+  const note = document.getElementById('milestoneNote');
+  const actions = document.getElementById('milestoneActions');
+
+  clearMilestoneTimers();
+  milestoneLastFocus = document.activeElement;
+  modal.classList.toggle('large', config.size === 'large');
+  emoji.textContent = config.emoji || '🎉';
+  title.textContent = config.title;
+  message.textContent = config.message;
+  reveal.textContent = '';
+  note.textContent = prefersReducedMotion ? (config.note || '') : '';
+  badge.textContent = config.badge || '';
+  badge.classList.toggle('show', !!(config.badge && (prefersReducedMotion || !config.badgeDelay)));
+
+  if(config.counter && !prefersReducedMotion){
+    counter.hidden = false;
+    counter.textContent = String(config.counter.from);
+    let n = config.counter.from;
+    const step = () => {
+      n += 1;
+      counter.textContent = String(n);
+      if(n < config.counter.to) milestoneTimers.push(setTimeout(step, 160));
+    };
+    milestoneTimers.push(setTimeout(step, 220));
+  }else{
+    counter.hidden = true;
+  }
+
+  if(!prefersReducedMotion && config.reveals){
+    config.reveals.forEach(item => {
+      milestoneTimers.push(setTimeout(() => {
+        reveal.textContent = item.text;
+      }, item.delay));
+    });
+  }else if(config.reveals && prefersReducedMotion){
+    reveal.textContent = config.reveals[config.reveals.length - 1].text;
+  }
+
+  if(config.badge && config.badgeDelay && !prefersReducedMotion){
+    milestoneTimers.push(setTimeout(() => badge.classList.add('show'), config.badgeDelay));
+  }
+  if(config.note && config.noteDelay && !prefersReducedMotion){
+    milestoneTimers.push(setTimeout(() => { note.textContent = config.note; }, config.noteDelay));
+  }else if(config.note && !config.noteDelay){
+    note.textContent = config.note;
+  }
+
+  actions.innerHTML = (config.actions || [{label: 'حسنًا', action: 'close'}]).map((btn, i) =>
+    `<button type="button" class="${btn.ghost ? 'ghost' : ''}" data-ms-action="${btn.action}">${btn.label}</button>`
+  ).join('');
+  actions.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => runMilestoneAction(btn.dataset.msAction));
+  });
+
+  overlay.classList.add('open');
+  markMilestoneAchieved(count);
+  burstConfetti(config.confetti);
+  const firstBtn = actions.querySelector('button');
+  if(firstBtn) firstBtn.focus();
+}
+
+function showNormalSuccessToast(){
+  const state = loadGamification();
+  let index = Math.floor(Math.random() * NORMAL_TOASTS.length);
+  if(index === state.lastToastIndex) index = (index + 1) % NORMAL_TOASTS.length;
+  state.lastToastIndex = index;
+  persistGamification(state);
+  showAppToast(NORMAL_TOASTS[index]);
+}
+
+function celebrateNewUniquePlan(count){
+  if(isMilestoneCount(count) && !hasAchievedMilestone(count)){
+    showMilestone(count);
+    return;
+  }
+  showNormalSuccessToast();
+}
+
+document.getElementById('milestoneClose').addEventListener('click', hideMilestoneModal);
+document.getElementById('milestoneOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'milestoneOverlay') hideMilestoneModal();
+});
+
+syncGamificationWithSavedPlans();
+renderSavedPlansUI();
+
 function generatePlan(){
+  if(isRestoringPlan) return;
   const statusEl = document.getElementById('status');
   const btn = document.getElementById('generateBtn');
   const docPreview = document.getElementById('docPreview');
@@ -2076,6 +4365,7 @@ function generatePlan(){
     statusEl.className = 'error';
     return;
   }
+  if(!validateAllDates()) return;
 
   statusEl.className = '';
   statusEl.textContent = 'جاري تجهيز المهام...';
@@ -2090,6 +4380,14 @@ function generatePlan(){
   renderCostTable();
   const costRaw = document.getElementById('costAmount').value;
   const costAmountVal = costRaw === '' ? '' : Number(costRaw);
+  const existingSaved = findExistingSavedPlan(getSavedPlans(), {
+    projectCode: ticketId,
+    projectNameEn: projectName,
+    projectName: productNameValue || projectName
+  });
+  const createdDate = (existingSaved && (existingSaved.createdAt || existingSaved.generatedDate))
+    ? String(existingSaved.createdAt || existingSaved.generatedDate).slice(0, 10)
+    : toIsoDate(new Date());
 
   docPreview.innerHTML = renderDoc({
     ticketId, projectName, teamTag, sprintNum,
@@ -2101,7 +4399,8 @@ function generatePlan(){
     feedbackDays: feedbackDaysVal,
     costAmount: costAmountVal,
     dependencies: aiResult.dependencies || [],
-    lang
+    lang,
+    createdDate
   });
 
   if(!statusEl.classList.contains('error')){
@@ -2110,17 +4409,34 @@ function generatePlan(){
   btn.textContent = 'تحديث الخطة';
   document.getElementById('downloadBtn').disabled = false;
 
-  if(wasAlreadyGenerated && !statusEl.classList.contains('error')){
-    showUpdateToast();
+  if(!statusEl.classList.contains('error')){
+    const featureCount = featuresManualVal !== '' ? Number(featuresManualVal) : (aiResult.featureCount ?? 0);
+    const saved = saveGeneratedPlan({
+      ticketId,
+      featureCount,
+      totalWorkingDays,
+      costAmountVal,
+      risks: []
+    });
+    const unique = registerUniquePlan(saved.planId);
+    if(unique.isNewUnique){
+      celebrateNewUniquePlan(unique.count);
+    }else if(wasAlreadyGenerated && !document.getElementById('milestoneOverlay').classList.contains('open')){
+      showUpdateToast();
+    }
   }
 }
 
 let updateToastTimer = null;
-function showUpdateToast(){
+function showAppToast(message){
   const toast = document.getElementById('updateToast');
+  toast.textContent = message;
   toast.classList.add('show');
   clearTimeout(updateToastTimer);
   updateToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+function showUpdateToast(){
+  showAppToast('تم تحديث الخطة');
 }
 
 document.getElementById('generateBtn').addEventListener('click', generatePlan);
@@ -2140,7 +4456,9 @@ function hasGeneratedOnce(){
 }
 function scheduleRegen(delay){
   updateGenerateBtnState();
+  if(isRestoringPlan) return;
   if(!hasGeneratedOnce()) return;
+  if(!validateAllDates()) return;
   clearTimeout(autoRegenTimer);
   autoRegenTimer = setTimeout(generatePlan, delay || 400);
 }
@@ -2153,7 +4471,25 @@ document.querySelector('.panel').addEventListener('change', (e) => {
   if(e.target.closest('.multiselect')) return; // handled separately via toggleAssignee
   scheduleRegen(200);
 });
+
+(function setDefaultStartDate(){
+  const startEl = document.getElementById('startDate');
+  if(!startEl || startEl.value) return;
+  startEl.value = toIsoDate(new Date());
+  const start = parseIsoDate(startEl.value);
+  if(start) calendarView = {year: start.getFullYear(), month: start.getMonth()};
+  renderLeaveCalendar();
+  renderCostTable();
+  syncAllDateLimits();
+})();
 updateGenerateBtnState();
+
+if(!hasWelcomeSeen() && localStorage.getItem(ONBOARDING_KEY)){
+  markWelcomeSeen();
+}
+if(!hasWelcomeSeen()){
+  showKhuttaWelcome();
+}
 
 
 document.getElementById('downloadBtn').addEventListener('click', async () => {
