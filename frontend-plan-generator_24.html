@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خُطّة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tajawal:wght@400;500;700&family=Overpass:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{
+    --navy:#0f1147;
+    --blue:#1f6fd1;
+    --blue-light:#dbeafe;
+    --purple-light:#f3e8ff;
+    --gray-row:#f4f5f7;
+    --text:#1a1d29;
+    --border:#e3e6ec;
+    --pattern: url('data:image/png;base64,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');
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Tajawal', sans-serif;
+    background:#eef0f4;
+    color:var(--text);
+  }
+  .app{
+    display:flex;
+    flex-direction:row-reverse;
+    gap:24px;
+    padding:24px;
+    align-items:flex-start;
+    flex-wrap:wrap;
+  }
+  .panel{
+    direction:rtl;
+    position:relative;
+    background:#fff;
+    border-radius:14px;
+    padding:22px 24px;
+    width:400px;
+    flex-shrink:0;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  .panel::after{
+    content:'';
+    position:absolute;
+    bottom:10px;
+    left:10px;
+    width:140px;
+    height:140px;
+    background-image:var(--pattern);
+    background-repeat:no-repeat;
+    background-size:contain;
+    opacity:.06;
+    pointer-events:none;
+    z-index:-1;
+    border-radius:14px;
+  }
+  .panel h1{
+    font-size:18px;
+    margin:0 0 4px;
+    color:var(--navy);
+  }
+  .panel-logo{
+    display:block;
+    max-height:32px;
+    margin-bottom:20px;
+  }
+  .panel p.sub{
+    font-size:12.5px;
+    color:#6b7280;
+    margin:0 0 18px;
+  }
+  .field{margin-bottom:22px;}
+  .field label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:5px;
+    color:#33364a;
+  }
+  .hint,
+  .field .hint{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    margin-top:8px;
+    padding:8px 10px;
+    background:#f5f8fc;
+    border:1px solid #e4ebf3;
+    border-inline-start:3px solid var(--blue);
+    border-radius:8px;
+    font-size:12px;
+    line-height:1.6;
+    color:#5b6470;
+  }
+  .hint::before{
+    content:"i";
+    flex-shrink:0;
+    width:16px;
+    height:16px;
+    margin-top:2px;
+    border-radius:50%;
+    background:var(--blue-light);
+    color:var(--blue);
+    font-family:'Poppins',sans-serif;
+    font-size:10px;
+    font-weight:700;
+    line-height:16px;
+    text-align:center;
+  }
+  input[type=text], input[type=number], input[type=date], textarea, select{
+    width:100%;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-family:inherit;
+    font-size:13.5px;
+    direction:rtl;
+    background:#fafbfc;
+    touch-action:manipulation;
+  }
+  textarea{resize:vertical; min-height:70px;}
+  .req-list{display:flex; flex-direction:column; gap:10px; margin-bottom:8px;}
+  .req-item-card{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    background:#fafbfc;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 30px;
+    grid-template-areas:
+      "text remove"
+      "feat feat"
+      "dates dates";
+    gap:8px 10px;
+    align-items:start;
+  }
+  .req-item-text{grid-area:text; min-width:0;}
+  .req-item-text textarea{
+    width:100%;
+    min-height:64px;
+    resize:vertical;
+    line-height:1.55;
+  }
+  .req-item-main{min-width:0; grid-area:feat;}
+  .req-item-main input[type=text]{width:100%;}
+  .req-dates-col{
+    grid-area:dates;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    min-width:0;
+  }
+  .req-dates-col .req-dates-title{
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .req-dates-fields{
+    display:flex;
+    gap:8px;
+  }
+  .req-dates-fields .req-meta-field{flex:1; min-width:0;}
+  .req-item-top{display:flex; align-items:center; gap:6px; margin-bottom:8px;}
+  .req-item-top input[type=text]{flex:1;}
+  .req-item-meta{
+    display:flex;
+    gap:8px;
+    margin-top:6px;
+  }
+  .req-meta-field{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+  }
+  .req-meta-field label{
+    font-size:10.5px;
+    color:#8a8d9a;
+    font-weight:600;
+  }
+  .req-meta-field input{
+    padding:6px 8px;
+    font-size:12px;
+  }
+  .req-remove{
+    flex-shrink:0;
+    width:30px;
+    height:30px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:#c0392b;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    line-height:1;
+  }
+  .add-item-btn{
+    background:#fff;
+    border:1px dashed var(--blue);
+    color:var(--blue);
+    padding:7px 12px;
+    border-radius:8px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .optional-badge{
+    display:inline-flex;
+    align-items:center;
+    background:#eef2f7;
+    color:#6b7280;
+    font-size:10.5px;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:20px;
+    letter-spacing:.2px;
+  }
+  .field.optional-field label .optional-badge{margin-inline-start:6px;}
+
+  .leave-box{
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fafbfc;
+    padding:10px;
+  }
+  .leave-cal-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .leave-cal-title{
+    font-size:13px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .leave-nav{
+    width:28px;
+    height:28px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:7px;
+    cursor:pointer;
+    color:var(--navy);
+    font-size:14px;
+    line-height:1;
+    padding:0;
+  }
+  .leave-nav:disabled{
+    opacity:.35;
+    cursor:default;
+  }
+  .leave-weekdays,
+  .leave-grid{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:3px;
+  }
+  .leave-weekdays span{
+    text-align:center;
+    font-size:10px;
+    font-weight:700;
+    color:#8a8d9a;
+    padding:2px 0 6px;
+  }
+  .leave-day{
+    aspect-ratio:1;
+    min-height:30px;
+    border:none;
+    background:transparent;
+    border-radius:7px;
+    font-family:inherit;
+    font-size:12px;
+    font-weight:600;
+    color:var(--text);
+    cursor:pointer;
+    padding:0;
+  }
+  .leave-day:hover:not(:disabled):not(.selected){
+    background:var(--blue-light);
+    color:var(--navy);
+  }
+  .leave-day.weekend{color:#9aa0ab;}
+  .leave-day.out-of-range,
+  .leave-day:disabled{
+    color:#c5c8d1;
+    cursor:default;
+    background:transparent;
+  }
+  .leave-day.today:not(.selected){
+    box-shadow:inset 0 0 0 1.5px var(--blue);
+    color:var(--blue);
+  }
+  .leave-day.selected{
+    background:var(--navy);
+    color:#fff;
+  }
+  .leave-day.selected.weekend{color:#fff;}
+  .leave-empty,
+  .cost-empty{
+    font-size:12px;
+    color:#8a8d9a;
+    text-align:center;
+    padding:10px 6px;
+    line-height:1.6;
+  }
+  .leave-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:5px;
+    margin-top:8px;
+  }
+  .leave-chips:empty{margin-top:0;}
+  .leave-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    background:var(--blue-light);
+    color:var(--navy);
+    font-size:11.5px;
+    font-weight:600;
+    padding:3px 6px 3px 8px;
+    border-radius:16px;
+  }
+  .leave-chip button{
+    border:none;
+    background:none;
+    color:var(--navy);
+    cursor:pointer;
+    font-size:13px;
+    line-height:1;
+    padding:0;
+  }
+  .leave-summary{
+    font-size:11px;
+    color:#6b7280;
+    margin-top:6px;
+  }
+
+  .cost-box{
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fafbfc;
+    overflow:hidden;
+  }
+  .cost-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+  }
+  .cost-table th{
+    background:#eef2f7;
+    color:#5b5e6e;
+    font-size:10.5px;
+    font-weight:700;
+    padding:7px 8px;
+    text-align:right;
+    border-bottom:1px solid var(--border);
+  }
+  .cost-table th:last-child{text-align:left;}
+  .cost-table td{
+    padding:7px 8px;
+    border-bottom:1px solid var(--border);
+    vertical-align:middle;
+  }
+  .cost-table tr:last-child td{border-bottom:none;}
+  .cost-table .emp-name{
+    font-weight:700;
+    color:var(--navy);
+    font-size:12.5px;
+  }
+  .cost-table select{
+    padding:5px 7px;
+    font-size:12px;
+    background:#fff;
+    min-width:72px;
+  }
+  .cost-table .cost-val{
+    font-weight:700;
+    color:#33364a;
+    direction:ltr;
+    unicode-bidi:isolate;
+    white-space:nowrap;
+    text-align:left;
+  }
+  .cost-table .cost-val.muted{
+    font-weight:500;
+    color:#9aa0ab;
+  }
+  .cost-table tr.cost-total td{
+    background:var(--blue-light);
+    font-weight:700;
+    color:var(--navy);
+    padding:8px;
+  }
+  .cost-table tr.cost-total .cost-val{color:var(--navy);}
+  .cost-foot-note{
+    font-size:11px;
+    color:#8a8d9a;
+    line-height:1.55;
+    margin-top:6px;
+  }
+  .prefixed-input{
+    display:flex;
+    direction:ltr;
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    background:#fafbfc;
+  }
+  .prefixed-input .prefix{
+    background:var(--gray-row);
+    color:#5b5e6e;
+    font-size:13.5px;
+    font-weight:600;
+    padding:9px 10px;
+    border-inline-end:1px solid var(--border);
+    white-space:nowrap;
+  }
+  .prefixed-input input[type=text]{
+    border:none;
+    background:transparent;
+    direction:ltr;
+    border-radius:0;
+  }
+  .row2{display:flex; gap:14px;}
+  .row2 > div{flex:1;}
+  .checkbox-line{display:flex; align-items:center; gap:6px; font-size:13px; margin-top:6px;}
+  .features-box{
+    border:1.5px solid var(--blue-light);
+    background:#f7faff;
+    border-radius:10px;
+    padding:12px 14px;
+  }
+  .features-box .hint{margin-top:8px;}
+  #featuresManualWrap.disabled{
+    opacity:.45;
+    pointer-events:none;
+  }
+  .file-drop{
+    border:1.5px dashed var(--border);
+    border-radius:8px;
+    padding:10px;
+    text-align:center;
+    font-size:12.5px;
+    color:#7a7d8c;
+    cursor:pointer;
+    background:#fafbfc;
+  }
+  #logoPreviewMini{max-height:36px; margin-top:8px; display:none;}
+  .tags-box{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:6px;
+  }
+  .tags-box:empty{margin-bottom:0;}
+  .tag-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--blue-light);
+    color:var(--navy);
+    font-size:12.5px;
+    font-weight:600;
+    padding:5px 8px 5px 10px;
+    border-radius:20px;
+  }
+  .tag-chip button{
+    border:none;
+    background:none;
+    color:var(--navy);
+    cursor:pointer;
+    font-size:14px;
+    line-height:1;
+    padding:0;
+  }
+  .multiselect{
+    position:relative;
+  }
+  .multiselect-trigger{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:9px 10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fafbfc;
+    font-size:13.5px;
+    cursor:pointer;
+    color:#33364a;
+    touch-action:manipulation;
+  }
+  .multiselect-trigger .chevron{
+    font-size:11px;
+    color:#8a8d9a;
+    transition:transform .15s;
+  }
+  .multiselect.open .multiselect-trigger .chevron{
+    transform:rotate(180deg);
+  }
+  .multiselect-panel{
+    display:none;
+    position:absolute;
+    z-index:20;
+    top:calc(100% + 6px);
+    left:0;
+    right:0;
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    padding:8px;
+  }
+  .multiselect.open .multiselect-panel{display:block;}
+  .multiselect-panel input[type=text]{margin-bottom:6px;}
+  .multiselect-list{
+    max-height:220px;
+    overflow-y:auto;
+  }
+  .multiselect-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 8px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:13px;
+  }
+  .multiselect-item:hover{background:var(--gray-row);}
+  .multiselect-item input[type=checkbox]{
+    width:auto;
+    accent-color:var(--blue);
+    margin:0;
+  }
+  .multiselect-item .name-en{
+    font-size:10.5px;
+    color:#9aa0ab;
+    direction:ltr;
+  }
+  .multiselect-empty{
+    padding:10px;
+    text-align:center;
+    font-size:12.5px;
+    color:#9aa0ab;
+  }
+  button#generateBtn{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:12px;
+    border-radius:9px;
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:6px;
+    font-family:inherit;
+  }
+  button#generateBtn:disabled{opacity:.6; cursor:default;}
+  #status{
+    margin-top:10px;
+    font-size:12.5px;
+    color:#6b7280;
+    min-height:16px;
+  }
+  #status.error{color:#c0392b;}
+
+  .preview-wrap{
+    flex:1;
+    min-width:320px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+  }
+  .toolbar{
+    display:flex;
+    justify-content:flex-start;
+    width:100%;
+    max-width:794px;
+    gap:10px;
+  }
+  .toolbar button{
+    background:#fff;
+    border:1px solid var(--border);
+    padding:9px 16px;
+    border-radius:8px;
+    font-family:'Tajawal',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    color:var(--navy);
+  }
+  .toolbar button.primary{
+    background:var(--blue);
+    color:#fff;
+    border-color:var(--blue);
+  }
+  .toolbar button:disabled{
+    opacity:.5;
+    cursor:default;
+  }
+
+  /* ---- Document ---- */
+  #docPreview{
+    direction:ltr;
+    width:794px;
+    min-height:1123px;
+    background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);
+    font-family:'Overpass', 'Poppins', sans-serif;
+    color:#1a1d29;
+    padding:0 0 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  #docPreview::after{
+    content:'';
+    position:absolute;
+    bottom:20px;
+    right:20px;
+    width:220px;
+    height:220px;
+    background-image:var(--pattern);
+    background-size:contain;
+    background-repeat:no-repeat;
+    opacity:.05;
+    pointer-events:none;
+    z-index:0;
+  }
+  #docPreview > *{
+    position:relative;
+    z-index:1;
+  }
+  .doc-topline{height:5px; background:var(--navy);}
+  .doc-header{padding:22px 46px 18px;}
+  .doc-tag{
+    display:inline-block;
+    background:var(--navy);
+    color:#fff;
+    font-size:12px;
+    letter-spacing:.5px;
+    padding:7px 16px;
+    border-radius:2px;
+    margin-bottom:14px;
+  }
+  .doc-header-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+  }
+  .doc-logo-left{
+    max-height:42px;
+  }
+  .doc-logo-right{
+    max-height:36px;
+  }
+  .doc-titlebar{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    border-bottom:2px solid var(--navy);
+    padding-bottom:10px;
+  }
+  .doc-title{
+    font-size:26px;
+    font-weight:600;
+    color:var(--navy);
+    margin:0;
+    direction:ltr;
+    unicode-bidi:isolate;
+    text-align:left;
+  }
+  .doc-title .ticket{
+    text-decoration:underline;
+    unicode-bidi:isolate;
+  }
+  .doc-title .project-name{
+    unicode-bidi:isolate;
+  }
+  .doc-subtitle{
+    font-size:15px;
+    color:var(--navy);
+    font-weight:500;
+  }
+  .doc-body{padding:8px 46px 0;}
+  .doc-section-title{
+    font-size:22px;
+    color:var(--navy);
+    font-weight:500;
+    margin:22px 0 4px;
+  }
+  .doc-section-underline{
+    width:70px;
+    height:4px;
+    background:var(--blue);
+    margin-bottom:14px;
+  }
+  table.doc-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    border:1px solid #c9d0dc;
+  }
+  table.doc-table th{
+    background:var(--blue);
+    color:#fff;
+    font-weight:600;
+    padding:10px 14px;
+    text-align:center;
+    font-size:13px;
+    border:1px solid #c9d0dc;
+  }
+  table.doc-table td{
+    background:var(--gray-row);
+    padding:10px 14px;
+    vertical-align:top;
+    border:1px solid #c9d0dc;
+  }
+  table.doc-table td.center{text-align:center; vertical-align:middle;}
+  table.doc-table td.task-text{text-align:left; vertical-align:middle;}
+  table.doc-table td.task-date{
+    text-align:center;
+    vertical-align:middle;
+    white-space:nowrap;
+    width:28%;
+    font-weight:600;
+  }
+  .task-list{margin:0; padding-inline-start:18px;}
+  .task-list li{margin-bottom:6px; line-height:1.5;}
+  tr.total-row td{background:var(--blue-light); font-weight:600; text-align:center;}
+  tr.total-row td.label{text-align:left; font-weight:700;}
+  tr.feedback-row td{background:var(--purple-light); font-weight:600; text-align:center;}
+  tr.feedback-row td.label{text-align:left; font-weight:700;}
+  tr.cost-row td{background:#e6f7ee; font-weight:600; text-align:center;}
+  tr.cost-row td.label{text-align:left; font-weight:700;}
+  .doc-deps{margin:8px 0 0; padding-inline-start:18px; font-size:12.5px;}
+  .doc-note{font-size:11px; color:#8a8d9a; margin-top:14px;}
+  .placeholder-msg{
+    padding:80px 40px;
+    text-align:center;
+    color:#9aa0ab;
+    font-family:'Tajawal',sans-serif;
+    font-size:14px;
+  }
+  .app-footer{
+    width:100%;
+    text-align:center;
+    padding:4px 16px 22px;
+    font-family:'Poppins','Tajawal',sans-serif;
+    font-size:12px;
+    font-weight:500;
+    color:#7a8090;
+    letter-spacing:.2px;
+  }
+  .app-footer strong{
+    color:var(--navy);
+    font-weight:700;
+  }
+  .app-footer .heart{
+    color:#7c3aed;
+    font-style:normal;
+  }
+  .app-footer .sep{
+    margin:0 5px;
+    color:#c5c9d3;
+  }
+
+  .success-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.45);
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+  }
+  .success-overlay.open{display:flex;}
+  .success-modal{
+    background:#fff;
+    border-radius:16px;
+    padding:32px 28px;
+    text-align:center;
+    max-width:340px;
+    width:100%;
+    font-family:'Tajawal', sans-serif;
+    direction:rtl;
+    box-shadow:0 10px 40px rgba(0,0,0,.2);
+    animation:popIn .25s ease;
+  }
+  @keyframes popIn{
+    from{transform:scale(.9); opacity:0;}
+    to{transform:scale(1); opacity:1;}
+  }
+  .success-emoji{font-size:46px; margin-bottom:8px;}
+  .update-toast{
+    position:fixed;
+    bottom:24px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--navy);
+    color:#fff;
+    padding:11px 22px;
+    border-radius:24px;
+    font-family:'Tajawal', sans-serif;
+    font-size:13.5px;
+    font-weight:700;
+    box-shadow:0 6px 20px rgba(0,0,0,.2);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:200;
+  }
+  .update-toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+  .success-modal h2{
+    color:var(--navy);
+    font-size:19px;
+    margin:0 0 10px;
+  }
+  .success-modal p{
+    color:#5b5e6e;
+    font-size:14px;
+    line-height:1.6;
+    margin:0 0 22px;
+  }
+  .success-modal button{
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:10px 28px;
+    border-radius:9px;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+
+  @media print{
+    body *{visibility:hidden;}
+    #docPreview, #docPreview *{visibility:visible;}
+    #docPreview{position:absolute; top:0; left:0; width:100%; box-shadow:none;}
+    @page{size:A4; margin:0;}
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 900px){
+    .app{
+      flex-direction:column;
+      padding:14px;
+      gap:16px;
+    }
+    .panel{
+      width:100%;
+    }
+    .preview-wrap{
+      width:100%;
+      min-width:0;
+    }
+    #docPreview{
+      width:100%;
+      max-width:794px;
+    }
+    html{
+      -webkit-text-size-adjust:100%;
+      text-size-adjust:100%;
+    }
+    input[type=text],
+    input[type=number],
+    input[type=date],
+    textarea,
+    select,
+    .req-meta-field input,
+    .cost-table select,
+    .multiselect-trigger,
+    .multiselect-panel input[type=text],
+    .prefixed-input input[type=text]{
+      font-size:16px !important;
+    }
+  }
+  @media (max-width: 560px){
+    .panel{
+      padding:16px 14px;
+      border-radius:10px;
+    }
+    .row2{
+      flex-direction:column;
+      gap:0;
+    }
+    .cost-table th,
+    .cost-table td{padding:6px 6px;}
+    .leave-day{min-height:28px; font-size:11.5px;}
+    .req-item-card{
+      grid-template-columns:minmax(0,1fr) 30px;
+    }
+    .toolbar{
+      width:100%;
+      flex-wrap:wrap;
+    }
+    .toolbar button{
+      flex:1;
+      padding:10px 8px;
+      font-size:12.5px;
+    }
+    #docPreview{
+      transform:scale(0.94);
+      transform-origin:top center;
+    }
+    .doc-header, .doc-body{
+      padding-left:22px;
+      padding-right:22px;
+    }
+    .doc-title{font-size:20px;}
+    .doc-subtitle{font-size:12px;}
+    .doc-section-title{font-size:18px;}
+    table.doc-table{font-size:11.5px;}
+    table.doc-table th, table.doc-table td{padding:7px 8px;}
+    table.doc-table td.task-date{white-space:normal; width:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="panel">
+    <img id="panelLogo" class="panel-logo" alt="شعار">
+    <h1>خُطّة</h1>
+    <p class="sub">أداة ذكية تُحوّل متطلبات المشروع إلى خطة تنفيذ احترافية، تشمل المهام، المدة، الفريق، المراحل والاعتماديات، وتُخرجها في نموذج موحّد جاهز للمشاركة.</p>
+
+    <div class="field">
+      <label>شعار المنتج (اختياري)</label>
+      <div class="file-drop" id="logoDrop">اضغط لرفع الشعار (PNG/SVG)</div>
+      <input type="file" id="logoInput" accept="image/*" style="display:none">
+      <img id="logoPreviewMini" style="display:none">
+    </div>
+
+    <div class="field">
+      <label>اسم الفريق (يظهر أعلى المستند)</label>
+      <select id="teamTag">
+        <option value="">— اختر الفريق —</option>
+        <option value="فريق تصميم تجربة المستخدم">فريق تصميم تجربة المستخدم</option>
+        <option value="فريق تطوير الويب">فريق تطوير الويب</option>
+        <option value="فريق تطوير الموبايل">فريق تطوير الموبايل</option>
+      </select>
+    </div>
+
+    <div class="row2">
+      <div class="field">
+        <label>رقم التذكرة</label>
+        <div class="prefixed-input">
+          <span class="prefix">DSBI-</span>
+          <input type="text" id="ticketId" placeholder="12345" inputmode="numeric">
+        </div>
+      </div>
+      <div class="field">
+        <label>رقم السبرنت (اختياري)</label>
+        <input type="text" id="sprintNum" placeholder="Sprint 3">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>اسم المشروع / الخدمة</label>
+      <div class="multiselect" id="productMultiselect">
+        <div class="multiselect-trigger" id="productTrigger">
+          <span id="productTriggerText">اختر أو أضف اسم المنتج</span>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="multiselect-panel" id="productPanel">
+          <input type="text" id="productSearch" placeholder="ابحث أو أضف اسمًا جديدًا..." autocomplete="off">
+          <div class="multiselect-list" id="productList"></div>
+        </div>
+      </div>
+      <input type="hidden" id="projectName">
+      <div class="hint">القائمة مأخوذة من دليل منتجات علم 2026، وتظهر بالإنجليزية في الخطة تلقائيًا. إن لم يكن المشروع ضمنها، يُكتب مباشرة في خانة البحث.</div>
+    </div>
+
+    <div class="field">
+      <label>نطاق العمل / المتطلبات</label>
+      <div class="req-list" id="reqList"></div>
+      <button type="button" id="addReqBtn" class="add-item-btn">+ إضافة بند</button>
+      <div class="hint">كل بند يظهر كمهمة في الخطة، والتاريخ يظهر في عمود مستقل. عمود الميزات يظهر فقط إذا كان العدد أكبر من 1.</div>
+    </div>
+
+    <div class="field" style="display:none;">
+      <div class="features-box">
+        <div class="checkbox-line" style="margin-top:0;">
+          <input type="checkbox" id="includeFeatures">
+          <label for="includeFeatures" style="font-weight:700; margin:0; font-size:13.5px;">تضمين عمود الميزات (Features) في الخطة</label>
+        </div>
+        <div id="featuresManualWrap" style="margin-top:10px;">
+          <input type="number" id="featuresManual" min="0" placeholder="عدد الميزات (اختياري)">
+          <div class="hint">اتركه فارغًا ليُحسب العدد تلقائيًا بالذكاء الاصطناعي، أو أدخلي رقمًا محددًا ليظهر كما هو في الخطة.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row2">
+      <div class="field">
+        <label>تاريخ البداية</label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="field">
+        <label>تاريخ النهاية</label>
+        <input type="date" id="endDate">
+        <div class="checkbox-line">
+          <input type="checkbox" id="tbdEnd">
+          <label for="tbdEnd" style="font-weight:400; margin:0;">غير محدد (TBD)</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="field optional-field">
+      <label>أيام الإجازات ضمن الفترة <span class="optional-badge">اختياري</span></label>
+      <div class="leave-box" id="leaveBox">
+        <div id="leaveCalendar"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>المطورون / الفريق المكلّف</label>
+      <div class="multiselect" id="assignedMultiselect">
+        <div class="multiselect-trigger" id="assignedTrigger">
+          <span id="assignedTriggerText">اختر الموظفين</span>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="multiselect-panel" id="assignedPanel">
+          <input type="text" id="assignedSearch" placeholder="ابحث عن اسم..." autocomplete="off">
+          <div class="multiselect-list" id="assignedList"></div>
+        </div>
+      </div>
+      <div class="tags-box" id="assignedTags"></div>
+      <input type="hidden" id="assigned">
+      <div class="hint">يظهر هنا الاسم فقط. فئة الموظف (Grade) تُحدَّد من قسم التكلفة عند الحاجة.</div>
+    </div>
+
+    <div class="field">
+      <label>وقت الفيدباك (بالأيام)</label>
+      <input type="number" id="feedbackDays" min="0" placeholder="يُترك فارغًا إن لم يُحدد">
+    </div>
+
+    <div class="field optional-field">
+      <label>التكلفة <span class="optional-badge">اختياري</span></label>
+      <div id="costTableWrap"></div>
+      <input type="hidden" id="costAmount">
+      <div class="cost-foot-note">تُحسب تكلفة كل موظف من الفئة المحددة × أيام العمل في الفترة × 8 ساعات، مع استثناء أيام الإجازات.</div>
+    </div>
+
+    <div class="field">
+      <label>التبعيات المعروفة (اختياري)</label>
+      <textarea id="depsNotes" placeholder="مثال: بانتظار موافقة التصميم، تعديل API من الباك إند..."></textarea>
+    </div>
+
+    <button id="generateBtn" disabled>توليد الخطة</button>
+    <div id="status"></div>
+  </div>
+
+  <div class="preview-wrap">
+    <div class="toolbar">
+      <button id="downloadBtn" class="primary" disabled>تنزيل الخطة</button>
+    </div>
+    <div id="docPreview">
+      <div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>
+    </div>
+  </div>
+</div>
+
+<footer class="app-footer">
+  Developed by <strong>Banan Alasmari</strong> with <span class="heart" aria-label="love">💜</span>
+  <span class="year">2026</span>
+  ELM
+</footer>
+
+<div id="successOverlay" class="success-overlay">
+  <div class="success-modal">
+    <div class="success-emoji">🚀</div>
+    <h2>خطتك جاهزة!</h2>
+    <p>تم تنزيل الخطة بنجاح، وبالتوفيق في التنفيذ!</p>
+    <button id="successCloseBtn">حسنًا</button>
+  </div>
+</div>
+
+<div id="updateToast" class="update-toast">✅ تم تحديث الخطة</div>
+
+<script>
+const ELM_LOGO_FIXED = "data:image/png;base64,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";
+let logoDataUrl = null; // product logo (optional, per-project)
+let reqItems = [{text:'', features:1, startDate:'', endDate:''}];
+
+function renderReqList(){
+  const box = document.getElementById('reqList');
+  box.innerHTML = '';
+  reqItems.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'req-item-card';
+
+    const textWrap = document.createElement('div');
+    textWrap.className = 'req-item-text';
+    const input = document.createElement('textarea');
+    input.placeholder = 'بند من المتطلبات...';
+    input.rows = 2;
+    input.value = item.text;
+    input.addEventListener('input', () => { reqItems[i].text = input.value; });
+    textWrap.appendChild(input);
+
+    const main = document.createElement('div');
+    main.className = 'req-item-main';
+
+    const metaRow = document.createElement('div');
+    metaRow.className = 'req-item-meta';
+
+    const featuresWrap = document.createElement('div');
+    featuresWrap.className = 'req-meta-field';
+    const featuresLabel = document.createElement('label');
+    featuresLabel.textContent = 'عدد الميزات';
+    const featuresInput = document.createElement('input');
+    featuresInput.type = 'number';
+    featuresInput.min = '0';
+    featuresInput.value = item.features;
+    featuresInput.addEventListener('input', () => { reqItems[i].features = featuresInput.value; });
+    featuresWrap.appendChild(featuresLabel);
+    featuresWrap.appendChild(featuresInput);
+    metaRow.appendChild(featuresWrap);
+    main.appendChild(metaRow);
+
+    const datesCol = document.createElement('div');
+    datesCol.className = 'req-dates-col';
+    const datesTitle = document.createElement('div');
+    datesTitle.className = 'req-dates-title';
+    datesTitle.textContent = 'التاريخ';
+
+    const startWrap = document.createElement('div');
+    startWrap.className = 'req-meta-field';
+    const startLabel = document.createElement('label');
+    startLabel.textContent = 'البداية';
+    const startInput = document.createElement('input');
+    startInput.type = 'date';
+    startInput.value = item.startDate;
+    startInput.addEventListener('input', () => { reqItems[i].startDate = startInput.value; });
+    startWrap.appendChild(startLabel);
+    startWrap.appendChild(startInput);
+
+    const endWrap = document.createElement('div');
+    endWrap.className = 'req-meta-field';
+    const endLabel = document.createElement('label');
+    endLabel.textContent = 'النهاية';
+    const endInput = document.createElement('input');
+    endInput.type = 'date';
+    endInput.value = item.endDate;
+    endInput.addEventListener('input', () => { reqItems[i].endDate = endInput.value; });
+    endWrap.appendChild(endLabel);
+    endWrap.appendChild(endInput);
+
+    const datesFields = document.createElement('div');
+    datesFields.className = 'req-dates-fields';
+    datesFields.appendChild(startWrap);
+    datesFields.appendChild(endWrap);
+    datesCol.appendChild(datesTitle);
+    datesCol.appendChild(datesFields);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'req-remove';
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', () => {
+      if(reqItems.length > 1){
+        reqItems.splice(i, 1);
+      }else{
+        reqItems[0] = {text:'', features:1, startDate:'', endDate:''};
+      }
+      renderReqList();
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    });
+
+    card.appendChild(textWrap);
+    card.appendChild(main);
+    card.appendChild(datesCol);
+    card.appendChild(removeBtn);
+    box.appendChild(card);
+  });
+}
+
+document.getElementById('addReqBtn').addEventListener('click', () => {
+  reqItems.push({text:'', features:1, startDate:'', endDate:''});
+  renderReqList();
+  const inputs = document.querySelectorAll('#reqList .req-item-text textarea');
+  if(inputs.length) inputs[inputs.length - 1].focus();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+});
+
+renderReqList();
+
+document.getElementById('panelLogo').src = ELM_LOGO_FIXED;
+
+const ELM_PRODUCT_NAMES = [
+  {ar:"حلول رابط", en:"Rabet Solutions"},
+  {ar:"النفاذ الوطني الموحد", en:"Unified National Access"},
+  {ar:"التحقق من ملكية رقم الجوال", en:"Mobile Number Ownership Verification"},
+  {ar:"نذير", en:"Nathir"},
+  {ar:"يقين", en:"Yaqeen"},
+  {ar:"العنوان الوطني", en:"National Address"},
+  {ar:"ذكي", en:"Zaki"},
+  {ar:"عميلـي", en:"Ameely"},
+  {ar:"دخلي", en:"Dakhli"},
+  {ar:"فرصة", en:"Forsa"},
+  {ar:"لزام", en:"Lizam"},
+  {ar:"تم", en:"Tam"},
+  {ar:"مرجع", en:"Marja"},
+  {ar:"باشر", en:"Bashir"},
+  {ar:"إيجاز", en:"Ejaz"},
+  {ar:"أسطول", en:"Ostool"},
+  {ar:"مزادات", en:"Muzadat"},
+  {ar:"ربط وثائق تأمين المركبات", en:"Vehicle Insurance Documents Linking"},
+  {ar:"شمول", en:"Shumoul"},
+  {ar:"شمول بوكس", en:"Shumoul Box"},
+  {ar:"شمول مركبات", en:"Shumoul Vehicles"},
+  {ar:"مقيم", en:"Muqeem"},
+  {ar:"بوابة أمن", en:"Amn Gateway"},
+  {ar:"بوابة سلامة", en:"Salamah Gateway"},
+  {ar:"بوابة زاول", en:"Zawal Gateway"},
+  {ar:"التصاريح الأمنية", en:"Security Permits"},
+  {ar:"البوابة الذكية", en:"Smart Gateway"},
+  {ar:"البوابة منذر", en:"Munthir Gateway"},
+  {ar:"انجز", en:"Anjaz"},
+  {ar:"منصة برج الساعة", en:"Clock Tower Platform"},
+  {ar:"مراسي", en:"Marasi"},
+  {ar:"تطبيق نسك", en:"Nusuk App"},
+  {ar:"منصة نسك – أفراد", en:"Nusuk Platform – Individuals"},
+  {ar:"منصة نسك – أعمال", en:"Nusuk Platform – Business"},
+  {ar:"نسك - تمكين", en:"Nusuk - Tamkeen"},
+  {ar:"زمزم", en:"Zamzam"},
+  {ar:"فسح باي", en:"Fasah Pay"},
+  {ar:"كويك تك", en:"Quick Tech"},
+  {ar:"المحفظة الإلكترونية", en:"E-Wallet"},
+  {ar:"نظام إدارة الشاحنات", en:"Truck Management System"},
+  {ar:"نظام مجتمع الموانئ", en:"Port Community System"},
+  {ar:"منصة فسح", en:"Fasah Platform"},
+  {ar:"منصة سالسل", en:"Salasel Platform"},
+  {ar:"وتد", en:"Watad"},
+  {ar:"النقل البري", en:"Land Transport"},
+  {ar:"النقل البحري", en:"Maritime Transport"},
+  {ar:"بيان", en:"Bayan"},
+  {ar:"تأجير", en:"Tajeer"},
+  {ar:"دخول المدن", en:"City Access"},
+  {ar:"وصل", en:"Wasel"},
+  {ar:"توصيل", en:"Tawseel"},
+  {ar:"مناول", en:"Manawil"},
+  {ar:"دليل", en:"Daleel"},
+  {ar:"أثر", en:"Athar"},
+  {ar:"منصة وشج", en:"Washj Platform"},
+  {ar:"نظام الشحن الجوي (ACS)", en:"Air Cargo System (ACS)"},
+  {ar:"منصة االستيراد والتصدير", en:"Import & Export Platform"},
+  {ar:"وشج ترانزيت", en:"Washj Transit"},
+  {ar:"Cargo Gate", en:"Cargo Gate"},
+  {ar:"منصة أسواق النفع العام (نماء)", en:"Public Benefit Markets Platform (Nama)"},
+  {ar:"سابر", en:"Saber"},
+  {ar:"بوابة القبول", en:"Acceptance Gateway"},
+  {ar:"تقييس", en:"Taqyees"},
+  {ar:"تصنيف الورش", en:"Workshop Classification"},
+  {ar:"الفحص الفني الدوري", en:"Periodic Technical Inspection"},
+  {ar:"مدارس القيادة", en:"Driving Schools"},
+  {ar:"مياه", en:"Miyah"},
+  {ar:"تصريح", en:"Tasreeh"},
+  {ar:"قيمة", en:"Qeemah"},
+  {ar:"عدادي", en:"Addadi"},
+  {ar:"عبر", en:"Aber"},
+  {ar:"شهادة المنشأ", en:"Certificate of Origin"},
+  {ar:"كشف", en:"Kashf"},
+  {ar:"Brazil COO", en:"Brazil COO"},
+  {ar:"حالل", en:"Halal"},
+  {ar:"نشرتك", en:"Nashratak"},
+  {ar:"مستمر", en:"Mustamir"},
+  {ar:"إفادة", en:"Ifadah"},
+  {ar:"سدر", en:"Sidr"},
+  {ar:"فسح", en:"Fasah"},
+  {ar:"واثق", en:"Wathiq"},
+  {ar:"متم", en:"Mutamm"},
+  {ar:"B2B Marketplace", en:"B2B Marketplace"},
+  {ar:"منصة تجار", en:"Tujjar Platform"},
+  {ar:"ناجز أعمال", en:"Najiz Business"},
+  {ar:"خبرة", en:"Khibrah"},
+  {ar:"الموثق", en:"Al-Muwaththiq"},
+  {ar:"نافذ", en:"Nafith"},
+  {ar:"إنفاذ", en:"Infath"},
+  {ar:"التحكيم", en:"Arbitration"},
+  {ar:"البورصة العقارية (الفرز والدمج)", en:"Real Estate Exchange (Subdivision & Merging)"},
+  {ar:"إحكام", en:"Ihkam"},
+  {ar:"المزاد الإلكتروني", en:"Electronic Auction"},
+  {ar:"تحديث الصكوك", en:"Deed Update"}
+];
+let productNameValue = ''; // Arabic label shown in the trigger/search
+function updateProductTrigger(){
+  document.getElementById('productTriggerText').textContent = productNameValue || 'اختر أو أضف اسم المنتج';
+}
+function selectProduct(product){
+  productNameValue = product.ar;
+  document.getElementById('projectName').value = product.en; // English name used in the plan
+  updateProductTrigger();
+  document.getElementById('productMultiselect').classList.remove('open');
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+}
+function renderProductList(){
+  const q = document.getElementById('productSearch').value.trim().toLowerCase();
+  const list = document.getElementById('productList');
+  const filtered = q
+    ? ELM_PRODUCT_NAMES.filter(p => p.ar.toLowerCase().includes(q) || p.en.toLowerCase().includes(q))
+    : ELM_PRODUCT_NAMES;
+  if(!filtered.length){
+    list.innerHTML = '<div class="multiselect-empty">لا توجد نتائج مطابقة — سيُستخدم النص المكتوب كاسم المشروع</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(p =>
+    `<label class="multiselect-item" data-ar="${escapeHtml(p.ar)}"><span>${escapeHtml(p.ar)} <span class="name-en">(${escapeHtml(p.en)})</span></span></label>`
+  ).join('');
+  list.querySelectorAll('.multiselect-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const product = ELM_PRODUCT_NAMES.find(p => p.ar === item.dataset.ar);
+      selectProduct(product);
+    });
+  });
+}
+
+const productMultiselect = document.getElementById('productMultiselect');
+const productTrigger = document.getElementById('productTrigger');
+const productSearch = document.getElementById('productSearch');
+
+productTrigger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  productMultiselect.classList.toggle('open');
+  if(productMultiselect.classList.contains('open')){
+    productSearch.value = productNameValue;
+    renderProductList();
+    productSearch.focus();
+  }
+});
+productSearch.addEventListener('click', (e) => e.stopPropagation());
+productSearch.addEventListener('input', () => {
+  renderProductList();
+  // free-typed text: used as-is for both display and the plan's project name
+  productNameValue = productSearch.value;
+  document.getElementById('projectName').value = productNameValue;
+  updateProductTrigger();
+});
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('#productMultiselect')){
+    if(productMultiselect.classList.contains('open')){
+      productMultiselect.classList.remove('open');
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    }
+  }
+});
+
+const EMPLOYEE_LIST = [
+  {en:"Ali Ibrahim Alduaylij", ar:"علي ابراهيم الدعيلج"},
+  {en:"Abdullah Saud Bin Saif", ar:"عبدالله سعود بن سيف"},
+  {en:"Banan Mohammed A Alasmari", ar:"بنان محمد الأسمري"},
+  {en:"Manal Ibraheem Aljuhani", ar:"منال إبراهيم الجهني"},
+  {en:"Munirah Mohammed A Alamer", ar:"منيرة محمد العامر"},
+  {en:"Omaimah Ebrahim Alhindi", ar:"أميمة إبراهيم الهندي"},
+  {en:"Reema Khalid Alwehaibi", ar:"ريما خالد الوهيبي"},
+  {en:"Sara Yousef Alsaadon", ar:"سارة يوسف السعدون"},
+  {en:"Faisal Taleb Altayyari", ar:"فيصل طالب الطياري"},
+  {en:"Mohammad Ali AlShehri", ar:"محمد علي الشهري"},
+  {en:"Renad Abdulaziz Alkhuredly", ar:"ريناد عبدالعزيز الخريدلي"},
+  {en:"Garam Nawaf ALOnazi", ar:"غرام نواف العنزي"},
+  {en:"Osama Dwedar", ar:"أسامة دويدار"},
+  {en:"Mohamed Ahmed", ar:"محمد أحمد"},
+  {en:"Eslam Elsayed", ar:"إسلام السيد"},
+  {en:"Ali Khafagy", ar:"علي خفاجي"},
+  {en:"Ahmed Eltohamy", ar:"أحمد التهامي"},
+  {en:"Abdulaziz Saud A Alobaili", ar:"عبدالعزيز سعود العبيلي"},
+  {en:"Abdullah Mohammed N Alqahtani", ar:"عبدالله محمد القحطاني"},
+  {en:"Abdulrahman Atiyah S Alluhaibi", ar:"عبدالرحمن عطية اللهيبي"},
+  {en:"Ahad Abdullah Alotaibi", ar:"عهد عبدالله العتيبي"},
+  {en:"Ahmed Abobakr Radwan", ar:"أحمد أبوبكر رضوان"},
+  {en:"Abrar Abdullah Alharbi", ar:"أبرار عبدالله الحربي"},
+  {en:"Arwa Abdulaziz Abdullah Alzeaagi", ar:"أروى عبدالعزيز عبدالله الزعاقي"},
+  {en:"Deem Abdulsalam Alqudaimi", ar:"ديم عبدالسلام القديمي"},
+  {en:"Faisal Hassan Alotaibi", ar:"فيصل حسن العتيبي"},
+  {en:"Kareem Mahmoud Elsaid Shehab", ar:"كريم محمود السيد شهاب"},
+  {en:"Linah Abdulaziz S Alsallumi", ar:"لينا عبدالعزيز السلومي"},
+  {en:"Nada Jahz J Alharbi", ar:"ندى جهز الحربي"},
+  {en:"Sarah Ibrahim Alarifi", ar:"سارة إبراهيم العريفي"},
+  {en:"Yasmine Emadeldin Haggag", ar:"ياسمين عماد الدين حجاج"},
+  {en:"Ghaida Abdulaziz Almuhaysh", ar:"غيداء عبدالعزيز المحيش"},
+  {en:"Saffanah Abdulaziz Aljawi", ar:"سفانة عبدالعزيز الجاوي"},
+  {en:"Eslam Yousry Abdallah", ar:"إسلام يسري عبدالله"},
+  {en:"Norah Abdullah AlSadan", ar:"نورة عبدالله السدحان"},
+  {en:"Kareem Saadeldin", ar:"كريم سعد الدين"},
+  {en:"Ahmed Ibrahim", ar:"أحمد إبراهيم"},
+  {en:"Ahmed Abbas", ar:"أحمد عباس"},
+  {en:"Dania Mohammed Alkathiri", ar:"دانية محمد الكثيري"}
+];
+
+const GRADE_OPTIONS = [
+  {label:'I1', rate:101},
+  {label:'I2', rate:130},
+  {label:'I3', rate:217},
+  {label:'I4', rate:282}
+];
+const WEEKDAY_LABELS = ['أحد','إثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+const MONTH_LABELS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
+let selectedAssignees = []; // array of ar names
+let assigneeGrades = {}; // { ar name: rate string ('101'|'130'|'217'|'282'|'') }
+let selectedHolidays = []; // YYYY-MM-DD
+let calendarView = {year: new Date().getFullYear(), month: new Date().getMonth()};
+
+function renderAssignedTags(){
+  const box = document.getElementById('assignedTags');
+  box.innerHTML = selectedAssignees.map((name, i) => `
+    <span class="tag-chip">
+      ${escapeHtml(name)}
+      <button type="button" class="assignee-remove" data-idx="${i}" aria-label="إزالة">×</button>
+    </span>
+  `).join('');
+  box.querySelectorAll('.assignee-remove').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const name = selectedAssignees[Number(btn.dataset.idx)];
+      delete assigneeGrades[name];
+      selectedAssignees.splice(Number(btn.dataset.idx), 1);
+      syncAssignedHidden();
+      renderAssignedTags();
+      renderMultiselectList();
+      updateTriggerText();
+      renderCostTable();
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    });
+  });
+}
+
+function syncAssignedHidden(){
+  document.getElementById('assigned').value = selectedAssignees.join('، ');
+}
+
+function updateTriggerText(){
+  const el = document.getElementById('assignedTriggerText');
+  el.textContent = selectedAssignees.length
+    ? `${selectedAssignees.length} موظف/موظفة محدد`
+    : 'اختر الموظفين';
+}
+
+function toggleAssignee(person){
+  const idx = selectedAssignees.indexOf(person.ar);
+  if(idx === -1){
+    selectedAssignees.push(person.ar);
+    if(!(person.ar in assigneeGrades)) assigneeGrades[person.ar] = '';
+  }else{
+    selectedAssignees.splice(idx, 1);
+    delete assigneeGrades[person.ar];
+  }
+  syncAssignedHidden();
+  renderAssignedTags();
+  updateTriggerText();
+  renderMultiselectList();
+  renderCostTable();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+}
+
+function renderMultiselectList(){
+  const q = document.getElementById('assignedSearch').value.trim().toLowerCase();
+  const list = document.getElementById('assignedList');
+  const filtered = EMPLOYEE_LIST.filter(p =>
+    !q || p.ar.toLowerCase().includes(q) || p.en.toLowerCase().includes(q)
+  );
+  if(!filtered.length){
+    list.innerHTML = '<div class="multiselect-empty">لا توجد نتائج</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(p => {
+    const checked = selectedAssignees.includes(p.ar) ? 'checked' : '';
+    return `<label class="multiselect-item" data-en="${escapeHtml(p.en)}">
+      <input type="checkbox" ${checked}>
+      <span>${escapeHtml(p.ar)} <span class="name-en">(${escapeHtml(p.en)})</span></span>
+    </label>`;
+  }).join('');
+  list.querySelectorAll('.multiselect-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const person = EMPLOYEE_LIST.find(p => p.en === item.dataset.en);
+      toggleAssignee(person);
+    });
+  });
+}
+
+const assignedMultiselect = document.getElementById('assignedMultiselect');
+const assignedTrigger = document.getElementById('assignedTrigger');
+const assignedSearchInput = document.getElementById('assignedSearch');
+
+assignedTrigger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  assignedMultiselect.classList.toggle('open');
+  if(assignedMultiselect.classList.contains('open')){
+    renderMultiselectList();
+    assignedSearchInput.focus();
+  }
+});
+
+assignedSearchInput.addEventListener('click', (e) => e.stopPropagation());
+assignedSearchInput.addEventListener('input', renderMultiselectList);
+
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('#assignedMultiselect')){
+    assignedMultiselect.classList.remove('open');
+  }
+});
+
+renderMultiselectList();
+
+function toIsoDate(date){
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,'0');
+  const d = String(date.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+function parseIsoDate(str){
+  if(!str) return null;
+  const d = new Date(str + 'T00:00:00');
+  return isNaN(d) ? null : d;
+}
+function getProjectRange(){
+  const start = parseIsoDate(document.getElementById('startDate').value);
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  const end = tbdEnd ? null : parseIsoDate(document.getElementById('endDate').value);
+  return {start, end, tbdEnd};
+}
+function isDateInProjectRange(iso){
+  const {start, end, tbdEnd} = getProjectRange();
+  if(!start) return false;
+  const d = parseIsoDate(iso);
+  if(!d) return false;
+  if(d < start) return false;
+  if(!tbdEnd && end && d > end) return false;
+  return true;
+}
+function pruneHolidaysOutsideRange(){
+  selectedHolidays = selectedHolidays.filter(iso => {
+    const d = parseIsoDate(iso);
+    return isDateInProjectRange(iso) && d && isWorkingDay(d);
+  });
+}
+function syncCalendarViewToRange(){
+  const {start} = getProjectRange();
+  if(!start) return;
+  const viewDate = new Date(calendarView.year, calendarView.month, 1);
+  if(viewDate < new Date(start.getFullYear(), start.getMonth(), 1)){
+    calendarView = {year: start.getFullYear(), month: start.getMonth()};
+  }
+}
+function shiftCalendarMonth(delta){
+  const next = new Date(calendarView.year, calendarView.month + delta, 1);
+  calendarView = {year: next.getFullYear(), month: next.getMonth()};
+  renderLeaveCalendar();
+}
+function canNavigateMonth(delta){
+  const {start, end, tbdEnd} = getProjectRange();
+  if(!start) return false;
+  const next = new Date(calendarView.year, calendarView.month + delta, 1);
+  const startMonth = new Date(start.getFullYear(), start.getMonth(), 1);
+  if(next < startMonth) return false;
+  if(!tbdEnd && end){
+    const endMonth = new Date(end.getFullYear(), end.getMonth(), 1);
+    if(next > endMonth) return false;
+  }
+  return true;
+}
+function toggleHoliday(iso){
+  const d = parseIsoDate(iso);
+  if(!isDateInProjectRange(iso) || !d || !isWorkingDay(d)) return;
+  const idx = selectedHolidays.indexOf(iso);
+  if(idx === -1) selectedHolidays.push(iso);
+  else selectedHolidays.splice(idx, 1);
+  selectedHolidays.sort();
+  renderLeaveCalendar();
+  renderCostTable();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+}
+function renderLeaveCalendar(){
+  const box = document.getElementById('leaveCalendar');
+  const {start, end, tbdEnd} = getProjectRange();
+  if(!start){
+    box.innerHTML = '<div class="leave-empty">حدد تاريخ بداية المشروع أولًا لعرض التقويم واختيار أيام الإجازة.</div>';
+    return;
+  }
+  if(!tbdEnd && end && end < start){
+    box.innerHTML = '<div class="leave-empty">تاريخ النهاية يسبق تاريخ البداية. صححي الفترة لعرض التقويم.</div>';
+    return;
+  }
+
+  syncCalendarViewToRange();
+  const year = calendarView.year;
+  const month = calendarView.month;
+  const firstDow = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayIso = toIsoDate(new Date());
+
+  let daysHtml = '';
+  for(let i = 0; i < firstDow; i++){
+    daysHtml += '<span></span>';
+  }
+  for(let day = 1; day <= daysInMonth; day++){
+    const date = new Date(year, month, day);
+    const iso = toIsoDate(date);
+    const inRange = isDateInProjectRange(iso);
+    const selected = selectedHolidays.includes(iso);
+    const weekend = !isWorkingDay(date);
+    const selectable = inRange && !weekend;
+    const classes = ['leave-day'];
+    if(weekend) classes.push('weekend');
+    if(!inRange || weekend) classes.push('out-of-range');
+    if(selected) classes.push('selected');
+    if(iso === todayIso) classes.push('today');
+    daysHtml += `<button type="button" class="${classes.join(' ')}" data-iso="${iso}" ${selectable ? '' : 'disabled'} aria-pressed="${selected}">${day}</button>`;
+  }
+
+  const count = selectedHolidays.length;
+  const chips = selectedHolidays.map(iso =>
+    `<span class="leave-chip">${fmtShortDate(iso)}<button type="button" data-iso="${iso}" aria-label="إزالة">×</button></span>`
+  ).join('');
+
+  box.innerHTML = `
+    <div class="leave-cal-head">
+      <button type="button" class="leave-nav" id="leavePrev" ${canNavigateMonth(-1) ? '' : 'disabled'} aria-label="الشهر السابق">›</button>
+      <div class="leave-cal-title">${MONTH_LABELS[month]} ${year}</div>
+      <button type="button" class="leave-nav" id="leaveNext" ${canNavigateMonth(1) ? '' : 'disabled'} aria-label="الشهر التالي">‹</button>
+    </div>
+    <div class="leave-weekdays">${WEEKDAY_LABELS.map(d => `<span>${d}</span>`).join('')}</div>
+    <div class="leave-grid">${daysHtml}</div>
+    <div class="leave-chips">${chips}</div>
+    <div class="leave-summary">${count ? `${count === 1 ? 'يوم واحد محدد' : count === 2 ? 'يومان محددان' : count + ' أيام محددة'} ضمن الفترة` : 'لم يُحدد أي يوم إجازة بعد'}</div>
+  `;
+
+  const prevBtn = document.getElementById('leavePrev');
+  const nextBtn = document.getElementById('leaveNext');
+  if(prevBtn) prevBtn.addEventListener('click', () => { if(canNavigateMonth(-1)) shiftCalendarMonth(-1); });
+  if(nextBtn) nextBtn.addEventListener('click', () => { if(canNavigateMonth(1)) shiftCalendarMonth(1); });
+  box.querySelectorAll('.leave-day:not(:disabled)').forEach(btn => {
+    btn.addEventListener('click', () => toggleHoliday(btn.dataset.iso));
+  });
+  box.querySelectorAll('.leave-chip button').forEach(btn => {
+    btn.addEventListener('click', () => toggleHoliday(btn.dataset.iso));
+  });
+}
+
+function formatSar(amount){
+  return Number(amount).toLocaleString('en-US') + ' ر.س';
+}
+function getWorkingDaysForCost(){
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  if(!startDate || tbdEnd || !endDate) return null;
+  return workingDaysBetween(startDate, endDate, selectedHolidays);
+}
+function calcEmployeeCost(rate, workingDays){
+  if(!rate || workingDays === null) return null;
+  return rate * workingDays * 8;
+}
+function renderCostTable(){
+  const wrap = document.getElementById('costTableWrap');
+  if(!selectedAssignees.length){
+    wrap.innerHTML = '<div class="cost-box"><div class="cost-empty">أضف الموظفين إلى المشروع أولًا لتعيين الفئة وحساب التكلفة لكل موظف.</div></div>';
+    document.getElementById('costAmount').value = '';
+    return;
+  }
+
+  const workingDays = getWorkingDaysForCost();
+  let total = 0;
+  let hasAnyCost = false;
+
+  const rows = selectedAssignees.map(name => {
+    const rateStr = assigneeGrades[name] || '';
+    const rate = Number(rateStr) || 0;
+    const cost = calcEmployeeCost(rate, workingDays);
+    if(cost !== null){
+      total += cost;
+      hasAnyCost = true;
+    }
+    const options = GRADE_OPTIONS.map(g =>
+      `<option value="${g.rate}" ${rateStr === String(g.rate) ? 'selected' : ''}>${g.label}</option>`
+    ).join('');
+    let costHtml = '<span class="cost-val muted">—</span>';
+    if(rate && workingDays === null){
+      costHtml = '<span class="cost-val muted">بانتظار المدة</span>';
+    }else if(cost !== null){
+      costHtml = `<span class="cost-val">${formatSar(cost)}</span>`;
+    }
+    return `<tr>
+      <td class="emp-name">${escapeHtml(name)}</td>
+      <td>
+        <select class="cost-grade" data-name="${escapeHtml(name)}">
+          <option value="">اختر الفئة</option>
+          ${options}
+        </select>
+      </td>
+      <td>${costHtml}</td>
+    </tr>`;
+  }).join('');
+
+  const totalHtml = hasAnyCost
+    ? `<tr class="cost-total"><td colspan="2">الإجمالي</td><td><span class="cost-val">${formatSar(total)}</span></td></tr>`
+    : `<tr class="cost-total"><td colspan="2">الإجمالي</td><td><span class="cost-val muted">—</span></td></tr>`;
+
+  wrap.innerHTML = `
+    <div class="cost-box">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>الموظف</th>
+            <th>الفئة (Grade)</th>
+            <th>التكلفة المحسوبة</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+          ${totalHtml}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  wrap.querySelectorAll('.cost-grade').forEach(sel => {
+    sel.addEventListener('change', () => {
+      assigneeGrades[sel.dataset.name] = sel.value;
+      renderCostTable();
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    });
+  });
+
+  document.getElementById('costAmount').value = hasAnyCost ? String(total) : '';
+}
+
+['startDate','endDate','tbdEnd'].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    pruneHolidaysOutsideRange();
+    const {start} = getProjectRange();
+    if(start){
+      calendarView = {year: start.getFullYear(), month: start.getMonth()};
+    }
+    renderLeaveCalendar();
+    renderCostTable();
+  });
+});
+
+renderLeaveCalendar();
+renderCostTable();
+
+document.getElementById('logoDrop').addEventListener('click', () => document.getElementById('logoInput').click());
+document.getElementById('logoInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    logoDataUrl = reader.result;
+    const mini = document.getElementById('logoPreviewMini');
+    mini.src = logoDataUrl;
+    mini.style.display = 'block';
+    if(typeof scheduleRegen === 'function') scheduleRegen(200);
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('tbdEnd').addEventListener('change', (e) => {
+  document.getElementById('endDate').disabled = e.target.checked;
+});
+
+const ARABIC_INDIC_DIGITS = {'٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'};
+document.getElementById('ticketId').addEventListener('input', (e) => {
+  let v = e.target.value;
+  v = v.replace(/[٠-٩]/g, d => ARABIC_INDIC_DIGITS[d]);
+  v = v.replace(/[^0-9]/g, '');
+  e.target.value = v;
+});
+
+function showSuccessModal(){
+  document.getElementById('successOverlay').classList.add('open');
+}
+function hideSuccessModal(){
+  document.getElementById('successOverlay').classList.remove('open');
+}
+document.getElementById('successCloseBtn').addEventListener('click', hideSuccessModal);
+document.getElementById('successOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'successOverlay') hideSuccessModal();
+});
+
+function syncFeaturesManualState(){
+  const wrap = document.getElementById('featuresManualWrap');
+  const enabled = document.getElementById('includeFeatures').checked;
+  wrap.classList.toggle('disabled', !enabled);
+}
+document.getElementById('includeFeatures').addEventListener('change', syncFeaturesManualState);
+syncFeaturesManualState();
+
+function isWorkingDay(date){
+  const day = date.getDay(); // 0=Sun ... 6=Sat
+  return day !== 5 && day !== 6; // Friday(5) & Saturday(6) are weekend
+}
+
+function workingDaysBetween(startStr, endStr, holidaysArr){
+  const start = new Date(startStr + 'T00:00:00');
+  const end = new Date(endStr + 'T00:00:00');
+  if(isNaN(start) || isNaN(end) || end < start) return null;
+  let count = 0;
+  let d = new Date(start);
+  while(d <= end){
+    const iso = toIsoDate(d);
+    if(isWorkingDay(d) && !holidaysArr.includes(iso)) count++;
+    d.setDate(d.getDate()+1);
+  }
+  return count;
+}
+
+function fmtDate(str){
+  if(!str) return 'TBD';
+  const d = new Date(str + 'T00:00:00');
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function fmtShortDate(str){
+  if(!str) return '';
+  const d = new Date(str + 'T00:00:00');
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+function fmtTaskDate(start, end){
+  if(!start && !end) return 'TBD';
+  if(start && end) return `${fmtShortDate(start)} – ${fmtShortDate(end)}`;
+  return fmtShortDate(start || end);
+}
+
+function buildLocalPlan(scopeItems, depsNotes, lang){
+  const tasks = scopeItems.map(item => ({
+    text: item.text.trim(),
+    startDate: item.startDate || '',
+    endDate: item.endDate || '',
+    features: Number(item.features)
+  }));
+  const totalFeatures = scopeItems.reduce((sum, item) => {
+    const n = Number(item.features);
+    return sum + (Number.isFinite(n) && n > 0 ? n : 1);
+  }, 0);
+  return {
+    tasks,
+    featureCount: totalFeatures || 1,
+    dependencies: depsNotes ? [depsNotes] : []
+  };
+}
+
+async function generateTasksWithAI(scopeNotes, depsNotes, lang){
+  const langLabel = lang === 'ar' ? 'Arabic' : 'English';
+  const systemPrompt = `You are a senior frontend technical program manager preparing an internal implementation plan.
+Convert the raw project notes into a professional, concise list of frontend implementation tasks, and extract any known dependencies.
+
+Return ONLY valid JSON with no markdown fences and no preamble, in exactly this shape:
+{"tasks": ["...", "..."], "featureCount": 0, "dependencies": ["...", "..."]}
+
+Rules:
+- Tasks must be actionable, technical, and professional (roughly 6-12 items), written from a frontend engineering perspective.
+- Do not invent requirements that are not implied by the notes.
+- featureCount must reflect actual development features/modules (not every small activity) - a reasonable integer.
+- dependencies: only include items clearly implied by the notes, choosing from concepts like: Business approval, Design approval, Backend APIs, API changes, Environment access, QA feedback, External team dependency, Security approval, Deployment dependency. Return an empty array if none apply.
+- Write all task text and dependency text in ${langLabel}.
+- Keep each task under ~15 words.`;
+
+  const userContent = `Scope / Requirements notes:\n${scopeNotes || '(none provided)'}\n\nAdditional dependency notes from the requester:\n${depsNotes || '(none provided)'}`;
+
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1000,
+      system: systemPrompt,
+      messages: [{ role: "user", content: userContent }]
+    })
+  });
+
+  if(!response.ok){
+    throw new Error('API request failed: ' + response.status);
+  }
+  const data = await response.json();
+  const textBlock = (data.content || []).find(b => b.type === 'text');
+  if(!textBlock) throw new Error('No text response from model');
+  const cleaned = textBlock.text.replace(/```json|```/g, '').trim();
+  return JSON.parse(cleaned);
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+const TEAM_NAME_EN = {
+  'فريق تصميم تجربة المستخدم': 'UX/UI Team',
+  'فريق تطوير الويب': 'Web Development',
+  'فريق تطوير الموبايل': 'Mobile Development'
+};
+
+function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCount, includeFeatures, startDate, endDate, tbdEnd, assigned, totalWorkingDays, feedbackDays, costAmount, dependencies, lang}){
+  const L = lang === 'ar' ? {
+    planTitle: 'خطة تنفيذ الفرونت-إند',
+    working: 'خطة العمل',
+    task: 'المهمة',
+    date: 'التاريخ',
+    features: 'الميزات',
+    estimations: 'التقديرات',
+    sprint: 'السبرنت',
+    start: 'تاريخ البداية',
+    end: 'تاريخ النهاية',
+    assigned: 'المكلّفون',
+    totalDays: 'إجمالي أيام العمل',
+    excl: 'باستثناء وقت الفيدباك.',
+    feedback: 'وقت الفيدباك',
+    deps: 'التبعيات / الملاحظات',
+    tbd: 'غير محدد',
+    days: 'يوم عمل'
+  } : {
+    planTitle: 'Frontend Implementation Plan',
+    working: 'Working Plan',
+    task: 'Task',
+    date: 'Date',
+    features: 'Features',
+    estimations: 'Estimations',
+    sprint: 'Sprint',
+    start: 'Start Date',
+    end: 'End Date',
+    assigned: 'Assigned',
+    totalDays: 'Total Working Days',
+    excl: 'Excluding the feedback time.',
+    feedback: 'Feedback Time',
+    deps: 'Dependencies / Buffer Notes',
+    tbd: 'TBD',
+    days: 'Working Days'
+  };
+
+  const productLogoHtml = logoDataUrl ? `<img class="doc-logo-left" src="${logoDataUrl}">` : '<span></span>';
+  const elmLogoHtml = `<img class="doc-logo-right" src="${ELM_LOGO_FIXED}">`;
+  const teamNameEn = TEAM_NAME_EN[teamTag] || 'Frontend';
+  const planSubtitle = `${teamNameEn} Implementation Plan`;
+
+  const taskRows = (tasks || []).map(t => {
+    const text = typeof t === 'string' ? t : (t.text || '');
+    const dateText = typeof t === 'string' ? 'TBD' : fmtTaskDate(t.startDate, t.endDate);
+    const feat = typeof t === 'string' ? '' : t.features;
+    const featCell = includeFeatures
+      ? `<td class="center">${Number.isFinite(Number(feat)) && Number(feat) > 0 ? Number(feat) : 1}</td>`
+      : '';
+    return `<tr>
+      <td class="task-text">${escapeHtml(text)}</td>
+      <td class="task-date">${escapeHtml(dateText)}</td>
+      ${featCell}
+    </tr>`;
+  }).join('');
+
+  const totalDaysDisplay = tbdEnd || totalWorkingDays === null
+    ? L.tbd
+    : `${totalWorkingDays} ${Number(totalWorkingDays) === 1 ? 'Day' : 'Days'}`;
+
+  const feedbackDisplay = (feedbackDays === '' || feedbackDays === null || feedbackDays === undefined)
+    ? L.tbd
+    : `${feedbackDays} ${Number(feedbackDays) === 1 ? 'Day' : 'Days'}`;
+
+  const costRowHtml = (costAmount !== '' && costAmount !== null && costAmount !== undefined)
+    ? `<tr class="cost-row">
+         <td class="label">Cost</td>
+         <td colspan="3">${Number(costAmount).toLocaleString('en-US')} SAR</td>
+       </tr>`
+    : '';
+
+  const depsHtml = (dependencies && dependencies.length)
+    ? `<div class="doc-section-title" style="font-size:18px; margin-top:18px;">${L.deps}</div>
+       <div class="doc-section-underline" style="width:50px;"></div>
+       <ul class="doc-deps">${dependencies.map(d => `<li>${escapeHtml(d)}</li>`).join('')}</ul>`
+    : '';
+
+  return `
+    <div class="doc-topline"></div>
+    <div class="doc-header">
+      <span class="doc-tag">Design System &amp; BI</span>
+      <div class="doc-header-top">
+        ${productLogoHtml}
+        ${elmLogoHtml}
+      </div>
+      <div class="doc-titlebar">
+        <h1 class="doc-title"><span class="ticket">${escapeHtml(ticketId || 'TBD')}</span> <span class="project-name">${escapeHtml(projectName || '')}</span></h1>
+        <div class="doc-subtitle">${escapeHtml(planSubtitle)}</div>
+      </div>
+    </div>
+    <div class="doc-body">
+      <div class="doc-section-title">${L.working}</div>
+      <div class="doc-section-underline"></div>
+      <table class="doc-table">
+        <tr>
+          <th>${L.task}</th>
+          <th>${L.date}</th>
+          ${includeFeatures ? `<th style="width:18%">${L.features}</th>` : ''}
+        </tr>
+        ${taskRows}
+      </table>
+
+      <div class="doc-section-title">${L.estimations}</div>
+      <div class="doc-section-underline"></div>
+      <table class="doc-table">
+        <tr><th>${L.sprint}</th><th>${L.start}</th><th>${L.end}</th><th>${L.assigned}</th></tr>
+        <tr>
+          <td class="center">${escapeHtml(sprintNum || 'TBD')}</td>
+          <td class="center">${fmtDate(startDate)}</td>
+          <td class="center">${tbdEnd ? L.tbd : fmtDate(endDate)}</td>
+          <td class="center">${escapeHtml(assigned || 'TBD')}</td>
+        </tr>
+        <tr class="total-row">
+          <td class="label">${L.totalDays}</td>
+          <td colspan="2">${totalDaysDisplay}</td>
+          <td>${L.excl}</td>
+        </tr>
+        <tr class="feedback-row">
+          <td class="label">${L.feedback}</td>
+          <td colspan="3">${feedbackDisplay}</td>
+        </tr>
+        ${costRowHtml}
+      </table>
+      ${depsHtml}
+    </div>
+  `;
+}
+
+function generatePlan(){
+  const statusEl = document.getElementById('status');
+  const btn = document.getElementById('generateBtn');
+  const docPreview = document.getElementById('docPreview');
+  const wasAlreadyGenerated = hasGeneratedOnce();
+
+  const ticketNum = document.getElementById('ticketId').value.trim();
+  const ticketId = ticketNum ? 'DSBI-' + ticketNum : '';
+  const projectName = document.getElementById('projectName').value.trim();
+  const teamTag = document.getElementById('teamTag').value.trim();
+  const sprintNum = document.getElementById('sprintNum').value.trim();
+  const scopeItems = reqItems.filter(item => item.text.trim());
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  const holidaysArr = selectedHolidays.slice();
+  const assigned = document.getElementById('assigned').value.trim();
+  const feedbackDaysVal = document.getElementById('feedbackDays').value;
+  const depsNotes = document.getElementById('depsNotes').value.trim();
+  const lang = 'en'; // plan output is always English
+  const includeFeatures = scopeItems.some(item => Number(item.features) > 1);
+  const featuresManualVal = document.getElementById('featuresManual').value.trim();
+
+  if(!scopeItems.length){
+    statusEl.textContent = 'الرجاء إدخال نطاق العمل / المتطلبات على الأقل.';
+    statusEl.className = 'error';
+    return;
+  }
+  if(!startDate){
+    statusEl.textContent = 'الرجاء إدخال تاريخ البداية.';
+    statusEl.className = 'error';
+    return;
+  }
+
+  statusEl.className = '';
+  statusEl.textContent = 'جاري تجهيز المهام...';
+
+  const aiResult = buildLocalPlan(scopeItems, depsNotes, lang);
+
+  let totalWorkingDays = null;
+  if(!tbdEnd && endDate){
+    totalWorkingDays = workingDaysBetween(startDate, endDate, holidaysArr);
+  }
+
+  renderCostTable();
+  const costRaw = document.getElementById('costAmount').value;
+  const costAmountVal = costRaw === '' ? '' : Number(costRaw);
+
+  docPreview.innerHTML = renderDoc({
+    ticketId, projectName, teamTag, sprintNum,
+    tasks: aiResult.tasks || [],
+    featureCount: featuresManualVal !== '' ? Number(featuresManualVal) : (aiResult.featureCount ?? 0),
+    includeFeatures,
+    startDate, endDate, tbdEnd, assigned,
+    totalWorkingDays,
+    feedbackDays: feedbackDaysVal,
+    costAmount: costAmountVal,
+    dependencies: aiResult.dependencies || [],
+    lang
+  });
+
+  if(!statusEl.classList.contains('error')){
+    statusEl.textContent = 'تم تحديث الخطة تلقائيًا.';
+  }
+  btn.textContent = 'تحديث الخطة';
+  document.getElementById('downloadBtn').disabled = false;
+
+  if(wasAlreadyGenerated && !statusEl.classList.contains('error')){
+    showUpdateToast();
+  }
+}
+
+let updateToastTimer = null;
+function showUpdateToast(){
+  const toast = document.getElementById('updateToast');
+  toast.classList.add('show');
+  clearTimeout(updateToastTimer);
+  updateToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
+}
+
+document.getElementById('generateBtn').addEventListener('click', generatePlan);
+
+function requiredFieldsFilled(){
+  const hasScope = reqItems.some(item => item.text.trim());
+  const hasStartDate = !!document.getElementById('startDate').value;
+  return hasScope && hasStartDate;
+}
+function updateGenerateBtnState(){
+  document.getElementById('generateBtn').disabled = !requiredFieldsFilled();
+}
+
+let autoRegenTimer = null;
+function hasGeneratedOnce(){
+  return !document.querySelector('#docPreview .placeholder-msg');
+}
+function scheduleRegen(delay){
+  updateGenerateBtnState();
+  if(!hasGeneratedOnce()) return;
+  clearTimeout(autoRegenTimer);
+  autoRegenTimer = setTimeout(generatePlan, delay || 400);
+}
+document.querySelector('.panel').addEventListener('input', () => {
+  updateGenerateBtnState();
+  scheduleRegen(700);
+});
+document.querySelector('.panel').addEventListener('change', (e) => {
+  updateGenerateBtnState();
+  if(e.target.closest('.multiselect')) return; // handled separately via toggleAssignee
+  scheduleRegen(200);
+});
+updateGenerateBtnState();
+
+
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+  const doc = document.getElementById('docPreview');
+  if(doc.querySelector('.placeholder-msg')){
+    alert('الرجاء توليد الخطة أولاً.');
+    return;
+  }
+  const btn = document.getElementById('downloadBtn');
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = 'جاري التجهيز...';
+  try{
+    const canvas = await html2canvas(doc, {scale:2, backgroundColor:'#ffffff'});
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'pt', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('frontend-implementation-plan.pdf');
+    showSuccessModal();
+  }catch(err){
+    alert('تعذّر إنشاء ملف PDF: ' + err.message);
+  }finally{
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+});
+</script>
+</body>
+</html>
