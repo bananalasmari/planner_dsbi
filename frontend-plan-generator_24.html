@@ -44,6 +44,20 @@
     flex-shrink:0;
     box-shadow:0 1px 3px rgba(0,0,0,.08);
   }
+  .ai-side-panel{
+    direction:rtl;
+    width:380px;
+    flex-shrink:0;
+    position:sticky;
+    top:24px;
+    max-height:calc(100vh - 48px);
+    overflow-y:auto;
+  }
+  .ai-side-panel .ai-section{
+    margin-bottom:0;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+    background:#fff;
+  }
   .panel::after{
     content:'';
     position:absolute;
@@ -848,6 +862,450 @@
     font-family:inherit;
   }
 
+  .dga-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.35);
+    align-items:center;
+    justify-content:center;
+    z-index:120;
+    padding:20px;
+  }
+  .dga-overlay.open{display:flex;}
+  .dga-modal{
+    background:#fff;
+    border-radius:16px;
+    padding:24px 22px 20px;
+    max-width:400px;
+    width:100%;
+    font-family:'Tajawal', sans-serif;
+    direction:rtl;
+    text-align:right;
+    box-shadow:0 10px 40px rgba(15,17,71,.18);
+    border:1px solid #dbeafe;
+    border-inline-start:4px solid var(--blue);
+    animation:popIn .22s ease;
+  }
+  .dga-modal .dga-icon{
+    width:36px;
+    height:36px;
+    border-radius:10px;
+    background:var(--blue-light);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    margin-bottom:10px;
+  }
+  .dga-modal h2{
+    color:var(--navy);
+    font-size:16.5px;
+    margin:0 0 8px;
+    font-weight:700;
+  }
+  .dga-modal p{
+    color:#5b6470;
+    font-size:13.5px;
+    line-height:1.7;
+    margin:0 0 18px;
+  }
+  .dga-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .dga-actions button{flex:1; min-width:140px;}
+  .dga-actions .ai-primary-btn{margin-top:0; padding:10px 12px;}
+
+  /* ---- AI Copilot ---- */
+  .field-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:5px;
+  }
+  .field-head label{margin-bottom:0;}
+  .ai-section{
+    border:1.5px solid var(--blue-light);
+    background:linear-gradient(180deg,#f8fbff 0%,#f7faff 100%);
+    border-radius:12px;
+    padding:14px 14px 12px;
+    margin-bottom:22px;
+  }
+  .ai-section h2{
+    margin:0 0 4px;
+    font-size:15px;
+    color:var(--navy);
+    font-weight:700;
+  }
+  .ai-section .ai-desc{
+    font-size:12px;
+    color:#5b6470;
+    line-height:1.65;
+    margin:0 0 10px;
+  }
+  #aiBrief{
+    min-height:110px;
+    background:#fff;
+  }
+  .ai-primary-btn{
+    width:100%;
+    background:var(--navy);
+    color:#fff;
+    border:none;
+    padding:11px 12px;
+    border-radius:9px;
+    font-size:13.5px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+    margin-top:8px;
+  }
+  .ai-primary-btn:disabled{opacity:.6; cursor:default;}
+  .ai-secondary-btn{
+    background:#fff;
+    border:1px solid var(--blue);
+    color:var(--blue);
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+    white-space:nowrap;
+  }
+  .ai-secondary-btn:disabled{opacity:.55; cursor:default;}
+  .ai-ghost-btn{
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--navy);
+    padding:7px 12px;
+    border-radius:8px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .ai-btn-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:10px;
+  }
+  .ai-card{
+    display:none;
+    margin-top:12px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fff;
+    padding:12px;
+  }
+  .ai-card.visible{display:block;}
+  .ai-card.success{border-color:#bfdbfe; background:#f8fbff;}
+  .ai-card.warning{border-color:#f3d39a; background:#fffbeb;}
+  .ai-card.error{border-color:#f1c0bb; background:#fff6f5;}
+  .ai-card-title{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--navy);
+    margin:0 0 10px;
+  }
+  .ai-stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:8px;
+  }
+  .ai-stat{
+    background:#f4f7fb;
+    border-radius:8px;
+    padding:8px 10px;
+    text-align:center;
+  }
+  .ai-stat-num{
+    display:block;
+    font-size:16px;
+    font-weight:700;
+    color:var(--navy);
+    font-family:'Poppins','Tajawal',sans-serif;
+  }
+  .ai-stat-label{
+    display:block;
+    font-size:11px;
+    color:#6b7280;
+    margin-top:2px;
+  }
+  .ai-note{
+    font-size:12px;
+    color:#5b6470;
+    line-height:1.65;
+    margin:10px 0 0;
+  }
+  .ai-why{
+    font-size:11.5px;
+    color:#6b7280;
+    line-height:1.6;
+    margin:8px 0 0;
+    padding:8px 10px;
+    background:#f5f8fc;
+    border-radius:8px;
+    border-inline-start:3px solid var(--blue);
+  }
+  .ai-skeleton{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .ai-skel-line{
+    height:12px;
+    border-radius:6px;
+    background:linear-gradient(90deg,#eef2f7 0%,#f7f9fc 50%,#eef2f7 100%);
+    background-size:200% 100%;
+    animation:skel 1.1s ease-in-out infinite;
+  }
+  .ai-skel-line.lg{height:42px;}
+  @keyframes skel{
+    0%{background-position:100% 0;}
+    100%{background-position:-100% 0;}
+  }
+  .ai-details{
+    display:none;
+    margin-top:12px;
+    padding-top:10px;
+    border-top:1px dashed var(--border);
+  }
+  .ai-details.open{display:block;}
+  .ai-details label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    color:#5b5e6e;
+    margin:8px 0 4px;
+  }
+  .ai-details textarea{min-height:64px; background:#fff;}
+  .ai-chip-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    margin-top:6px;
+  }
+  .ai-chip-row{
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .ai-chip-row input[type=text]{
+    flex:1;
+    background:#fff;
+    padding:7px 8px;
+    font-size:12.5px;
+  }
+  .ai-chip-row button{
+    width:28px;
+    height:28px;
+    border:1px solid var(--border);
+    background:#fff;
+    color:#c0392b;
+    border-radius:7px;
+    cursor:pointer;
+  }
+  .ai-health{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#fafbfc;
+  }
+  .ai-health.ready{background:#f0fdf4; border-color:#bbf7d0;}
+  .ai-health.review{background:#fffbeb; border-color:#fde68a;}
+  .ai-health.risk{background:#fff5f5; border-color:#fecaca;}
+  .ai-health-dot{
+    font-size:18px;
+    line-height:1.2;
+  }
+  .ai-health-body{flex:1; min-width:0;}
+  .ai-health-title{
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--navy);
+    margin-bottom:4px;
+  }
+  .ai-health-body p{
+    margin:0 0 6px;
+    font-size:12.5px;
+    color:#4b5563;
+    line-height:1.6;
+  }
+  .ai-health-body ul{
+    margin:0;
+    padding-inline-start:18px;
+    font-size:12px;
+    color:#4b5563;
+    line-height:1.65;
+  }
+  .ai-team-list{
+    margin:0;
+    padding:0;
+    list-style:none;
+    font-size:13px;
+    color:#33364a;
+  }
+  .ai-team-list li{
+    padding:5px 0;
+    border-bottom:1px dashed var(--border);
+  }
+  .ai-team-list li:last-child{border-bottom:none;}
+  .ai-compare{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:10px;
+  }
+  .ai-compare-col{
+    border:1px solid var(--border);
+    border-radius:9px;
+    padding:10px;
+    background:#fafbfc;
+  }
+  .ai-compare-col.proposed{
+    border-color:#bfdbfe;
+    background:#f8fbff;
+  }
+  .ai-compare-col h3{
+    margin:0 0 8px;
+    font-size:12.5px;
+    color:var(--navy);
+  }
+  .ai-compare-col p{
+    margin:0 0 5px;
+    font-size:12px;
+    color:#4b5563;
+    line-height:1.55;
+  }
+  .ai-delta{
+    font-size:12px;
+    margin-top:8px;
+    padding:8px 10px;
+    border-radius:8px;
+    background:#eef6ff;
+    color:#1e3a5f;
+    line-height:1.6;
+  }
+  .ai-req-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:8px 0;
+  }
+  .confirm-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.45);
+    align-items:center;
+    justify-content:center;
+    z-index:110;
+    padding:20px;
+  }
+  .confirm-overlay.open{display:flex;}
+  .confirm-modal{
+    background:#fff;
+    border-radius:16px;
+    padding:24px 22px;
+    max-width:420px;
+    width:100%;
+    font-family:'Tajawal', sans-serif;
+    direction:rtl;
+    box-shadow:0 10px 40px rgba(15,17,71,.2);
+  }
+  .confirm-modal h2{
+    color:var(--navy);
+    font-size:17px;
+    margin:0 0 8px;
+  }
+  .confirm-modal p{
+    color:#5b5e6e;
+    font-size:13px;
+    line-height:1.65;
+    margin:0 0 10px;
+  }
+  .confirm-modal ul{
+    margin:0 0 16px;
+    padding-inline-start:18px;
+    font-size:12.5px;
+    color:#33364a;
+    line-height:1.7;
+  }
+  .confirm-actions{display:flex; gap:8px;}
+  .confirm-actions button{flex:1;}
+  .doc-kv{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+    margin-bottom:8px;
+  }
+  .doc-kv th,.doc-kv td{
+    border:1px solid #c9d0dc;
+    padding:8px 12px;
+    text-align:left;
+    background:var(--gray-row);
+  }
+  .doc-kv th{
+    width:34%;
+    background:#eef2f7;
+    color:var(--navy);
+    font-weight:600;
+  }
+  .doc-badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:700;
+  }
+  .doc-badge.ready{background:#dcfce7; color:#166534;}
+  .doc-badge.review{background:#fef3c7; color:#92400e;}
+  .doc-badge.risk{background:#fee2e2; color:#991b1b;}
+  .doc-list{margin:6px 0 0; padding-inline-start:18px; font-size:12.5px; line-height:1.6;}
+  .whatif-box{display:none; width:100%; max-width:794px;}
+  .whatif-box.visible{display:block;}
+  .clickup-box{display:none; width:100%; max-width:794px;}
+  .clickup-box.visible{display:block;}
+  .clickup-status{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    font-weight:700;
+    margin-top:8px;
+  }
+  .clickup-status.ok{color:#166534;}
+  .clickup-status.warn{color:#92400e;}
+  .clickup-status.err{color:#991b1b;}
+  .clickup-row{display:flex; gap:8px; align-items:flex-end;}
+  .clickup-row > div{flex:1; min-width:0;}
+  .clickup-token-wrap{position:relative;}
+  .clickup-token-wrap input{padding-inline-end:40px;}
+  .clickup-preview{
+    margin-top:10px;
+    max-height:180px;
+    overflow:auto;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fff;
+    padding:8px 12px;
+    font-size:12.5px;
+  }
+  .clickup-preview li{margin:4px 0; color:#33364a;}
+  .clickup-link{
+    color:var(--blue);
+    font-weight:700;
+    word-break:break-all;
+  }
+
   @media print{
     body *{visibility:hidden;}
     #docPreview, #docPreview *{visibility:visible;}
@@ -864,10 +1322,18 @@
     }
     .panel{
       width:100%;
+      order:1;
+    }
+    .ai-side-panel{
+      width:100%;
+      position:static;
+      max-height:none;
+      order:2;
     }
     .preview-wrap{
       width:100%;
       min-width:0;
+      order:3;
     }
     #docPreview{
       width:100%;
@@ -886,9 +1352,12 @@
     .cost-table select,
     .multiselect-trigger,
     .multiselect-panel input[type=text],
-    .prefixed-input input[type=text]{
+    .prefixed-input input[type=text],
+    .ai-chip-row input[type=text]{
       font-size:16px !important;
     }
+    .ai-compare{grid-template-columns:1fr;}
+    .ai-stats{grid-template-columns:1fr 1fr;}
   }
   @media (max-width: 560px){
     .panel{
@@ -987,9 +1456,15 @@
     </div>
 
     <div class="field">
-      <label>نطاق العمل / المتطلبات</label>
+      <div class="field-head">
+        <label>نطاق العمل / المتطلبات</label>
+        <button type="button" class="ai-secondary-btn ai-ignore-regen" id="aiReqAnalyzeBtn">✨ تحليل المتطلبات</button>
+      </div>
       <div class="req-list" id="reqList"></div>
-      <button type="button" id="addReqBtn" class="add-item-btn">+ إضافة بند</button>
+      <div class="ai-req-actions">
+        <button type="button" id="addReqBtn" class="add-item-btn">+ إضافة بند</button>
+      </div>
+      <div id="aiReqCard" class="ai-card ai-ignore-regen" aria-live="polite"></div>
       <div class="hint">كل بند يظهر كمهمة في الخطة، والتاريخ يظهر في عمود مستقل. عمود الميزات يظهر فقط إذا كان العدد أكبر من 1.</div>
     </div>
 
@@ -1022,6 +1497,10 @@
       </div>
     </div>
 
+    <div class="field ai-ignore-regen" id="aiEstimateField" style="display:none;">
+      <div id="aiEstimateCard" class="ai-card visible success"></div>
+    </div>
+
     <div class="field optional-field">
       <label>أيام الإجازات ضمن الفترة <span class="optional-badge">اختياري</span></label>
       <div class="leave-box" id="leaveBox">
@@ -1044,6 +1523,7 @@
       <div class="tags-box" id="assignedTags"></div>
       <input type="hidden" id="assigned">
       <div class="hint">يظهر هنا الاسم فقط. فئة الموظف (Grade) تُحدَّد من قسم التكلفة عند الحاجة.</div>
+      <div id="aiTeamCard" class="ai-card ai-ignore-regen" aria-live="polite"></div>
     </div>
 
     <div class="field">
@@ -1061,6 +1541,24 @@
     <div class="field">
       <label>التبعيات المعروفة (اختياري)</label>
       <textarea id="depsNotes" placeholder="مثال: بانتظار موافقة التصميم، تعديل API من الباك إند..."></textarea>
+      <div id="aiDepsRisksBox" class="ai-ignore-regen" style="display:none; margin-top:12px;">
+        <label style="margin-top:4px;">الاعتماديات المقترحة ✨</label>
+        <div id="aiDepsList" class="ai-chip-list"></div>
+        <label>المخاطر المقترحة ✨</label>
+        <div id="aiRisksList" class="ai-chip-list"></div>
+        <div class="hint">يمكن تعديل أي بند أو حذفه قبل توليد الخطة. لن يُعتمد إلا ما تبقيه هنا.</div>
+      </div>
+    </div>
+
+    <div class="field" id="aiHealthField">
+      <label>جاهزية الخطة</label>
+      <div id="aiHealthCard" class="ai-health review">
+        <div class="ai-health-dot">🟡</div>
+        <div class="ai-health-body">
+          <div class="ai-health-title">تحتاج مراجعة</div>
+          <p>أدخل نطاق العمل وتاريخ البداية لتشغيل فحص الجاهزية.</p>
+        </div>
+      </div>
     </div>
 
     <button id="generateBtn" disabled>توليد الخطة</button>
@@ -1070,9 +1568,78 @@
   <div class="preview-wrap">
     <div class="toolbar">
       <button id="downloadBtn" class="primary" disabled>تنزيل الخطة</button>
+      <button id="clickupToolbarBtn" disabled>إرسال إلى ClickUp</button>
+    </div>
+    <div class="whatif-box ai-section ai-ignore-regen" id="whatIfBox" hidden>
+      <h2>✨ جرّب سيناريو مختلف</h2>
+      <p class="ai-desc">اسأل بالعربية عن تغيير في الفريق أو الموعد أو النطاق، وسنحسب الأثر دون تعديل الخطة الأصلية إلا إذا اخترت تطبيقه.</p>
+      <textarea id="whatIfInput" placeholder="مثال: ماذا لو أضفت مطورًا آخر؟ ماذا لو لازم نطلق قبل 30 سبتمبر؟ ماذا لو أخذ أحد أعضاء الفريق إجازة أسبوع؟ ماذا لو قللنا النطاق إلى أهم 8 ميزات؟" style="min-height:72px; background:#fff;"></textarea>
+      <button type="button" class="ai-secondary-btn" id="whatIfBtn" style="margin-top:8px;">✨ حساب السيناريو</button>
+      <div id="whatIfCard" class="ai-card" aria-live="polite"></div>
+    </div>
+    <div class="clickup-box ai-section ai-ignore-regen" id="clickupBox" hidden>
+      <h2>ربط ClickUp</h2>
+      <p class="ai-desc">بعد توليد الخطة يمكنك إرسالها إلى ClickUp كخطة تنفيذ منظّمة. لن يُرسل أي شيء تلقائيًا.</p>
+      <div class="field" style="margin-bottom:12px;">
+        <label>رمز API</label>
+        <div class="clickup-token-wrap">
+          <input type="password" id="clickupToken" autocomplete="off" placeholder="pk_••••••••">
+        </div>
+        <div class="checkbox-line">
+          <input type="checkbox" id="clickupRemember">
+          <label for="clickupRemember" style="font-weight:400; margin:0;">حفظ الرمز على هذا الجهاز فقط</label>
+        </div>
+        <div class="hint">من ClickUp: Settings → Apps → API Token. الرمز لا يُرسل إلا إلى ClickUp عبر وكيل محلي على جهازك.</div>
+      </div>
+      <div class="ai-btn-row" style="margin-top:0;">
+        <button type="button" class="ai-secondary-btn" id="clickupConnectBtn">اتصال</button>
+        <button type="button" class="ai-ghost-btn" id="clickupDisconnectBtn" hidden>قطع الاتصال</button>
+      </div>
+      <div id="clickupConnStatus" class="clickup-status" hidden></div>
+      <div id="clickupSelects" hidden>
+        <div class="clickup-row" style="margin-top:12px;">
+          <div>
+            <label>مساحة العمل (Workspace)</label>
+            <select id="clickupTeam"></select>
+          </div>
+          <div>
+            <label>المساحة (Space)</label>
+            <select id="clickupSpace"></select>
+          </div>
+        </div>
+        <div class="field" style="margin:12px 0 0;">
+          <label>الوجهة</label>
+          <div class="checkbox-line" style="margin-top:4px;">
+            <input type="radio" name="clickupDest" id="clickupDestNew" value="new" checked>
+            <label for="clickupDestNew" style="font-weight:400; margin:0;">إنشاء قائمة جديدة للخطة</label>
+          </div>
+          <div class="checkbox-line">
+            <input type="radio" name="clickupDest" id="clickupDestExisting" value="existing">
+            <label for="clickupDestExisting" style="font-weight:400; margin:0;">استخدام قائمة موجودة</label>
+          </div>
+          <input type="text" id="clickupNewListName" placeholder="اسم القائمة الجديدة" style="margin-top:8px;">
+          <select id="clickupList" style="margin-top:8px; display:none;"></select>
+        </div>
+        <div id="clickupPreviewWrap" style="display:none;">
+          <label>ما سيُنشأ في ClickUp</label>
+          <ul class="clickup-preview" id="clickupPreview"></ul>
+        </div>
+        <button type="button" class="ai-primary-btn" id="clickupSendBtn" style="margin-top:12px;">إرسال الخطة إلى ClickUp</button>
+        <div id="clickupSendStatus" class="clickup-status" hidden></div>
+      </div>
     </div>
     <div id="docPreview">
       <div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>
+    </div>
+  </div>
+
+  <div class="ai-side-panel">
+    <div class="ai-section ai-ignore-regen" id="aiCopilotSection">
+      <h2>✨ مساعد خُطّة الذكي</h2>
+      <p class="ai-desc">اكتب وصف المشروع أو الصق المتطلبات، وسنحوّلها إلى خطة تنفيذ مقترحة يمكنك مراجعتها وتعديلها.</p>
+      <textarea id="aiBrief" placeholder="مثال: نحتاج تطوير خدمة لإدارة المخالفات تشمل عرض المخالفات، إضافة مخالفة، تعديلها، تفاصيل المخالفة، الدفع والإشعارات، مع دعم الجوال..."></textarea>
+      <button type="button" class="ai-primary-btn" id="aiAnalyzeBtn">✨ تحليل المشروع بالذكاء الاصطناعي</button>
+      <div id="aiAnalyzeCard" class="ai-card" aria-live="polite"></div>
     </div>
   </div>
 </div>
@@ -1093,6 +1660,30 @@
 </div>
 
 <div id="updateToast" class="update-toast">✅ تم تحديث الخطة</div>
+
+<div id="confirmOverlay" class="confirm-overlay">
+  <div class="confirm-modal">
+    <h2 id="confirmTitle">تأكيد التطبيق</h2>
+    <p id="confirmText">سيتم استبدال معلومات أدخلتها يدويًا. راجع التغييرات قبل المتابعة.</p>
+    <ul id="confirmList"></ul>
+    <div class="confirm-actions">
+      <button type="button" class="ai-primary-btn" id="confirmApplyBtn" style="margin-top:0;">تطبيق الاقتراحات</button>
+      <button type="button" class="ai-ghost-btn" id="confirmCancelBtn">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div id="dgaRecOverlay" class="dga-overlay" role="dialog" aria-modal="true" aria-labelledby="dgaRecTitle">
+  <div class="dga-modal">
+    <div class="dga-icon" aria-hidden="true">💡</div>
+    <h2 id="dgaRecTitle">💡 توصية قبل إنشاء الخطة</h2>
+    <p>بما أن المشروع مرتبط بـ DGA / المنصات، ننصحك بمراجعة معايير التصميم الرسمية للتأكد من توافق الواجهات مع المعايير قبل بدء التنفيذ.</p>
+    <div class="dga-actions">
+      <button type="button" class="ai-primary-btn" id="dgaReviewBtn">مراجعة معايير DGA</button>
+      <button type="button" class="ai-ghost-btn" id="dgaContinueBtn">متابعة</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const ELM_LOGO_FIXED = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAACUCAMAAABV5TcGAAABPlBMVEX///8FHUl2PLwAoeD/oWjMi9sAcc7/XTYFHkkAAA8AADsAADnw8fMACkBkZHcAFUUAAEDc3OEAGUcAADOrrre/wcj3+fzl5ukAEUMnMFRtc4gAADYAAC94fY8AACNRUGeXnauKjp0VJ1Dz8PlFUW3/8u/n3vKUbMoAVcdwLrmsddAAZcu7zer/ppT/gWe/q92UXceoiNP/Th1/TcCfn6f/m1z/5dgAABc7R2X/s4iOY8cAAAAAl93/p3P/2cX/wJ5qIbfGe9fSm99vvemb0O8fIEr/Z0CuktXRwue2ntkyM05dALJVV2Daz+zMq+JGitbmye0ASMSau+Zimdubd8x/pN3d6vdkZskAf9RoVMNlfNG+3/RKsOWPfdTzrKBsj7b/RwDUeHNTm8uqjKDpaFSPi6u7eoLial7/hlb/zLBEkulcAAAJ4klEQVR4nO2c+0ObSB7AJYlKCSQBCXm/jEmXtXdqNTHaGOOjatuLervW2jX32Nvbu/r//wMHyUAGGGBIINC9+fw4/YJ8P5kZ5kVXVggEAoFAIBAIBAKBQCAQCAQCgUAgEKJEsxn2E0SJ0fVO2I8QHdo7+0OiA9DcOR7KMaJjys2eLMdiRMeE9t6+KiNsHblQ/7pG8wOQEa6OXKoR4l/XudmP6YSoo/6xHAEd7d1hLAI6sj0mnQxdh7T3SY6Fr4PfquYpOnQdO0O4aoSlI9dgkhQdvo52zEwYOqRKVaAUwtexHw0dSYro0CE6DBAdBogOA4oOmujQ+b+sHZIF/V9cdCAuCYYl6eArheph1cSrv2jzVwcdrJgqQVceVoJ4PB2zjiCWfyS+V03mKTM0l2K1CLu+I9colRkBuigTbGsy6pDl4xvf/wTbOMzQFhkKBh3I2pHtlQXKcO0ydci7H/xfR2eLZRppg3KtHSLFmK9Zno7h/nXb/z+g/fBz1I4szVmuWZYOOfbgfztRONgULDnh6cj1LHVjWTpk+fVNIPtNfA/8wjQlaGDqqJR1CfqlArMMHcP9nYA23xpafWfKGQ6QxtLBlqfeaKHKcDpL0CEPr9sBDW/4FDPtRjNFXiNX53B0iKByCEyWhwh2qV3R8ek4KBlKb1iYVgWuxs8KxQyOji1uKrKcDerhELRjnwLpQQF1kHmmAhnH06GNvphlbr20MQahC9SdgxLIybMOSetI/dIhjfZuXTpIaXSN0YXeNecWEh0d7b3h/tnqvUO6Uvt6eIyh469rPz3O+RBR0dHeiQ3l3dXVs/ORXcLq6QX5NYaOH9a2797MJyQaOpo3x+ruiaJDEXKLfHFMTy9g6lhb2/75zTwtJgo6pJuHydGEqY7Vs9Vb61wEhGDrWNte+/zs/VEioGOkHU0AOhTOTV3IaC82DcHXoQi5++y5xYSuAzqaMNOhCpk9T/taD/GiQ+HuJ48tJmwdO/D6BaRDEQJajLSzG9OFedSxvXb3xtPjhKujvW/YjDfoUISoqY924RCPOlR+9tJicHU0AtAhvTYeTTDrWD27bz4MDSFz6Fjb/ozfYnB11DeADn1leHEdD6ajCRYdq6u7ppB5dKz9gN9gZjqgQquOlSxIPl3QShbXsSe76vhR9kHHto2OnBXQCCimyM8KtQl+PqUXZtNgwpbRyvgNoCPDm28KiLiObIHJmNEXO/OowvSsTF9cZsqgRCsQNpHQvWjrYIsZwQKl41KoF2mLiLOgNJJMxHWIhTR6/yAQ6Hy0deRSiHVvTwna7MbYEHEdYtp2AwFLhpAsZygPQqKtQ99AmBOGqfDFsod7RFqHVLfda8NBKPey0oqU3awymB3QHH2HHDtblo7su3evFqAsgvvwKRrzRu8y3nTI8kOzee6i40v/gnW562O8/4Q3DIsYsA45djxSy+7PHXR8vYvH+/1LpynI40U/HjcJ+e50yPLuB5Bk89ZOx9df4hP642c7IexlvD8Nenr6fnXIhqMJ7VuEDvnrl/44DuhfIIVIz+N+XI95+k51yLG9kfEf7m9NOuTYl7u4gUvLKob0fGEM0YX4poMN9ODbRIfSg1qPJjTvz89mOqwy1BZjEvJ4Ee9bgp581SEeuHXjC6HqGO6ijyY071fPgA756y+WRFXGUJ/6eDlGxfQnQvzRka28TwWsQ5Y/2J1nktq3Z6oOOYaWoXIBtg6ky7FdSP/OHx1so5dMBqzj02unowlS+/zsR/mLrYyJEPV6pZ040H/yQYdYy+fh1bAguB65dE3S6G9PTpmqXDrLUHlaVAefyqvHTAPWgcHf/4Ghw7H+qCELvhDEEjeZ/Yav40///PVfTplOGsuzbc+hhyyECKZ7EdDx9u36b7ZCxtq71r4rHc+xUWtGZKKjY3397b9/RwoZX87ibN4tcMj8REuHIuTX3xGZGhuBtUftm0PmJWo61t+u/8fUp15YtxrNg/QLrHaS47MGeKtChA7TRdMrZ7KQhT4AdKgtBu5CMKZw6BAz2UaxVoDppSqiOQOrDrayWbBQq9Snpy/5BqLQF3QdCv/9TWsEz3bKH8EE32ENAIavfEwyXB7aDclzTJJOicYwhI5iybKRkueSXK3OrrD1WnJ2S47J9Bq+Ha2EdaxfqV1IHzGZnSGpoxAlBKuKijUmb1kMp2mB2TSenEbpQCy10pTAUcV6Ks0ZbkdxwpZfFcSgQxWidBrOv7v0OL7Am4iLBbuF8LRhxxpXh5q8kBasGxYCU/DJh0nH+ts/t1yvwXydZG1tqAnA9QNfhx2Zgj/tZR4dePA1xmFLIM1B/cfiOqjSli9vmOB01LUDCEIeRvtYg0nNfk8nHenZpbPkofuBlkMf+nJwPzAdvPaBQXqzBvMR+BCg6uGgQyjoV/a01Kk0dD9qej86s+XHUwemIwtSTBfEHAuRrQEfpYZeve110ExD0q7kG9oRjzJ0R+0TCKrqR2sJSod2uItKmz/7BV+00MzsixYHHaU6dGkPVLgq3DCKjI+fuQSlIweeUnhvGnKtsLVpJ5Df1J8fV0cDHCzbgAu1j6CSfnxuHZiOVMZFB8XMraNkeEuXfew8QtSxMa8OOlmECjUd3PepQ9J0lJaso3vkmtogcRWsDkqZZDSMFIQwdLSOOonOqWtIwijEfx15xoQ2elimjtZLR0210xnYh5yqEQrfAtVhy/J0tAYnINVE56hrE5LQQk4S367+wDpa3SMt00kFOUUIMYQoQq6uAtNBo6GSy9HRPe3AqSpCEi9dc0jCGKIEXQWkg0uaOw9AdRk6Wi+WTNUWM4Cy7L6cWEMS0xbjuw6h1qjY4HmQ7llHa3CEylRpMUcDPQQpAwgJYNwhsTboy0hB6RgcIaoGEHIy7UIcQpSgb+uBD8MQeB2k4+noHtnmOUER0j21rRqggvikgwUfs82vg0bpoD3UjoHD7z6tIF2MkIUs6EgHYIKfx5hoBtRYWuZ3iiHTzssKNPayCfFraXC2/PP+wDU2uK4U3ZOqqR6BkK5tc+mc+iZDXTnWXi2lahnJ4dwTfA8v2sEJMlW4EbygbfjVTgAHbmvhLhN8ZN/hsXaonFqFnLy4h9hPbuaDT7l8fbGsQbp5zHli7RFMbxjlLexjOwE4bTth6Fj4zTIDGlxo4w1LyCksw992oj1oIWNjYqm1YwUanc5Go3YhncSp3+1EI7u1Yd2yXlyHl65Uo6VOTIxzFUvIwDVkQfh6oczkbb6Jw1krpXB0TIW7LQ4qM1u3TJVexr+RBgqJF4s9ZgMJ9KJ9pf33rbqOVBUEwYvmjcNpYTUFFYqvQGFhxZmWe6YYIYvC5ngb9G0z1vo/xOWsRTaFiIsJBAKBQCAQCAQCgUAgEAgEAoFAIBDc+B8GTOCbLjuFNwAAAABJRU5ErkJggg==";
@@ -1301,6 +1892,34 @@ const ELM_PRODUCT_NAMES = [
   {ar:"تحديث الصكوك", en:"Deed Update"}
 ];
 let productNameValue = ''; // Arabic label shown in the trigger/search
+let dgaRecShownThisSession = false;
+const DGA_HINT_URL = 'https://design.dga.gov.sa/';
+
+function projectTextMentionsDga(){
+  const hay = [
+    productNameValue,
+    document.getElementById('projectName')?.value,
+    document.getElementById('productSearch')?.value
+  ].filter(Boolean).join(' ');
+  if(!hay.trim()) return false;
+  const lower = hay.toLowerCase();
+  if(lower.includes('dga')) return true;
+  if(lower.includes('digital government authority')) return true;
+  if(hay.includes('المنصات') || hay.includes('منصات') || hay.includes('منصة')) return true;
+  return false;
+}
+
+function closeDgaRecommendation(){
+  document.getElementById('dgaRecOverlay').classList.remove('open');
+}
+
+function maybeShowDgaRecommendation(){
+  if(dgaRecShownThisSession) return;
+  if(!projectTextMentionsDga()) return;
+  dgaRecShownThisSession = true;
+  document.getElementById('dgaRecOverlay').classList.add('open');
+}
+
 function updateProductTrigger(){
   document.getElementById('productTriggerText').textContent = productNameValue || 'اختر أو أضف اسم المنتج';
 }
@@ -1310,6 +1929,7 @@ function selectProduct(product){
   updateProductTrigger();
   document.getElementById('productMultiselect').classList.remove('open');
   if(typeof scheduleRegen === 'function') scheduleRegen(200);
+  maybeShowDgaRecommendation();
 }
 function renderProductList(){
   const q = document.getElementById('productSearch').value.trim().toLowerCase();
@@ -1353,11 +1973,17 @@ productSearch.addEventListener('input', () => {
   document.getElementById('projectName').value = productNameValue;
   updateProductTrigger();
 });
+productSearch.addEventListener('blur', () => {
+  setTimeout(() => {
+    if(!productMultiselect.classList.contains('open')) maybeShowDgaRecommendation();
+  }, 220);
+});
 document.addEventListener('click', (e) => {
   if(!e.target.closest('#productMultiselect')){
     if(productMultiselect.classList.contains('open')){
       productMultiselect.classList.remove('open');
       if(typeof scheduleRegen === 'function') scheduleRegen(200);
+      maybeShowDgaRecommendation();
     }
   }
 });
@@ -1437,6 +2063,8 @@ function renderAssignedTags(){
       renderMultiselectList();
       updateTriggerText();
       renderCostTable();
+      if(typeof refreshTeamCard === 'function') refreshTeamCard();
+      if(typeof refreshHealthCheck === 'function') refreshHealthCheck();
       if(typeof scheduleRegen === 'function') scheduleRegen(200);
     });
   });
@@ -1467,6 +2095,8 @@ function toggleAssignee(person){
   updateTriggerText();
   renderMultiselectList();
   renderCostTable();
+  if(typeof refreshTeamCard === 'function') refreshTeamCard();
+  if(typeof refreshHealthCheck === 'function') refreshHealthCheck();
   if(typeof scheduleRegen === 'function') scheduleRegen(200);
 }
 
@@ -1791,6 +2421,14 @@ function showSuccessModal(){
 function hideSuccessModal(){
   document.getElementById('successOverlay').classList.remove('open');
 }
+document.getElementById('dgaReviewBtn').addEventListener('click', () => {
+  window.open(DGA_HINT_URL, '_blank', 'noopener');
+  closeDgaRecommendation();
+});
+document.getElementById('dgaContinueBtn').addEventListener('click', closeDgaRecommendation);
+document.getElementById('dgaRecOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'dgaRecOverlay') closeDgaRecommendation();
+});
 document.getElementById('successCloseBtn').addEventListener('click', hideSuccessModal);
 document.getElementById('successOverlay').addEventListener('click', (e) => {
   if(e.target.id === 'successOverlay') hideSuccessModal();
@@ -1865,45 +2503,6 @@ function buildLocalPlan(scopeItems, depsNotes, lang){
   };
 }
 
-async function generateTasksWithAI(scopeNotes, depsNotes, lang){
-  const langLabel = lang === 'ar' ? 'Arabic' : 'English';
-  const systemPrompt = `You are a senior frontend technical program manager preparing an internal implementation plan.
-Convert the raw project notes into a professional, concise list of frontend implementation tasks, and extract any known dependencies.
-
-Return ONLY valid JSON with no markdown fences and no preamble, in exactly this shape:
-{"tasks": ["...", "..."], "featureCount": 0, "dependencies": ["...", "..."]}
-
-Rules:
-- Tasks must be actionable, technical, and professional (roughly 6-12 items), written from a frontend engineering perspective.
-- Do not invent requirements that are not implied by the notes.
-- featureCount must reflect actual development features/modules (not every small activity) - a reasonable integer.
-- dependencies: only include items clearly implied by the notes, choosing from concepts like: Business approval, Design approval, Backend APIs, API changes, Environment access, QA feedback, External team dependency, Security approval, Deployment dependency. Return an empty array if none apply.
-- Write all task text and dependency text in ${langLabel}.
-- Keep each task under ~15 words.`;
-
-  const userContent = `Scope / Requirements notes:\n${scopeNotes || '(none provided)'}\n\nAdditional dependency notes from the requester:\n${depsNotes || '(none provided)'}`;
-
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-6",
-      max_tokens: 1000,
-      system: systemPrompt,
-      messages: [{ role: "user", content: userContent }]
-    })
-  });
-
-  if(!response.ok){
-    throw new Error('API request failed: ' + response.status);
-  }
-  const data = await response.json();
-  const textBlock = (data.content || []).find(b => b.type === 'text');
-  if(!textBlock) throw new Error('No text response from model');
-  const cleaned = textBlock.text.replace(/```json|```/g, '').trim();
-  return JSON.parse(cleaned);
-}
-
 function escapeHtml(str){
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -1914,6 +2513,1244 @@ const TEAM_NAME_EN = {
   'فريق تطوير الويب': 'Web Development',
   'فريق تطوير الموبايل': 'Mobile Development'
 };
+
+let pendingAiSuggestion = null;
+let lastAppliedSuggestion = null;
+let pendingReqAnalysis = null;
+let pendingWhatIf = null;
+let pendingConfirmAction = null;
+let lastHealth = null;
+let lastGeneratedSnapshot = null;
+let lastPlanPayload = null;
+let lastAiRecommendations = [];
+let estimationAdopted = false;
+let aiDeps = [];
+let aiRisks = [];
+let aiDetailsOpen = false;
+
+function sleep(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
+function newAiItem(text){ return {id: 'ai-' + Math.random().toString(36).slice(2,9), text: String(text || '').trim()}; }
+function unknownAr(){ return 'يحتاج تأكيد'; }
+function unknownEn(){ return 'Needs confirmation'; }
+function tbdEn(){ return 'TBD'; }
+function docVal(value, fallback){
+  if(value === 0) return '0';
+  if(value === false) return 'No';
+  if(value === null || value === undefined || value === '') return fallback || unknownEn();
+  return value;
+}
+
+function normalizeAr(text){
+  return String(text || '')
+    .replace(/[أإآ]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/[ًٌٍَُِّْ]/g, '')
+    .replace(/[^\u0600-\u06FFa-zA-Z0-9]+/g, '')
+    .toLowerCase();
+}
+function tokenOverlap(a, b){
+  const ta = new Set(String(a).split(/\s+/).map(normalizeAr).filter(t => t.length > 2));
+  const tb = new Set(String(b).split(/\s+/).map(normalizeAr).filter(t => t.length > 2));
+  if(!ta.size || !tb.size) return 0;
+  let hit = 0;
+  ta.forEach(t => { if(tb.has(t)) hit++; });
+  return hit / Math.max(ta.size, tb.size);
+}
+function countAr(n, one, two, many){
+  if(n === 1) return one;
+  if(n === 2) return two;
+  return `${n} ${many}`;
+}
+
+function detectSignals(text){
+  const t = String(text || '');
+  const has = (re) => re.test(t);
+  return {
+    payment: has(/دفع|سداد|فاتورة|محفظة|payment|billing/i),
+    mobile: has(/جوال|موبايل|تطبيق|responsive|تجاوب|هاتف/i),
+    integration: has(/api|أبياي|تكامل|ربط|واجهة برمج|backend|باك\s*اند|الباك/i),
+    backend: has(/backend|باك|خادم|سيرفر|قاعدة بيانات/i),
+    design: has(/تصميم|figma|ux|ui|تجربة المستخدم/i),
+    security: has(/أمن|امان|صلاح|توثيق|security|role|permission/i),
+    qa: has(/اختبار|جودة|qa|تجريب/i),
+    notification: has(/اشعار|إشعار|تنبيه|notification/i),
+    report: has(/تقرير|لوحة|احصاء|إحصاء|تحليل|dashboard/i),
+    migration: has(/ترحيل|هجره|هجرة|استبدال|migration/i),
+    approval: has(/موافقه عمل|موافقة عمل|business approval|اعتماد عمل/i),
+    external: has(/خارجي|جهة|نظام قائم|external/i),
+    auth: has(/تسجيل دخول|login|auth|حسابات|مستخدمين/i)
+  };
+}
+
+function includesWholeToken(hay, needle){
+  const n = String(needle || '').trim();
+  if(!n) return false;
+  const escaped = n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('(?:^|[^\\u0600-\\u06FFa-zA-Z0-9])' + escaped + '(?:$|[^\\u0600-\\u06FFa-zA-Z0-9])', 'i');
+  return re.test(hay);
+}
+
+function inferProjectName(text){
+  const raw = String(text || '').trim();
+  if(!raw) return {ar:'', en:'', matched:false, unknown:true};
+  for(const p of ELM_PRODUCT_NAMES){
+    if(includesWholeToken(raw, p.ar) || includesWholeToken(raw, p.en)){
+      return {ar:p.ar, en:p.en, matched:true, unknown:false};
+    }
+  }
+  const m = raw.match(/(?:خدمة|نظام|منصة|تطبيق|مشروع)\s+[\u0600-\u06FFA-Za-z0-9][\u0600-\u06FFA-Za-z0-9\s]{1,40}/);
+  if(m){
+    let name = m[0].replace(/[،,.].*$/, '').split(/\s+(?:تشمل|مثل|وهي|منها|كالتالي|كما|تتضمن)/)[0].trim();
+    const words = name.split(/\s+/);
+    if(words.length > 5) name = words.slice(0, 5).join(' ');
+    if(name.length >= 5) return {ar:name, en:name, matched:false, unknown:false};
+  }
+  return {ar:'', en:'', matched:false, unknown:true};
+}
+
+function extractFeaturesFromText(text){
+  const src = String(text || '').trim();
+  if(!src) return [];
+  let parts = src.split(/(?:\r?\n|•|●|·|\u2022|\d+[\.\-\)]\s+|؛)/).map(s => s.trim()).filter(Boolean);
+  if(parts.length <= 2){
+    const splitOnIntro = src.split(/(?:تشمل|مثل|وهي|منها|كالتالي|كما يلي|تتضمن)\s+/);
+    const listPart = splitOnIntro.length > 1 ? splitOnIntro.slice(1).join(' ') : src;
+    const commaParts = listPart.split(/\s*،\s*|\s*,\s*|\s+و\s+/).map(s => s.trim()).filter(s => s.length > 2);
+    if(commaParts.length > parts.length) parts = commaParts;
+  }
+  const weak = /^(نحتاج|نريد|المطلوب|يشمل|تشمل|مع|و|او|أو|كما|ايضا|أيضا|ذلك|هذا|تطوير|بناء)\s*/;
+  const seen = new Set();
+  const features = [];
+  parts.forEach(part => {
+    let p = part.replace(/^[-–—*•]\s*/, '').replace(/[.،,]+$/, '').replace(weak, '').trim();
+    if(p.length < 3 || p.length > 90) return;
+    if(/^(مشروع|خدمة|نظام)$/.test(p)) return;
+    const key = normalizeAr(p);
+    if(!key || seen.has(key)) return;
+    let dup = false;
+    features.forEach(existing => {
+      if(tokenOverlap(existing, p) >= 0.72) dup = true;
+    });
+    if(dup) return;
+    seen.add(key);
+    features.push(p);
+  });
+  return features;
+}
+
+function groupFeatures(features){
+  const rules = [
+    {name:'إدارة البيانات', re:/عرض|إضافة|اضافه|تعديل|حذف|تفاصيل|قائمة|بحث/},
+    {name:'المدفوعات', re:/دفع|سداد|فاتورة|محفظة|payment/i},
+    {name:'الإشعارات', re:/اشعار|إشعار|تنبيه|بريد|رسالة/},
+    {name:'الجوال والتجاوب', re:/جوال|موبايل|تطبيق|responsive|تجاوب/i},
+    {name:'التكامل', re:/api|تكامل|ربط|واجهة/i},
+    {name:'التقارير', re:/تقرير|لوحة|احصاء|إحصاء|تحليل/},
+    {name:'الأمن والصلاحيات', re:/صلاح|أمن|توثيق|دور/}
+  ];
+  const grouped = {};
+  features.forEach(f => {
+    const hit = rules.find(r => r.re.test(f));
+    const key = hit ? hit.name : 'متطلبات أخرى';
+    if(!grouped[key]) grouped[key] = [];
+    grouped[key].push(f);
+  });
+  return grouped;
+}
+
+function findUnclear(items){
+  const vague = /^(تحسين|تطوير|تحديث|تعديلات|غيرها|الخ|إلخ|مطلوب|عمل|شاشات)$/;
+  return items.filter(t => {
+    const s = String(t || '').trim();
+    return s.length > 0 && (s.length < 6 || vague.test(s) || /^(تحسين|تطوير)\s+\S{1,10}$/.test(s));
+  });
+}
+
+function findMissing(features, signals){
+  const blob = features.join(' ');
+  const missing = [];
+  if(/عرض|إضافة|اضافه|تعديل/.test(blob) && !/حذف/.test(blob)) missing.push('حذف السجل / إلغاء العنصر');
+  if(signals.payment && !signals.notification) missing.push('إشعارات حالة الدفع');
+  if(signals.payment && !/فاتورة|إيصال|ايصال/.test(blob)) missing.push('إيصال أو سجل عمليات الدفع');
+  if(signals.mobile && !/تجاوب|responsive|جوال/.test(blob)) missing.push('متطلبات العرض على الجوال');
+  if(!signals.auth && /إدارة|خدمة|نظام/.test(blob)) missing.push('تسجيل الدخول وصلاحيات المستخدم');
+  if(features.length >= 6 && !/اختبار|qa/i.test(blob)) missing.push('سيناريوهات الاختبار وقبول الجودة');
+  if(signals.integration && !/بيئة|environment|staging/i.test(blob)) missing.push('اعتماد بيئة الربط والتجربة');
+  return missing;
+}
+
+function buildClarifyingQuestions(unclear, missing, signals){
+  const qs = [];
+  unclear.forEach(u => qs.push(`ما المقصود بـ «${u}» بشكل قابل للتنفيذ؟`));
+  if(signals.integration) qs.push('ما هي واجهات الـ API المطلوبة، وهل هي جاهزة أم ما زالت قيد التطوير؟');
+  if(signals.design) qs.push('هل تصاميم تجربة المستخدم معتمدة أم ما زالت مسودة؟');
+  if(signals.payment) qs.push('ما بوابة الدفع المعتمدة وما حالات الفشل المطلوب دعمها؟');
+  if(signals.mobile) qs.push('هل المطلوب تطبيق مستقل أم تجاوب الويب مع الجوال فقط؟');
+  missing.slice(0, 3).forEach(m => qs.push(`هل يجب شمول «${m}» ضمن النطاق الحالي؟`));
+  return [...new Set(qs)].slice(0, 6);
+}
+
+function addWorkingDaysInclusive(startStr, days, holidays){
+  const start = parseIsoDate(startStr);
+  if(!start || !days) return '';
+  const hol = holidays || [];
+  let counted = 0;
+  const d = new Date(start);
+  for(let i = 0; i < 800; i++){
+    const iso = toIsoDate(d);
+    if(isWorkingDay(d) && !hol.includes(iso)) counted++;
+    if(counted >= days) return iso;
+    d.setDate(d.getDate() + 1);
+  }
+  return toIsoDate(d);
+}
+
+function computeEstimation(featureCount, signals, teamCount, extraDays){
+  const n = Math.max(1, featureCount);
+  let complexity = n <= 4 ? 'صغير' : n <= 9 ? 'متوسط' : 'كبير';
+  const weight = (signals.integration?1:0) + (signals.security?1:0) + (signals.migration?1:0) + (signals.payment?1:0);
+  if(weight >= 2 && complexity === 'صغير') complexity = 'متوسط';
+  if(weight >= 3 && complexity === 'متوسط') complexity = 'كبير';
+  const mult = {صغير:0.85, متوسط:1, كبير:1.3}[complexity];
+  let days = n * 1.55 * mult;
+  if(signals.payment) days += 2;
+  if(signals.mobile) days += 2;
+  if(signals.integration) days += 2;
+  if(signals.security) days += 1.5;
+  if(signals.migration) days += 3;
+  if(signals.report) days += 1.5;
+  const people = Math.max(1, teamCount || 0);
+  const usedPeople = teamCount ? people : (complexity === 'كبير' ? 3 : 2);
+  days = days / Math.sqrt(Math.min(usedPeople, 5));
+  days += Number(extraDays || 0);
+  days = Math.max(5, Math.round(days));
+  const sprints = Math.max(1, Math.ceil(days / 10));
+  return {complexity, featureCount:n, workingDays:days, sprints, usedPeople};
+}
+
+function suggestTeam(signals, complexity, featureCount, teamTag){
+  const team = [];
+  const needTwoFe = complexity === 'كبير' || signals.mobile || featureCount >= 10 || teamTag === 'فريق تطوير الموبايل';
+  team.push({role:'Frontend Developers', roleAr:'مطور واجهات', count: needTwoFe ? 2 : 1});
+  if(signals.integration || signals.payment || signals.backend){
+    team.push({role:'Backend Developer', roleAr:'مطور خلفية', count:1});
+  }
+  if(featureCount >= 6 || complexity !== 'صغير'){
+    team.push({role:'QA Engineer', roleAr:'مهندس جودة', count:1});
+  }
+  if(signals.design || signals.mobile || complexity !== 'صغير' || teamTag === 'فريق تصميم تجربة المستخدم'){
+    team.push({role:'UX/UI Support', roleAr:'دعم تجربة المستخدم', count:1, support:true});
+  }
+  return team;
+}
+
+function requiredHeadcount(team){
+  return (team || []).reduce((sum, r) => sum + (r.support ? 0 : r.count), 0);
+}
+
+function suggestDependencies(signals, holidaysCount){
+  const deps = [];
+  if(signals.design) deps.push('اعتماد التصميم');
+  if(signals.integration || signals.backend) deps.push('توفر الـ APIs');
+  if(signals.approval) deps.push('Business Approval');
+  if(signals.security) deps.push('Security Review');
+  if(signals.qa || signals.payment || signals.security) deps.push('QA');
+  if(signals.external || signals.integration) deps.push('External systems');
+  if(holidaysCount) deps.push('Employee vacations');
+  if(signals.migration) deps.push('Technical migration');
+  if(signals.mobile) deps.push('Responsive/mobile requirements');
+  return [...new Set(deps)].map(newAiItem);
+}
+
+function suggestRisks(signals, complexity, holidaysCount, teamGap, tightDeadline){
+  const risks = [];
+  if(signals.design) risks.push('تأخر اعتماد التصميم قد يوقف التنفيذ');
+  if(signals.integration) risks.push('تأخر جاهزية الـ APIs يؤثر على المسار الحرج');
+  if(signals.payment) risks.push('تعقيد سيناريوهات الدفع والفشل');
+  if(signals.security) risks.push('Security Review قد يضيف ملاحظات متأخرة');
+  if(holidaysCount) risks.push('إجازات الفريق تقلل السعة المتاحة');
+  if(teamGap > 0) risks.push('سعة الفريق الحالي أقل من الاحتياج المقترح');
+  if(tightDeadline) risks.push('التاريخ المستهدف أقصر من التقدير الحالي');
+  if(complexity === 'كبير') risks.push('نطاق واسع قد يتجاوز سبرنتًا واحدًا دون تقسيم واضح');
+  if(signals.migration) risks.push('المخاطر التقنية للترحيل من النظام الحالي');
+  if(signals.mobile) risks.push('اختلاف سلوك الجوال عن الويب قد يزيد إعادة العمل');
+  if(!risks.length) risks.push('وضوح المتطلبات غير مكتمل — يحتاج تأكيد');
+  return risks.slice(0, 6).map(newAiItem);
+}
+
+function suggestPhases(features, workingDays, signals){
+  const total = Math.max(5, workingDays || 10);
+  const phases = [];
+  if(signals.design){
+    phases.push({nameAr:'التصميم والاعتماد', nameEn:'Design & Approval', share:0.2});
+  }else{
+    phases.push({nameAr:'التحليل والتأسيس', nameEn:'Discovery & Foundation', share:0.2});
+  }
+  phases.push({nameAr:'التنفيذ', nameEn:'Implementation', share:0.55});
+  phases.push({nameAr:'الاختبار والإطلاق', nameEn:'QA & Launch', share:0.25});
+  let used = 0;
+  return phases.map((p, i) => {
+    const days = i === phases.length - 1 ? Math.max(1, total - used) : Math.max(1, Math.round(total * p.share));
+    used += days;
+    const slice = i === 0 ? features.slice(0, Math.min(2, features.length))
+      : i === 1 ? features.slice(0, Math.max(1, features.length - 1))
+      : features.slice(-Math.min(2, features.length));
+    return {...p, days, items: slice};
+  });
+}
+
+function buildSprintPlan(features, sprints, startDate, workingDays, holidays){
+  const count = Math.max(1, sprints || 1);
+  const per = Math.ceil(Math.max(features.length, 1) / count);
+  const daysEach = Math.max(1, Math.round((workingDays || count * 10) / count));
+  let cursor = startDate || '';
+  return Array.from({length: count}, (_, i) => {
+    const items = features.slice(i * per, (i + 1) * per);
+    const end = cursor ? addWorkingDaysInclusive(cursor, daysEach, holidays) : '';
+    const row = {
+      sprint: i + 1,
+      items: items.length ? items : ['Needs confirmation'],
+      days: daysEach,
+      start: cursor || tbdEn(),
+      end: end || tbdEn()
+    };
+    cursor = end ? addWorkingDaysInclusive(end, 2, holidays) : cursor;
+    return row;
+  });
+}
+
+function buildScopeText(nameAr, features){
+  if(!features.length) return unknownAr();
+  const head = nameAr ? `تطوير ${nameAr}` : 'تطوير الخدمة';
+  return `${head} يشمل: ${features.join('، ')}.`;
+}
+
+function analyzeProject(text, context){
+  const source = String(text || '').trim();
+  if(!source) throw new Error('empty');
+  const signals = detectSignals(source);
+  const name = inferProjectName(source);
+  const features = extractFeaturesFromText(source);
+  if(!features.length) throw new Error('no-features');
+  const grouped = groupFeatures(features);
+  const teamTag = context.teamTag || '';
+  const assignedCount = context.assignedCount || 0;
+  const holidaysCount = context.holidaysCount || 0;
+  const startDate = context.startDate || '';
+  const endDate = context.endDate || '';
+  const tbdEnd = !!context.tbdEnd;
+  const team = suggestTeam(signals, 'متوسط', features.length, teamTag);
+  const est = computeEstimation(features.length, signals, assignedCount, holidaysCount * 0.15);
+  team.splice(0, team.length, ...suggestTeam(signals, est.complexity, features.length, teamTag));
+  const needed = requiredHeadcount(team);
+  const phases = suggestPhases(features, est.workingDays, signals);
+  const suggestedStart = startDate || toIsoDate(new Date());
+  const suggestedEnd = addWorkingDaysInclusive(suggestedStart, est.workingDays, context.holidays || []);
+  let tight = false;
+  if(!tbdEnd && startDate && endDate){
+    const targetDays = workingDaysBetween(startDate, endDate, context.holidays || []);
+    tight = targetDays !== null && targetDays < est.workingDays;
+  }
+  const deps = suggestDependencies(signals, holidaysCount);
+  const risks = suggestRisks(signals, est.complexity, holidaysCount, Math.max(0, needed - assignedCount), tight);
+  const unclear = findUnclear(features);
+  const missing = findMissing(features, signals);
+  const questions = buildClarifyingQuestions(unclear, missing, signals);
+  const sprintPlan = buildSprintPlan(features, est.sprints, suggestedStart, est.workingDays, context.holidays || []);
+  const why = [
+    `حجم النطاق ${est.complexity} بناءً على ${features.length} ميزة مستخرجة من الوصف.`,
+    assignedCount ? `حُسب التقدير على ${assignedCount} من الفريق المختار.` : 'لم يُحدد فريق بعد، فاستُخدم تكوين مقترح فقط دون تعيين أحد.',
+    holidaysCount ? `أُخذت ${holidaysCount} أيام إجازة ضمن estimaton السعة.` : 'لم تُحدد إجازات، لذلك لم تُخصم أيام إضافية.'
+  ];
+  return {
+    projectNameAr: name.ar,
+    projectNameEn: name.en,
+    nameUnknown: name.unknown,
+    scope: buildScopeText(name.ar, features),
+    features,
+    grouped,
+    complexity: est.complexity,
+    sprints: est.sprints,
+    workingDays: est.workingDays,
+    team,
+    needed,
+    dependencies: deps,
+    risks,
+    phases,
+    timeline: {start: suggestedStart, end: suggestedEnd},
+    unclear,
+    missing,
+    questions,
+    sprintPlan,
+    signals,
+    why,
+    rationale: 'تم احتساب التقدير بناءً على حجم النطاق، عدد الميزات، الفريق المتاح، أيام العمل والإجازات.'
+  };
+}
+
+function currentFormContext(){
+  return {
+    teamTag: document.getElementById('teamTag').value.trim(),
+    assignedCount: selectedAssignees.length,
+    holidaysCount: selectedHolidays.length,
+    holidays: selectedHolidays.slice(),
+    startDate: document.getElementById('startDate').value,
+    endDate: document.getElementById('endDate').value,
+    tbdEnd: document.getElementById('tbdEnd').checked
+  };
+}
+
+function showAiCard(id, html, state){
+  const el = document.getElementById(id);
+  el.className = 'ai-card visible ' + (state || 'success');
+  el.innerHTML = html;
+}
+
+function renderSkeleton(id, title){
+  showAiCard(id, `
+    <div class="ai-card-title">${title}</div>
+    <div class="ai-skeleton">
+      <div class="ai-skel-line lg"></div>
+      <div class="ai-skel-line"></div>
+      <div class="ai-skel-line" style="width:70%"></div>
+    </div>
+  `, '');
+}
+
+function renderEditableChips(containerId, items, onMutate){
+  const box = document.getElementById(containerId);
+  if(!box) return;
+  box.innerHTML = items.map((item, i) => `
+    <div class="ai-chip-row">
+      <input type="text" value="${escapeHtml(item.text)}" data-id="${escapeHtml(item.id)}">
+      <button type="button" data-id="${escapeHtml(item.id)}" aria-label="حذف">×</button>
+    </div>
+  `).join('') + `<button type="button" class="add-item-btn" data-add="1">+ إضافة بند</button>`;
+  box.querySelectorAll('input[type=text]').forEach(input => {
+    input.addEventListener('input', () => {
+      const found = items.find(x => x.id === input.dataset.id);
+      if(found) found.text = input.value;
+    });
+  });
+  box.querySelectorAll('button[data-id]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = items.findIndex(x => x.id === btn.dataset.id);
+      if(idx !== -1) items.splice(idx, 1);
+      onMutate();
+    });
+  });
+  const addBtn = box.querySelector('[data-add]');
+  if(addBtn) addBtn.addEventListener('click', () => {
+    items.push(newAiItem(''));
+    onMutate();
+  });
+}
+
+function renderDepsRisks(){
+  const box = document.getElementById('aiDepsRisksBox');
+  if(!aiDeps.length && !aiRisks.length){
+    box.style.display = 'none';
+    return;
+  }
+  box.style.display = 'block';
+  renderEditableChips('aiDepsList', aiDeps, renderDepsRisks);
+  renderEditableChips('aiRisksList', aiRisks, renderDepsRisks);
+}
+
+function applyProjectName(ar, en){
+  if(!ar && !en) return;
+  const known = ELM_PRODUCT_NAMES.find(p => p.ar === ar || p.en === en);
+  if(known){
+    selectProduct(known);
+    return;
+  }
+  productNameValue = ar || en;
+  document.getElementById('projectName').value = en || ar;
+  updateProductTrigger();
+  maybeShowDgaRecommendation();
+}
+
+function readDetailsIntoSuggestion(){
+  if(!pendingAiSuggestion || !aiDetailsOpen) return pendingAiSuggestion;
+  const name = document.getElementById('aiEditName');
+  const scope = document.getElementById('aiEditScope');
+  const feats = document.getElementById('aiEditFeatures');
+  const complexity = document.getElementById('aiEditComplexity');
+  const sprints = document.getElementById('aiEditSprints');
+  const days = document.getElementById('aiEditDays');
+  const start = document.getElementById('aiEditStart');
+  const end = document.getElementById('aiEditEnd');
+  if(name) pendingAiSuggestion.projectNameAr = name.value.trim();
+  if(scope) pendingAiSuggestion.scope = scope.value.trim();
+  if(feats) pendingAiSuggestion.features = feats.value.split(/\n+/).map(s => s.trim()).filter(Boolean);
+  if(complexity) pendingAiSuggestion.complexity = complexity.value;
+  if(sprints) pendingAiSuggestion.sprints = Math.max(1, Number(sprints.value) || pendingAiSuggestion.sprints);
+  if(days) pendingAiSuggestion.workingDays = Math.max(1, Number(days.value) || pendingAiSuggestion.workingDays);
+  if(start) pendingAiSuggestion.timeline.start = start.value;
+  if(end) pendingAiSuggestion.timeline.end = end.value;
+  pendingAiSuggestion.featureCount = pendingAiSuggestion.features.length;
+  return pendingAiSuggestion;
+}
+
+function collectOverwriteChanges(s){
+  const changes = [];
+  const currentName = productNameValue || document.getElementById('projectName').value.trim();
+  if(s.projectNameAr && currentName && currentName !== s.projectNameAr && currentName !== s.projectNameEn){
+    changes.push(`اسم المشروع: «${currentName}» → «${s.projectNameAr}»`);
+  }
+  const filledReqs = reqItems.filter(r => r.text.trim());
+  if(s.features && s.features.length && filledReqs.length){
+    changes.push(`نطاق العمل: استبدال ${filledReqs.length} بندًا بـ ${s.features.length} ميزة مقترحة`);
+  }
+  const start = document.getElementById('startDate').value;
+  const end = document.getElementById('endDate').value;
+  if(s.timeline.start && start && start !== s.timeline.start){
+    changes.push(`تاريخ البداية: ${fmtShortDate(start)} → ${fmtShortDate(s.timeline.start)}`);
+  }
+  if(s.timeline.end && end && !document.getElementById('tbdEnd').checked && end !== s.timeline.end){
+    changes.push(`تاريخ النهاية: ${fmtShortDate(end)} → ${fmtShortDate(s.timeline.end)}`);
+  }
+  const sprint = document.getElementById('sprintNum').value.trim();
+  const sprintLabel = s.sprints > 1 ? `Sprint 1–${s.sprints}` : 'Sprint 1';
+  if(sprint && sprint !== sprintLabel){
+    changes.push(`رقم السبرنت: «${sprint}» → «${sprintLabel}»`);
+  }
+  const depsNotes = document.getElementById('depsNotes').value.trim();
+  if(depsNotes && s.dependencies && s.dependencies.length){
+    changes.push('ستُعرض الاعتماديات المقترحة بجانب ملاحظاتك الحالية دون حذفها تلقائيًا.');
+  }
+  return changes;
+}
+
+function applySuggestionToForm(s){
+  if(!s.nameUnknown && (s.projectNameAr || s.projectNameEn)){
+    applyProjectName(s.projectNameAr, s.projectNameEn);
+  }
+  if(s.features && s.features.length){
+    reqItems = s.features.map(text => ({text, features:1, startDate:'', endDate:''}));
+    renderReqList();
+  }
+  if(s.timeline.start && !document.getElementById('startDate').value){
+    document.getElementById('startDate').value = s.timeline.start;
+  }else if(s.timeline.start && document.getElementById('startDate').value !== s.timeline.start){
+    document.getElementById('startDate').value = s.timeline.start;
+  }
+  if(s.timeline.end){
+    document.getElementById('tbdEnd').checked = false;
+    document.getElementById('endDate').disabled = false;
+    document.getElementById('endDate').value = s.timeline.end;
+  }
+  if(s.sprints && !document.getElementById('sprintNum').value.trim()){
+    document.getElementById('sprintNum').value = s.sprints > 1 ? `Sprint 1–${s.sprints}` : 'Sprint 1';
+  }else if(s.sprints){
+    document.getElementById('sprintNum').value = s.sprints > 1 ? `Sprint 1–${s.sprints}` : 'Sprint 1';
+  }
+  aiDeps = (s.dependencies || []).map(d => typeof d === 'string' ? newAiItem(d) : {...d});
+  aiRisks = (s.risks || []).map(d => typeof d === 'string' ? newAiItem(d) : {...d});
+  renderDepsRisks();
+  lastAppliedSuggestion = JSON.parse(JSON.stringify(s));
+  lastAppliedSuggestion.dependencies = aiDeps;
+  lastAppliedSuggestion.risks = aiRisks;
+  estimationAdopted = false;
+  pruneHolidaysOutsideRange();
+  const {start} = getProjectRange();
+  if(start) calendarView = {year:start.getFullYear(), month:start.getMonth()};
+  renderLeaveCalendar();
+  renderCostTable();
+  renderEstimateCard(s);
+  renderTeamCard(s);
+  refreshHealthCheck();
+  updateGenerateBtnState();
+  scheduleRegen(200);
+}
+
+function askConfirm({title, text, items, onConfirm, confirmLabel}){
+  document.getElementById('confirmTitle').textContent = title || 'تأكيد التطبيق';
+  document.getElementById('confirmText').textContent = text || '';
+  document.getElementById('confirmList').innerHTML = (items || []).map(i => `<li>${escapeHtml(i)}</li>`).join('');
+  document.getElementById('confirmApplyBtn').textContent = confirmLabel || 'تطبيق الاقتراحات';
+  pendingConfirmAction = onConfirm;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+
+function closeConfirm(){
+  pendingConfirmAction = null;
+  document.getElementById('confirmApplyBtn').textContent = 'تطبيق الاقتراحات';
+  document.getElementById('confirmOverlay').classList.remove('open');
+}
+
+function applyPendingSuggestion(force){
+  const s = readDetailsIntoSuggestion();
+  if(!s) return;
+  const changes = collectOverwriteChanges(s);
+  if(changes.length && !force){
+    askConfirm({
+      title: 'تطبيق الاقتراحات',
+      text: 'بعض الحقول فيها بيانات أدخلتها يدويًا. تطبيق الاقتراحات سيغيّر ما يلي:',
+      items: changes.concat(['لن يتم تعيين الموظفين تلقائيًا.']),
+      onConfirm: () => applySuggestionToForm(s)
+    });
+    return;
+  }
+  applySuggestionToForm(s);
+}
+
+function renderDetailsPanel(s){
+  const phasesText = (s.phases || []).map(p => `${p.nameAr} (${p.days} يوم عمل)`).join('\n');
+  const teamText = (s.team || []).map(r => `${r.count} ${r.role}`).join('\n');
+  return `
+    <div class="ai-details${aiDetailsOpen ? ' open' : ''}" id="aiDetailsPanel" ${aiDetailsOpen ? '' : 'hidden'}>
+      <label>اسم المشروع / الخدمة</label>
+      <input type="text" id="aiEditName" value="${escapeHtml(s.projectNameAr || '')}" placeholder="${unknownAr()}">
+      <label>نطاق العمل المقترح</label>
+      <textarea id="aiEditScope">${escapeHtml(s.scope || '')}</textarea>
+      <label>الميزات / المهام (سطر لكل بند)</label>
+      <textarea id="aiEditFeatures" style="min-height:90px;">${escapeHtml((s.features || []).join('\n'))}</textarea>
+      <div class="row2">
+        <div>
+          <label>التعقيد</label>
+          <select id="aiEditComplexity">
+            <option value="صغير" ${s.complexity==='صغير'?'selected':''}>صغير</option>
+            <option value="متوسط" ${s.complexity==='متوسط'?'selected':''}>متوسط</option>
+            <option value="كبير" ${s.complexity==='كبير'?'selected':''}>كبير</option>
+          </select>
+        </div>
+        <div>
+          <label>عدد الـ Sprints</label>
+          <input type="number" id="aiEditSprints" min="1" value="${s.sprints || 1}">
+        </div>
+      </div>
+      <div class="row2">
+        <div>
+          <label>أيام العمل المقترحة</label>
+          <input type="number" id="aiEditDays" min="1" value="${s.workingDays || ''}">
+        </div>
+        <div>
+          <label>الفريق المقترح</label>
+          <textarea id="aiEditTeam" style="min-height:70px;">${escapeHtml(teamText)}</textarea>
+        </div>
+      </div>
+      <label>المراحل المقترحة</label>
+      <textarea id="aiEditPhases">${escapeHtml(phasesText)}</textarea>
+      <div class="row2">
+        <div>
+          <label>بداية مقترحة</label>
+          <input type="date" id="aiEditStart" value="${escapeHtml(s.timeline.start || '')}">
+        </div>
+        <div>
+          <label>نهاية مقترحة</label>
+          <input type="date" id="aiEditEnd" value="${escapeHtml(s.timeline.end || '')}">
+        </div>
+      </div>
+      <p class="ai-why">عدّل أي بند أعلاه ثم اضغط «تطبيق الاقتراحات». لن يُكتب شيء في النموذج إلا بعد التأكيد.</p>
+    </div>
+  `;
+}
+
+function bindAnalyzeCardActions(){
+  const applyBtn = document.getElementById('aiApplyBtn');
+  const reviewBtn = document.getElementById('aiReviewBtn');
+  if(applyBtn) applyBtn.addEventListener('click', () => applyPendingSuggestion(false));
+  if(reviewBtn) reviewBtn.addEventListener('click', () => {
+    aiDetailsOpen = !aiDetailsOpen;
+    renderAnalyzeSuccess(pendingAiSuggestion);
+  });
+}
+
+function renderAnalyzeSuccess(s){
+  const depN = (s.dependencies || []).length;
+  const riskN = (s.risks || []).length;
+  const foundLine = `تم اكتشاف ${countAr(depN,'اعتمادية واحدة','اعتماديتين', 'اعتماديات')} و${countAr(riskN,'مخاطرة محتملة','مخاطرتين محتملتين','مخاطر محتملة')}.`;
+  showAiCard('aiAnalyzeCard', `
+    <div class="ai-card-title">تم تحليل المشروع ✨</div>
+    <div class="ai-stats">
+      <div class="ai-stat"><span class="ai-stat-num">${s.features.length}</span><span class="ai-stat-label">ميزة</span></div>
+      <div class="ai-stat"><span class="ai-stat-num">${s.phases.length}</span><span class="ai-stat-label">مراحل</span></div>
+      <div class="ai-stat"><span class="ai-stat-num">${s.workingDays}</span><span class="ai-stat-label">يوم عمل</span></div>
+      <div class="ai-stat"><span class="ai-stat-num">${s.needed}</span><span class="ai-stat-label">أعضاء مقترحين</span></div>
+    </div>
+    <p class="ai-note">${foundLine}</p>
+    <p class="ai-why">${escapeHtml(s.why.join(' '))}</p>
+    <div class="ai-btn-row">
+      <button type="button" class="ai-primary-btn" id="aiApplyBtn" style="width:auto;margin:0;padding:8px 14px;">تطبيق الاقتراحات</button>
+      <button type="button" class="ai-ghost-btn" id="aiReviewBtn">مراجعة التفاصيل</button>
+    </div>
+    ${renderDetailsPanel(s)}
+  `, 'success');
+  bindAnalyzeCardActions();
+}
+
+async function runProjectAnalysis(){
+  const btn = document.getElementById('aiAnalyzeBtn');
+  const text = document.getElementById('aiBrief').value.trim();
+  if(!text){
+    showAiCard('aiAnalyzeCard', `<div class="ai-card-title">تعذّر التحليل</div><p class="ai-note">اكتب وصف المشروع أو الصق المتطلبات أولًا.</p>`, 'error');
+    return;
+  }
+  btn.disabled = true;
+  renderSkeleton('aiAnalyzeCard', 'جاري تحليل المشروع...');
+  try{
+    await sleep(450);
+    const suggestion = analyzeProject(text, currentFormContext());
+    pendingAiSuggestion = suggestion;
+    aiDetailsOpen = false;
+    aiDeps = suggestion.dependencies.map(d => ({...d}));
+    aiRisks = suggestion.risks.map(d => ({...d}));
+    renderDepsRisks();
+    renderAnalyzeSuccess(suggestion);
+    renderEstimateCard(suggestion);
+    renderTeamCard(suggestion);
+    refreshHealthCheck();
+  }catch(err){
+    showAiCard('aiAnalyzeCard', `<div class="ai-card-title">تعذّر التحليل</div><p class="ai-note">لم نتمكن من استخراج ميزات واضحة من النص. أضف قائمة بالمتطلبات أو فصّل الوصف ثم أعد المحاولة.</p>`, 'error');
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+function renderEstimateCard(s){
+  const wrap = document.getElementById('aiEstimateField');
+  wrap.style.display = 'block';
+  document.getElementById('aiEstimateCard').innerHTML = `
+    <div class="ai-card-title">التقدير الذكي ✨</div>
+    <div class="ai-stats">
+      <div class="ai-stat"><span class="ai-stat-num">${escapeHtml(s.complexity)}</span><span class="ai-stat-label">حجم النطاق</span></div>
+      <div class="ai-stat"><span class="ai-stat-num">${s.features.length}</span><span class="ai-stat-label">عدد الميزات</span></div>
+      <div class="ai-stat"><span class="ai-stat-num">${s.workingDays}</span><span class="ai-stat-label">المدة المقترحة</span></div>
+      <div class="ai-stat"><span class="ai-stat-num">${s.sprints}</span><span class="ai-stat-label">عدد الـ Sprints</span></div>
+    </div>
+    <p class="ai-note">تم احتساب التقدير بناءً على حجم النطاق، عدد الميزات، الفريق المتاح، أيام العمل والإجازات.</p>
+    <div class="ai-btn-row">
+      <button type="button" class="ai-secondary-btn" id="aiAdoptEstimateBtn">اعتماد التقدير</button>
+      <button type="button" class="ai-ghost-btn" id="aiEditEstimateBtn">تعديل</button>
+    </div>
+  `;
+  document.getElementById('aiAdoptEstimateBtn').addEventListener('click', () => adoptEstimation(s));
+  document.getElementById('aiEditEstimateBtn').addEventListener('click', () => {
+    if(!pendingAiSuggestion) pendingAiSuggestion = s;
+    aiDetailsOpen = true;
+    renderAnalyzeSuccess(pendingAiSuggestion);
+    document.getElementById('aiCopilotSection').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+}
+
+function adoptEstimation(s){
+  const startEl = document.getElementById('startDate');
+  const endEl = document.getElementById('endDate');
+  const start = startEl.value || s.timeline.start || toIsoDate(new Date());
+  const end = addWorkingDaysInclusive(start, s.workingDays, selectedHolidays);
+  const changes = [];
+  if(startEl.value && startEl.value !== start) changes.push(`تاريخ البداية → ${fmtShortDate(start)}`);
+  if(endEl.value && !document.getElementById('tbdEnd').checked && endEl.value !== end){
+    changes.push(`تاريخ النهاية: ${fmtShortDate(endEl.value)} → ${fmtShortDate(end)}`);
+  }
+  const apply = () => {
+    startEl.value = start;
+    document.getElementById('tbdEnd').checked = false;
+    endEl.disabled = false;
+    endEl.value = end;
+    document.getElementById('sprintNum').value = s.sprints > 1 ? `Sprint 1–${s.sprints}` : 'Sprint 1';
+    estimationAdopted = true;
+    if(pendingAiSuggestion){
+      pendingAiSuggestion.timeline.start = start;
+      pendingAiSuggestion.timeline.end = end;
+    }
+    pruneHolidaysOutsideRange();
+    renderLeaveCalendar();
+    renderCostTable();
+    refreshHealthCheck();
+    scheduleRegen(200);
+  };
+  if(changes.length){
+    askConfirm({
+      title: 'اعتماد التقدير',
+      text: 'اعتماد التقدير سيحدّث التواريخ التالية:',
+      items: changes,
+      onConfirm: apply
+    });
+    return;
+  }
+  apply();
+}
+
+function extraDevSaving(days, currentCount){
+  const now = Math.max(1, currentCount || 1);
+  const next = now + 1;
+  const after = Math.round(days * (Math.sqrt(now) / Math.sqrt(next)));
+  return Math.max(1, days - after);
+}
+
+function renderTeamCard(s){
+  const card = document.getElementById('aiTeamCard');
+  const have = selectedAssignees.length;
+  const needed = s.needed || requiredHeadcount(s.team);
+  const items = (s.team || []).map(r => `<li>${r.count} ${escapeHtml(r.role)}</li>`).join('');
+  let extra = '';
+  let state = 'success';
+  if(have && have < needed){
+    state = 'warning';
+    const save = extraDevSaving(s.workingDays, have);
+    extra = `<p class="ai-note">⚠️ الفريق الحالي قد لا يكون كافيًا لتحقيق التاريخ المستهدف.</p>
+      <p class="ai-why">إضافة مطور Frontend إضافي قد تقلل مدة التنفيذ بحوالي ${save} أيام عمل. لن نعدّل تعيين الموظفين تلقائيًا.</p>`;
+  }else if(have && have >= needed){
+    extra = `<p class="ai-note">الفريق المحدد يغطي العدد المقترح (${needed}). راجع التخصصات يدويًا إن لزم.</p>`;
+  }else{
+    extra = `<p class="ai-note">اقتراح فقط — اختر الموظفين من القائمة أعلاه إذا رغبت.</p>`;
+  }
+  showAiCard('aiTeamCard', `
+    <div class="ai-card-title">الفريق المقترح ✨</div>
+    <ul class="ai-team-list">${items}</ul>
+    ${extra}
+  `, state);
+}
+
+function activeSuggestion(){
+  return pendingAiSuggestion || lastAppliedSuggestion;
+}
+
+function refreshTeamCard(){
+  const s = activeSuggestion();
+  if(s) renderTeamCard(s);
+}
+
+function mergedDependencies(){
+  const notes = document.getElementById('depsNotes').value.trim();
+  const fromAi = aiDeps.map(d => d.text.trim()).filter(Boolean);
+  const all = [];
+  if(notes) all.push(notes);
+  fromAi.forEach(d => { if(!all.includes(d)) all.push(d); });
+  return all;
+}
+
+function refreshHealthCheck(){
+  const scopeItems = reqItems.filter(item => item.text.trim());
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  const s = activeSuggestion();
+  const featureCount = scopeItems.reduce((sum, item) => {
+    const n = Number(item.features);
+    return sum + (Number.isFinite(n) && n > 0 ? n : 1);
+  }, 0) || scopeItems.length;
+  const signals = detectSignals([
+    document.getElementById('aiBrief').value,
+    scopeItems.map(i => i.text).join('\n'),
+    document.getElementById('depsNotes').value
+  ].join('\n'));
+  const est = s ? {
+    complexity: s.complexity,
+    workingDays: s.workingDays,
+    sprints: s.sprints,
+    needed: s.needed,
+    features: s.features || scopeItems.map(i => i.text)
+  } : (() => {
+    if(!scopeItems.length) return null;
+    const computed = computeEstimation(featureCount || 1, signals, selectedAssignees.length, selectedHolidays.length * 0.15);
+    const team = suggestTeam(signals, computed.complexity, featureCount || 1, document.getElementById('teamTag').value.trim());
+    return {...computed, needed: requiredHeadcount(team), features: scopeItems.map(i => i.text)};
+  })();
+
+  const issues = [];
+  const recs = [];
+  let level = 'ready';
+
+  if(!scopeItems.length){
+    issues.push('نطاق العمل غير مكتمل.');
+    recs.push('أضف بنود المتطلبات أو حلّل الوصف من مساعد خُطّة.');
+    level = 'review';
+  }
+  if(!startDate){
+    issues.push('تاريخ البداية غير محدد.');
+    recs.push('حدد تاريخ بداية واقعي قبل توليد الخطة.');
+    level = 'review';
+  }
+  if(!document.getElementById('projectName').value.trim() && !productNameValue){
+    issues.push('اسم المشروع غير محدد.');
+    recs.push('اختر منتجًا من الدليل أو اكتب الاسم يدويًا.');
+    if(level === 'ready') level = 'review';
+  }
+  if(!document.getElementById('teamTag').value.trim()){
+    issues.push('فريق التنفيذ غير محدد.');
+    recs.push('اختر فريق تصميم تجربة المستخدم أو تطوير الويب أو الموبايل.');
+    if(level === 'ready') level = 'review';
+  }
+  if(tbdEnd){
+    issues.push('تاريخ النهاية غير محدد (TBD).');
+    recs.push(est ? `يمكن اعتماد التقدير: ${est.workingDays} يوم عمل.` : 'حدد تاريخ نهاية أو اعتمد التقدير الذكي.');
+    if(level === 'ready') level = 'review';
+  }
+  let targetDays = null;
+  if(startDate && endDate && !tbdEnd){
+    targetDays = workingDaysBetween(startDate, endDate, selectedHolidays);
+    if(est && targetDays !== null && targetDays < est.workingDays){
+      const gap = est.workingDays - targetDays;
+      const suggestedEnd = addWorkingDaysInclusive(startDate, est.workingDays, selectedHolidays);
+      issues.push(`التاريخ المستهدف هو ${fmtShortDate(endDate)}، بينما التقدير الحالي يشير إلى ${fmtShortDate(suggestedEnd)}.`);
+      recs.push(gap > 7
+        ? `قلّص النطاق أو أضف سعة؛ العجز حوالي ${gap} أيام عمل.`
+        : `مدّد تاريخ النهاية إلى ${fmtShortDate(suggestedEnd)} أو أزل ${gap} أيام من النطاق.`);
+      level = gap > 7 ? 'risk' : 'review';
+    }
+  }
+  if(est && selectedAssignees.length && selectedAssignees.length < est.needed){
+    issues.push('سعة الفريق أقل من التكوين المقترح للنطاق الحالي.');
+    recs.push(`إضافة مطور Frontend إضافي قد تقلل مدة التنفيذ بحوالي ${extraDevSaving(est.workingDays, selectedAssignees.length)} أيام عمل.`);
+    if(level === 'ready') level = 'review';
+  }
+  if(!selectedAssignees.length){
+    issues.push('لم يُكلَّف أي موظف بعد.');
+    recs.push('اختيار الفريق لا يتم تلقائيًا — حدده يدويًا بعد مراجعة الاقتراح.');
+    if(level === 'ready') level = 'review';
+  }
+  if(selectedHolidays.length){
+    issues.push(`${selectedHolidays.length} أيام إجازة ضمن الفترة تؤثر على السعة.`);
+    recs.push('راجع تعارض الإجازات مع المراحل الحرجة قبل اعتماد الموعد.');
+    if(level === 'ready') level = 'review';
+  }
+  if((est && (est.features || []).length >= 12) || featureCount >= 12){
+    issues.push('النطاق كبير نسبيًا لتنفيذ متزامن دون تقسيم مراحل.');
+    recs.push('ثبّت المراحل الثلاث المقترحة وأبقِ الإطلاق على أهم المسارات أولًا.');
+    if(level === 'ready') level = 'review';
+  }
+  if(signals.design && !aiDeps.some(d => /تصميم/.test(d.text))){
+    issues.push('يبدو أن التصميم اعتمادية، لكنها غير مثبتة في القائمة.');
+    recs.push('أضف «اعتماد التصميم» إلى الاعتماديات قبل التنفيذ.');
+    if(level === 'ready') level = 'review';
+  }
+  if(signals.integration && !aiDeps.some(d => /API|أبي/i.test(d.text))){
+    issues.push('التكامل مع أنظمة أخرى مذكور دون اعتمادية API واضحة.');
+    recs.push('وثّق جاهزية الـ APIs أو اعتبرها غير محدد.');
+    if(level === 'ready') level = 'review';
+  }
+  if(!document.getElementById('ticketId').value.trim()){
+    recs.push('رقم التذكرة سيظهر كـ TBD إلى أن يُدخل.');
+  }
+
+  if(!issues.length){
+    issues.push('لا توجد تعارضات ظاهرة بين النطاق والتاريخ والفريق المدخل.');
+    recs.push('راجع الاعتماديات والمخاطر يدويًا ثم ولّد الخطة.');
+  }
+
+  lastHealth = {
+    level,
+    labelAr: level === 'ready' ? 'جاهزة' : level === 'risk' ? 'عالية المخاطر' : 'تحتاج مراجعة',
+    labelEn: level === 'ready' ? 'Ready' : level === 'risk' ? 'High risk' : 'Needs review',
+    issues,
+    recs
+  };
+  lastAiRecommendations = recs.slice();
+
+  const icon = level === 'ready' ? '🟢' : level === 'risk' ? '🔴' : '🟡';
+  const card = document.getElementById('aiHealthCard');
+  card.className = 'ai-health ' + level;
+  card.innerHTML = `
+    <div class="ai-health-dot">${icon}</div>
+    <div class="ai-health-body">
+      <div class="ai-health-title">${icon} ${lastHealth.labelAr}</div>
+      <p>${escapeHtml(issues[0])}</p>
+      <ul>${recs.slice(0, 4).map(r => `<li>${escapeHtml(r)}</li>`).join('')}</ul>
+    </div>
+  `;
+  return lastHealth;
+}
+
+function applyReqAnalysis(force){
+  if(!pendingReqAnalysis) return;
+  const original = pendingReqAnalysis.original || [];
+  const apply = () => {
+    reqItems = pendingReqAnalysis.unique.map(text => ({text, features:1, startDate:'', endDate:''}));
+    if(!reqItems.length) reqItems = [{text:'', features:1, startDate:'', endDate:''}];
+    renderReqList();
+    refreshHealthCheck();
+    updateGenerateBtnState();
+    scheduleRegen(200);
+  };
+  if(original.length && !force){
+    askConfirm({
+      title: 'اعتماد الميزات المقترحة',
+      text: 'سيتم استبدال بنود النطاق الحالية بالميزات المجمّعة. النص الأصلي لن يُحذف من وصف المساعد إن كان موجودًا.',
+      items: [`الحالي: ${original.length} بند`, `المقترح: ${pendingReqAnalysis.unique.length} ميزة`],
+      onConfirm: apply
+    });
+    return;
+  }
+  apply();
+}
+
+async function runRequirementsAnalysis(){
+  const btn = document.getElementById('aiReqAnalyzeBtn');
+  const existing = reqItems.map(i => i.text.trim()).filter(Boolean);
+  const brief = document.getElementById('aiBrief').value.trim();
+  const source = [brief, ...existing].filter(Boolean).join('\n');
+  if(!source){
+    showAiCard('aiReqCard', `<div class="ai-card-title">تعذّر تحليل المتطلبات</div><p class="ai-note">أضف بنودًا أو اكتب وصف المشروع في المساعد أولًا. لن نكتب فوق الحقول الفارغة بتخمين.</p>`, 'error');
+    return;
+  }
+  btn.disabled = true;
+  renderSkeleton('aiReqCard', 'جاري تحليل المتطلبات...');
+  try{
+    await sleep(400);
+    const features = extractFeaturesFromText(source);
+    const unique = features;
+    const grouped = groupFeatures(unique);
+    const signals = detectSignals(source);
+    const unclear = findUnclear(existing.length ? existing : unique);
+    const missing = findMissing(unique, signals);
+    const questions = buildClarifyingQuestions(unclear, missing, signals);
+    const beforeCount = existing.length || extractFeaturesFromText(brief).length;
+    const removed = Math.max(0, beforeCount - unique.length);
+    pendingReqAnalysis = {unique, grouped, unclear, missing, questions, original: existing};
+    const groupsHtml = Object.keys(grouped).map(k => `<li><strong>${escapeHtml(k)}:</strong> ${escapeHtml(grouped[k].join('، '))}</li>`).join('');
+    showAiCard('aiReqCard', `
+      <div class="ai-card-title">نتائج تحليل المتطلبات ✨</div>
+      <p class="ai-note">تم تحويل النص إلى ${unique.length} ميزة واضحة${removed ? ` وإزالة تكرار واضح (${removed}).` : '.'}</p>
+      <ul class="ai-team-list">${groupsHtml}</ul>
+      ${unclear.length ? `<p class="ai-note">متطلبات غير واضحة: ${escapeHtml(unclear.join('، '))}.</p>` : ''}
+      ${missing.length ? `<p class="ai-note">متطلبات ناقصة محتملة: ${escapeHtml(missing.join('، '))}.</p>` : ''}
+      ${questions.length ? `<p class="ai-why"><strong>أسئلة للتوضيح قبل التطوير:</strong><br>${questions.map(q => escapeHtml(q)).join('<br>')}</p>` : ''}
+      <div class="ai-btn-row">
+        <button type="button" class="ai-secondary-btn" id="aiApplyReqBtn">اعتماد الميزات المقترحة</button>
+      </div>
+    `, unclear.length || missing.length ? 'warning' : 'success');
+    document.getElementById('aiApplyReqBtn').addEventListener('click', () => applyReqAnalysis(false));
+  }catch(err){
+    showAiCard('aiReqCard', `<div class="ai-card-title">تعذّر تحليل المتطلبات</div><p class="ai-note">حدث خطأ أثناء التحليل. أعد المحاولة بعد تبسيط النص.</p>`, 'error');
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+function capturePlanSnapshot(){
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+  const tbdEnd = document.getElementById('tbdEnd').checked;
+  const scopeItems = reqItems.filter(i => i.text.trim());
+  const workingDays = (!tbdEnd && startDate && endDate) ? workingDaysBetween(startDate, endDate, selectedHolidays) : (activeSuggestion()?.workingDays || null);
+  const s = activeSuggestion();
+  return {
+    workingDays,
+    sprints: s ? s.sprints : (document.getElementById('sprintNum').value || tbdEn()),
+    endDate: tbdEnd ? '' : endDate,
+    startDate,
+    featureCount: scopeItems.length,
+    features: scopeItems.map(i => i.text),
+    teamCount: selectedAssignees.length,
+    risks: aiRisks.map(r => r.text).filter(Boolean),
+    utilization: selectedAssignees.length ? Math.min(100, Math.round(((s ? s.needed : 2) / selectedAssignees.length) * 100)) : 0
+  };
+}
+
+function parseArabicDate(text){
+  const months = {
+    'يناير':1,'فبراير':2,'مارس':3,'ابريل':4,'أبريل':4,'مايو':5,'يونيو':6,'يوليو':7,
+    'اغسطس':8,'أغسطس':8,'سبتمبر':9,'اكتوبر':10,'أكتوبر':10,'نوفمبر':11,'ديسمبر':12
+  };
+  const m = String(text).match(/(\d{1,2})\s*(يناير|فبراير|مارس|ابريل|أبريل|مايو|يونيو|يوليو|اغسطس|أغسطس|سبتمبر|اكتوبر|أكتوبر|نوفمبر|ديسمبر)/);
+  if(!m) return '';
+  const year = new Date().getFullYear();
+  const mm = String(months[m[2]]).padStart(2,'0');
+  const dd = String(m[1]).padStart(2,'0');
+  return `${year}-${mm}-${dd}`;
+}
+
+function parseWhatIf(question, current){
+  const t = String(question || '').trim();
+  if(!t) throw new Error('empty');
+  const num = Number((t.match(/\d+/) || [])[0]);
+  const scenario = {
+    label: t,
+    workingDays: current.workingDays || 0,
+    sprints: typeof current.sprints === 'number' ? current.sprints : (activeSuggestion()?.sprints || 1),
+    endDate: current.endDate,
+    startDate: current.startDate,
+    featureCount: current.featureCount,
+    features: current.features.slice(),
+    teamCount: current.teamCount,
+    risks: current.risks.slice(),
+    utilization: current.utilization,
+    changes: [],
+    applyKind: 'none'
+  };
+
+  if(/مطور|عضو.*آخر|اضفت|أضفت|زيادة الفريق|مطورًا|مطورًا/.test(t)){
+    const extra = num || 1;
+    const days = current.workingDays || activeSuggestion()?.workingDays || 10;
+    const nextTeam = Math.max(1, (current.teamCount || 1) + extra);
+    const nextDays = Math.max(5, Math.round(days * (Math.sqrt(Math.max(1, current.teamCount || 1)) / Math.sqrt(nextTeam))));
+    scenario.workingDays = nextDays;
+    scenario.sprints = Math.max(1, Math.ceil(nextDays / 10));
+    scenario.teamCount = nextTeam;
+    if(current.startDate) scenario.endDate = addWorkingDaysInclusive(current.startDate, nextDays, selectedHolidays);
+    scenario.changes.push(`مدة التنفيذ: ${days} → ${nextDays} يوم عمل`);
+    scenario.changes.push('تعيين الموظفين لن يتغير إلا إذا طبّقت السيناريو على التواريخ فقط.');
+    scenario.applyKind = 'timeline';
+  }else if(/قبل|نطلق|موعد|تاريخ/.test(t) && (parseArabicDate(t) || /\d{4}-\d{2}-\d{2}/.test(t))){
+    const deadline = parseArabicDate(t) || (t.match(/\d{4}-\d{2}-\d{2}/) || [])[0];
+    scenario.endDate = deadline;
+    scenario.applyKind = 'deadline';
+    if(current.startDate && deadline){
+      const fit = workingDaysBetween(current.startDate, deadline, selectedHolidays);
+      scenario.workingDays = fit;
+      scenario.sprints = Math.max(1, Math.ceil((fit || 1) / 10));
+      const estDays = current.workingDays || activeSuggestion()?.workingDays;
+      if(estDays && fit !== null && fit < estDays){
+        scenario.risks = scenario.risks.concat(['ضغط الجدول لبلوغ التاريخ المستهدف']);
+        scenario.changes.push(`التاريخ المستهدف ${fmtShortDate(deadline)} أقصر من التقدير (${estDays} يوم عمل).`);
+        scenario.changes.push('قد تحتاج تقليص النطاق أو زيادة السعة.');
+      }else{
+        scenario.changes.push(`اعتماد تاريخ الإطلاق ${fmtShortDate(deadline)}.`);
+      }
+    }
+  }else if(/اجازه|إجازة|اجازة/.test(t)){
+    const vacDays = num || 5;
+    const days = (current.workingDays || activeSuggestion()?.workingDays || 10) + vacDays;
+    scenario.workingDays = days;
+    scenario.sprints = Math.max(1, Math.ceil(days / 10));
+    if(current.startDate) scenario.endDate = addWorkingDaysInclusive(current.startDate, days, selectedHolidays);
+    scenario.risks = scenario.risks.concat(['انخفاض السعة بسبب إجازة أحد الأعضاء']);
+    scenario.changes.push(`إضافة حوالي ${vacDays} أيام عمل لتعويض الإجازة.`);
+    scenario.applyKind = 'timeline';
+  }else if(/قلل|أهم|نطاق|ميزات/.test(t)){
+    const keep = num || Math.max(3, Math.ceil((current.featureCount || 8) * 0.6));
+    const nextFeatures = current.features.slice(0, keep);
+    const signals = detectSignals(nextFeatures.join('\n'));
+    const est = computeEstimation(nextFeatures.length || 1, signals, current.teamCount, selectedHolidays.length * 0.15);
+    scenario.features = nextFeatures;
+    scenario.featureCount = nextFeatures.length;
+    scenario.workingDays = est.workingDays;
+    scenario.sprints = est.sprints;
+    if(current.startDate) scenario.endDate = addWorkingDaysInclusive(current.startDate, est.workingDays, selectedHolidays);
+    scenario.changes.push(`تقليص النطاق إلى أهم ${nextFeatures.length} ميزات.`);
+    scenario.changes.push(`المدة المقترحة بعد التقليص: ${est.workingDays} يوم عمل.`);
+    scenario.applyKind = 'scope';
+  }else{
+    throw new Error('unparsed');
+  }
+  if(scenario.teamCount){
+    const needed = activeSuggestion()?.needed || 2;
+    scenario.utilization = Math.min(100, Math.round((needed / Math.max(1, scenario.teamCount)) * 100));
+  }
+  return scenario;
+}
+
+function renderWhatIfCard(current, proposed){
+  showAiCard('whatIfCard', `
+    <div class="ai-card-title">مقارنة السيناريو ✨</div>
+    <div class="ai-compare">
+      <div class="ai-compare-col">
+        <h3>الخطة الحالية</h3>
+        <p>المدة: ${current.workingDays ?? unknownAr()} يوم عمل</p>
+        <p>السبرنتات: ${escapeHtml(String(current.sprints ?? unknownAr()))}</p>
+        <p>الميزات: ${current.featureCount}</p>
+        <p>النهاية: ${current.endDate ? fmtShortDate(current.endDate) : unknownAr()}</p>
+        <p>استغلال السعة: ${current.teamCount ? (current.utilization || 0) + '%' : unknownAr()}</p>
+        <p>المخاطر: ${current.risks.length}</p>
+      </div>
+      <div class="ai-compare-col proposed">
+        <h3>السيناريو المقترح</h3>
+        <p>المدة: ${proposed.workingDays ?? unknownAr()} يوم عمل</p>
+        <p>السبرنتات: ${proposed.sprints}</p>
+        <p>الميزات: ${proposed.featureCount}</p>
+        <p>النهاية: ${proposed.endDate ? fmtShortDate(proposed.endDate) : unknownAr()}</p>
+        <p>استغلال السعة: ${proposed.utilization || 0}%</p>
+        <p>المخاطر: ${proposed.risks.length}</p>
+      </div>
+    </div>
+    <div class="ai-delta">${proposed.changes.map(c => escapeHtml(c)).join('<br>')}</div>
+    <p class="ai-why">الخطة الأصلية لن تتغير حتى تضغط «تطبيق السيناريو».</p>
+    <div class="ai-btn-row">
+      <button type="button" class="ai-secondary-btn" id="aiApplyWhatIfBtn">تطبيق السيناريو</button>
+    </div>
+  `, 'success');
+  document.getElementById('aiApplyWhatIfBtn').addEventListener('click', applyWhatIf);
+}
+
+function applyWhatIf(){
+  if(!pendingWhatIf || !lastGeneratedSnapshot) return;
+  const p = pendingWhatIf;
+  const apply = () => {
+    if(p.startDate) document.getElementById('startDate').value = p.startDate;
+    if(p.endDate){
+      document.getElementById('tbdEnd').checked = false;
+      document.getElementById('endDate').disabled = false;
+      document.getElementById('endDate').value = p.endDate;
+    }
+    if(p.sprints) document.getElementById('sprintNum').value = p.sprints > 1 ? `Sprint 1–${p.sprints}` : 'Sprint 1';
+    if(p.applyKind === 'scope' && p.features && p.features.length){
+      reqItems = p.features.map(text => ({text, features:1, startDate:'', endDate:''}));
+      renderReqList();
+    }
+    p.risks.forEach(text => {
+      if(text && !aiRisks.some(r => r.text === text)) aiRisks.push(newAiItem(text));
+    });
+    renderDepsRisks();
+    if(pendingAiSuggestion){
+      pendingAiSuggestion.workingDays = p.workingDays;
+      pendingAiSuggestion.sprints = p.sprints;
+      pendingAiSuggestion.timeline.end = p.endDate;
+      if(p.applyKind === 'scope') pendingAiSuggestion.features = p.features;
+    }
+    pruneHolidaysOutsideRange();
+    renderLeaveCalendar();
+    renderCostTable();
+    refreshHealthCheck();
+    generatePlan();
+  };
+  const items = [];
+  if(p.endDate && lastGeneratedSnapshot.endDate && p.endDate !== lastGeneratedSnapshot.endDate){
+    items.push(`تاريخ النهاية: ${fmtShortDate(lastGeneratedSnapshot.endDate)} → ${fmtShortDate(p.endDate)}`);
+  }
+  if(p.applyKind === 'scope'){
+    items.push(`النطاق: ${lastGeneratedSnapshot.featureCount} → ${p.featureCount} ميزات`);
+  }
+  if(items.length){
+    askConfirm({
+      title: 'تطبيق السيناريو',
+      text: 'سيتم تحديث الخطة الحالية بهذه التغييرات:',
+      items,
+      onConfirm: apply
+    });
+    return;
+  }
+  apply();
+}
+
+async function runWhatIf(){
+  if(!hasGeneratedOnce()){
+    showAiCard('whatIfCard', `<div class="ai-card-title">غير متاح بعد</div><p class="ai-note">ولّد الخطة أولًا ثم جرّب سيناريو مختلف.</p>`, 'warning');
+    return;
+  }
+  const q = document.getElementById('whatIfInput').value.trim();
+  if(!q){
+    showAiCard('whatIfCard', `<div class="ai-card-title">تعذّر حساب السيناريو</div><p class="ai-note">اكتب سؤالًا مثل: «ماذا لو أضفت مطورًا آخر؟»</p>`, 'error');
+    return;
+  }
+  renderSkeleton('whatIfCard', 'جاري حساب السيناريو...');
+  try{
+    await sleep(350);
+    const current = lastGeneratedSnapshot || capturePlanSnapshot();
+    const proposed = parseWhatIf(q, current);
+    pendingWhatIf = proposed;
+    renderWhatIfCard(current, proposed);
+  }catch(err){
+    showAiCard('whatIfCard', `<div class="ai-card-title">لم يُفهم السيناريو</div><p class="ai-note">جرّب صياغة أوضح: إضافة مطور، إطلاق قبل تاريخ، إجازة أسبوع، أو تقليص النطاق إلى عدد ميزات.</p>`, 'error');
+  }
+}
+
+function buildExecutiveSummary(data){
+  const bits = [];
+  bits.push(data.projectName ? `This plan covers ${data.projectName}.` : 'Project name: Needs confirmation.');
+  bits.push(`Scope includes ${data.featureCount} feature${data.featureCount===1?'':'s'} across ${data.phases.length} phase${data.phases.length===1?'':'s'}.`);
+  if(data.tbdEnd || data.totalWorkingDays === null){
+    bits.push('Duration is TBD pending a confirmed end date.');
+  }else{
+    bits.push(`Estimated duration is ${data.totalWorkingDays} working days.`);
+  }
+  bits.push(data.assigned ? `Assigned team: ${data.assigned}.` : 'Assigned team: Needs confirmation.');
+  if(data.health) bits.push(`Readiness: ${data.health.labelEn}.`);
+  return bits.join(' ');
+}
 
 function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCount, includeFeatures, startDate, endDate, tbdEnd, assigned, totalWorkingDays, feedbackDays, costAmount, dependencies, lang}){
   const L = lang === 'ar' ? {
@@ -1986,11 +3823,60 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
        </tr>`
     : '';
 
-  const depsHtml = (dependencies && dependencies.length)
-    ? `<div class="doc-section-title" style="font-size:18px; margin-top:18px;">${L.deps}</div>
-       <div class="doc-section-underline" style="width:50px;"></div>
-       <ul class="doc-deps">${dependencies.map(d => `<li>${escapeHtml(d)}</li>`).join('')}</ul>`
-    : '';
+  const extras = arguments[0] || {};
+  const phases = extras.phases || [];
+  const sprintPlan = extras.sprintPlan || [];
+  const risks = extras.risks || [];
+  const assumptions = extras.assumptions || [];
+  const recommendations = extras.recommendations || [];
+  const health = extras.health || null;
+  const milestones = extras.milestones || [];
+  const vacations = extras.vacations || [];
+  const teamRoles = extras.teamRoles || [];
+  const capacity = extras.capacity || null;
+  const scopeText = extras.scopeText || '';
+  const summary = extras.executiveSummary || '';
+
+  const section = (title, body) => `
+    <div class="doc-section-title">${title}</div>
+    <div class="doc-section-underline"></div>
+    ${body}`;
+
+  const listOrUnknown = (arr) => arr && arr.length
+    ? `<ul class="doc-list">${arr.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>`
+    : `<p class="doc-note">${unknownEn()}</p>`;
+
+  const phasesHtml = phases.length
+    ? `<table class="doc-table">${phases.map(p => `<tr><td class="task-text"><strong>${escapeHtml(p.nameEn)}</strong> — ${p.days} working days</td></tr>`).join('')}</table>`
+    : `<p class="doc-note">${unknownEn()}</p>`;
+
+  const sprintHtml = sprintPlan.length
+    ? `<table class="doc-table">
+        <tr><th>Sprint</th><th>Window</th><th>Focus</th></tr>
+        ${sprintPlan.map(sp => `<tr>
+          <td class="center">${sp.sprint}</td>
+          <td class="center">${escapeHtml(typeof sp.start === 'string' && sp.start.includes('-') ? fmtTaskDate(sp.start, sp.end) : String(sp.start))} </td>
+          <td class="task-text">${escapeHtml((sp.items || []).join('; '))}</td>
+        </tr>`).join('')}
+      </table>`
+    : `<table class="doc-table">
+        <tr><th>${L.sprint}</th><th>${L.start}</th><th>${L.end}</th><th>${L.assigned}</th></tr>
+        <tr>
+          <td class="center">${escapeHtml(sprintNum || tbdEn())}</td>
+          <td class="center">${fmtDate(startDate)}</td>
+          <td class="center">${tbdEnd ? L.tbd : fmtDate(endDate)}</td>
+          <td class="center">${escapeHtml(assigned || tbdEn())}</td>
+        </tr>
+      </table>`;
+
+  const healthHtml = health
+    ? `<span class="doc-badge ${health.level}">${escapeHtml(health.labelEn)}</span>
+       ${listOrUnknown(health.issues.concat(health.recs || []))}`
+    : `<p class="doc-note">${unknownEn()}</p>`;
+
+  const costSection = (costAmount !== '' && costAmount !== null && costAmount !== undefined)
+    ? section('14. Cost Estimate', `<table class="doc-kv"><tr><th>Total</th><td>${Number(costAmount).toLocaleString('en-US')} SAR</td></tr></table>`)
+    : section('14. Cost Estimate', `<p class="doc-note">Not enabled / ${tbdEn()}</p>`);
 
   return `
     <div class="doc-topline"></div>
@@ -2001,44 +3887,62 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
         ${elmLogoHtml}
       </div>
       <div class="doc-titlebar">
-        <h1 class="doc-title"><span class="ticket">${escapeHtml(ticketId || 'TBD')}</span> <span class="project-name">${escapeHtml(projectName || '')}</span></h1>
+        <h1 class="doc-title"><span class="ticket">${escapeHtml(ticketId || tbdEn())}</span> <span class="project-name">${escapeHtml(projectName || '')}</span></h1>
         <div class="doc-subtitle">${escapeHtml(planSubtitle)}</div>
       </div>
     </div>
     <div class="doc-body">
-      <div class="doc-section-title">${L.working}</div>
-      <div class="doc-section-underline"></div>
-      <table class="doc-table">
-        <tr>
-          <th>${L.task}</th>
-          <th>${L.date}</th>
-          ${includeFeatures ? `<th style="width:18%">${L.features}</th>` : ''}
-        </tr>
-        ${taskRows}
-      </table>
-
-      <div class="doc-section-title">${L.estimations}</div>
-      <div class="doc-section-underline"></div>
-      <table class="doc-table">
-        <tr><th>${L.sprint}</th><th>${L.start}</th><th>${L.end}</th><th>${L.assigned}</th></tr>
-        <tr>
-          <td class="center">${escapeHtml(sprintNum || 'TBD')}</td>
-          <td class="center">${fmtDate(startDate)}</td>
-          <td class="center">${tbdEnd ? L.tbd : fmtDate(endDate)}</td>
-          <td class="center">${escapeHtml(assigned || 'TBD')}</td>
-        </tr>
-        <tr class="total-row">
-          <td class="label">${L.totalDays}</td>
-          <td colspan="2">${totalDaysDisplay}</td>
-          <td>${L.excl}</td>
-        </tr>
-        <tr class="feedback-row">
-          <td class="label">${L.feedback}</td>
-          <td colspan="3">${feedbackDisplay}</td>
-        </tr>
-        ${costRowHtml}
-      </table>
-      ${depsHtml}
+      ${section('1. Executive Summary', `<p class="doc-note" style="color:#1a1d29;font-size:13px;line-height:1.65;">${escapeHtml(summary)}</p>`)}
+      ${section('2. Project Information', `
+        <table class="doc-kv">
+          <tr><th>Ticket</th><td>${escapeHtml(ticketId || tbdEn())}</td></tr>
+          <tr><th>Project / Service</th><td>${escapeHtml(projectName || unknownEn())}</td></tr>
+          <tr><th>Team</th><td>${escapeHtml(teamTag ? (TEAM_NAME_EN[teamTag] || teamTag) : unknownEn())}</td></tr>
+          <tr><th>Sprint</th><td>${escapeHtml(sprintNum || tbdEn())}</td></tr>
+        </table>`)}
+      ${section('3. Scope', `<p class="doc-note" style="color:#1a1d29;font-size:13px;line-height:1.65;">${escapeHtml(scopeText || unknownEn())}</p>`)}
+      ${section('4. Features', `
+        <table class="doc-table">
+          <tr>
+            <th>${L.task}</th>
+            <th>${L.date}</th>
+            ${includeFeatures ? `<th style="width:18%">${L.features}</th>` : ''}
+          </tr>
+          ${taskRows}
+        </table>`)}
+      ${section('5. Project Phases', phasesHtml)}
+      ${section('6. Sprint Plan', sprintHtml)}
+      ${section('7. Timeline', `
+        <table class="doc-table">
+          <tr><th>${L.start}</th><th>${L.end}</th><th>${L.totalDays}</th><th>${L.feedback}</th></tr>
+          <tr>
+            <td class="center">${fmtDate(startDate)}</td>
+            <td class="center">${tbdEnd ? L.tbd : fmtDate(endDate)}</td>
+            <td class="center">${totalDaysDisplay}</td>
+            <td class="center">${feedbackDisplay}</td>
+          </tr>
+        </table>
+        <p class="doc-note">${L.excl}</p>`)}
+      ${section('8. Team & Responsibilities', assigned || teamRoles.length
+        ? `<p class="doc-note" style="color:#1a1d29;">${escapeHtml(assigned || unknownEn())}</p>${listOrUnknown(teamRoles)}`
+        : `<p class="doc-note">${unknownEn()}</p>`)}
+      ${section('9. Resource Capacity', capacity
+        ? `<table class="doc-kv">
+            <tr><th>Assigned</th><td>${capacity.assigned}</td></tr>
+            <tr><th>Suggested headcount</th><td>${capacity.needed}</td></tr>
+            <tr><th>Utilization note</th><td>${escapeHtml(capacity.note)}</td></tr>
+          </table>`
+        : `<p class="doc-note">${unknownEn()}</p>`)}
+      ${section('10. Employee Vacations', vacations.length
+        ? listOrUnknown(vacations.map(fmtShortDate))
+        : `<p class="doc-note">${tbdEn()}</p>`)}
+      ${section('11. Dependencies', listOrUnknown(dependencies))}
+      ${section('12. Risks', listOrUnknown(risks))}
+      ${section('13. Assumptions', listOrUnknown(assumptions))}
+      ${costSection}
+      ${section('15. AI Recommendations', listOrUnknown(recommendations))}
+      ${section('16. Project Readiness / Health', healthHtml)}
+      ${section('17. Milestones', listOrUnknown(milestones))}
     </div>
   `;
 }
@@ -2080,29 +3984,97 @@ function generatePlan(){
   statusEl.className = '';
   statusEl.textContent = 'جاري تجهيز المهام...';
 
+  const health = refreshHealthCheck();
   const aiResult = buildLocalPlan(scopeItems, depsNotes, lang);
+  const suggestion = activeSuggestion();
+  const signals = detectSignals([
+    document.getElementById('aiBrief').value,
+    scopeItems.map(i => i.text).join('\n'),
+    depsNotes
+  ].join('\n'));
 
   let totalWorkingDays = null;
   if(!tbdEnd && endDate){
     totalWorkingDays = workingDaysBetween(startDate, endDate, holidaysArr);
   }
 
+  const featureCount = featuresManualVal !== '' ? Number(featuresManualVal) : (aiResult.featureCount ?? 0);
+  const workingForPlan = totalWorkingDays || (suggestion && suggestion.workingDays) || 10;
+  const sprints = suggestion ? suggestion.sprints : Math.max(1, Math.ceil(workingForPlan / 10));
+  const phases = suggestion ? suggestion.phases : suggestPhases(scopeItems.map(i => i.text), workingForPlan, signals);
+  const sprintPlan = suggestion ? suggestion.sprintPlan : buildSprintPlan(scopeItems.map(i => i.text), sprints, startDate, workingForPlan, holidaysArr);
+  const deps = mergedDependencies();
+  const risks = aiRisks.map(r => r.text.trim()).filter(Boolean);
+  const team = suggestion ? suggestion.team : suggestTeam(signals, suggestion ? suggestion.complexity : (featureCount >= 10 ? 'كبير' : featureCount >= 5 ? 'متوسط' : 'صغير'), featureCount, teamTag);
+  const needed = requiredHeadcount(team);
+  const teamRoles = team.map(r => `${r.count} × ${r.role}${r.support ? ' (support)' : ''}`);
+  const assumptions = [
+    'Working week is Sunday–Thursday.',
+    selectedHolidays.length ? `${selectedHolidays.length} vacation day(s) were excluded from working-day counts.` : 'No employee vacations were entered; vacation impact is TBD.',
+    assigned ? 'Named assignees are as selected in the form.' : 'Named assignees: Needs confirmation.',
+    feedbackDaysVal === '' ? 'Feedback time: Needs confirmation.' : `Feedback buffer is ${feedbackDaysVal} day(s).`,
+    'AI did not invent requirements that were not present in the form or analysis inputs.'
+  ];
+  const recommendedEnd = startDate && (suggestion || totalWorkingDays)
+    ? addWorkingDaysInclusive(startDate, suggestion ? suggestion.workingDays : (totalWorkingDays || workingForPlan), holidaysArr)
+    : '';
+  const milestones = [
+    startDate ? `Kickoff — ${fmtShortDate(startDate)}` : 'Kickoff — Needs confirmation',
+    ...phases.map((p, i) => `${p.nameEn} complete — ${p.days} working days (phase ${i+1})`),
+    (tbdEnd || !endDate) ? `Release — ${recommendedEnd ? fmtShortDate(recommendedEnd) + ' (suggested)' : tbdEn()}` : `Release — ${fmtShortDate(endDate)}`
+  ];
+  const capacity = {
+    assigned: selectedAssignees.length,
+    needed,
+    note: !selectedAssignees.length
+      ? unknownEn()
+      : (selectedAssignees.length < needed
+        ? `Current team may be insufficient for the target date.`
+        : `Current headcount meets or exceeds the suggested ${needed}.`)
+  };
+  const scopeText = suggestion && suggestion.scope
+    ? suggestion.scope
+    : scopeItems.map(i => i.text).join('; ');
+  const recommendations = (lastAiRecommendations || []).length ? lastAiRecommendations : ['No additional AI recommendations beyond the health check.'];
+
   renderCostTable();
   const costRaw = document.getElementById('costAmount').value;
   const costAmountVal = costRaw === '' ? '' : Number(costRaw);
 
-  docPreview.innerHTML = renderDoc({
+  const docData = {
     ticketId, projectName, teamTag, sprintNum,
     tasks: aiResult.tasks || [],
-    featureCount: featuresManualVal !== '' ? Number(featuresManualVal) : (aiResult.featureCount ?? 0),
+    featureCount,
     includeFeatures,
     startDate, endDate, tbdEnd, assigned,
     totalWorkingDays,
     feedbackDays: feedbackDaysVal,
     costAmount: costAmountVal,
-    dependencies: aiResult.dependencies || [],
-    lang
+    dependencies: deps.length ? deps : [],
+    lang,
+    phases,
+    sprintPlan,
+    risks,
+    assumptions,
+    recommendations,
+    health,
+    milestones,
+    vacations: holidaysArr,
+    teamRoles,
+    capacity,
+    scopeText
+  };
+  docData.executiveSummary = buildExecutiveSummary({
+    projectName, featureCount, phases, tbdEnd, totalWorkingDays, assigned, health
   });
+
+  docPreview.innerHTML = renderDoc(docData);
+
+  lastGeneratedSnapshot = capturePlanSnapshot();
+  lastPlanPayload = docData;
+  document.getElementById('whatIfBox').hidden = false;
+  document.getElementById('whatIfBox').classList.add('visible');
+  revealClickUpBox();
 
   if(!statusEl.classList.contains('error')){
     statusEl.textContent = 'تم تحديث الخطة تلقائيًا.';
@@ -2123,7 +4095,430 @@ function showUpdateToast(){
   updateToastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
-document.getElementById('generateBtn').addEventListener('click', generatePlan);
+const CLICKUP_PROXY = 'http://127.0.0.1:18766';
+const CLICKUP_TOKEN_KEY = 'khutta_clickup_token';
+const clickupState = {
+  token: '',
+  connected: false,
+  teams: [],
+  spaces: [],
+  lists: [],
+  members: []
+};
+
+function isoToClickUpMs(iso){
+  const d = parseIsoDate(iso);
+  return d ? d.getTime() : null;
+}
+
+function clickupSetStatus(id, text, kind){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.hidden = !text;
+  el.className = 'clickup-status ' + (kind || '');
+  el.textContent = text || '';
+}
+
+function revealClickUpBox(){
+  const box = document.getElementById('clickupBox');
+  if(!box) return;
+  box.hidden = false;
+  box.classList.add('visible');
+  document.getElementById('clickupToolbarBtn').disabled = false;
+  refreshClickUpPreview();
+}
+
+function hideClickUpSelects(){
+  document.getElementById('clickupSelects').hidden = true;
+  document.getElementById('clickupDisconnectBtn').hidden = true;
+}
+
+async function clickupApi(method, path, body){
+  const token = clickupState.token;
+  if(!token) throw new Error('NO_TOKEN');
+  const headers = {
+    'Authorization': token,
+    'Content-Type': 'application/json'
+  };
+  try{
+    const res = await fetch(CLICKUP_PROXY + path, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined
+    });
+    const text = await res.text();
+    let data = {};
+    try{ data = text ? JSON.parse(text) : {}; }catch(_){ data = {err: text}; }
+    if(!res.ok){
+      const msg = data.err || data.error || data.ECODE || ('HTTP ' + res.status);
+      const error = new Error(msg);
+      error.status = res.status;
+      throw error;
+    }
+    return data;
+  }catch(err){
+    if(err.message === 'Failed to fetch' || err.name === 'TypeError'){
+      const proxyErr = new Error('PROXY_DOWN');
+      throw proxyErr;
+    }
+    throw err;
+  }
+}
+
+function buildClickUpTasks(plan){
+  const ticket = plan.ticketId || '';
+  const project = plan.projectName || productNameValue || 'Untitled plan';
+  const listName = [ticket, project].filter(Boolean).join(' — ');
+  const items = [];
+  const summaryLines = [
+    plan.executiveSummary || '',
+    '',
+    plan.scopeText ? 'Scope: ' + plan.scopeText : '',
+    plan.health ? 'Readiness: ' + plan.health.labelEn : '',
+    (plan.assumptions || []).length ? 'Assumptions:\n- ' + plan.assumptions.join('\n- ') : '',
+    (plan.risks || []).length ? 'Risks:\n- ' + plan.risks.join('\n- ') : '',
+    (plan.recommendations || []).length ? 'Recommendations:\n- ' + plan.recommendations.join('\n- ') : ''
+  ].filter(Boolean).join('\n');
+
+  items.push({
+    kind: 'summary',
+    name: 'Plan overview — ' + listName,
+    markdown_description: summaryLines,
+    tags: ['khutta', 'plan'],
+    start_date: isoToClickUpMs(plan.startDate),
+    due_date: plan.tbdEnd ? null : isoToClickUpMs(plan.endDate)
+  });
+
+  (plan.phases || []).forEach((p, i) => {
+    items.push({
+      kind: 'phase',
+      phaseIndex: i,
+      name: 'Phase ' + (i + 1) + ': ' + (p.nameEn || p.nameAr || 'Untitled'),
+      markdown_description: (p.days ? p.days + ' working days' : '') + ((p.items || []).length ? '\n\n' + p.items.join('\n') : ''),
+      tags: ['khutta', 'phase']
+    });
+  });
+
+  (plan.tasks || []).forEach((t, i) => {
+    const name = typeof t === 'string' ? t : (t.text || '');
+    if(!name.trim()) return;
+    const phaseCount = (plan.phases || []).length;
+    const phaseIndex = phaseCount ? Math.min(phaseCount - 1, Math.floor(i / Math.ceil((plan.tasks.length || 1) / phaseCount))) : -1;
+    items.push({
+      kind: 'feature',
+      phaseIndex,
+      name: name.trim(),
+      markdown_description: 'Feature from Khutta plan' + (ticket ? ' (' + ticket + ')' : ''),
+      tags: ['khutta', 'feature'],
+      start_date: isoToClickUpMs(typeof t === 'object' ? t.startDate : '') || isoToClickUpMs(plan.startDate),
+      due_date: isoToClickUpMs(typeof t === 'object' ? t.endDate : '') || (plan.tbdEnd ? null : isoToClickUpMs(plan.endDate))
+    });
+  });
+
+  (plan.sprintPlan || []).forEach(sp => {
+    items.push({
+      kind: 'sprint',
+      name: 'Sprint ' + sp.sprint,
+      markdown_description: (sp.items || []).join('\n'),
+      tags: ['khutta', 'sprint'],
+      start_date: isoToClickUpMs(sp.start),
+      due_date: isoToClickUpMs(sp.end)
+    });
+  });
+
+  (plan.dependencies || []).forEach(d => {
+    if(!d) return;
+    items.push({
+      kind: 'dependency',
+      name: 'Dependency: ' + d,
+      tags: ['khutta', 'dependency']
+    });
+  });
+
+  return {listName, items};
+}
+
+function refreshClickUpPreview(){
+  const wrap = document.getElementById('clickupPreviewWrap');
+  const list = document.getElementById('clickupPreview');
+  if(!lastPlanPayload){
+    wrap.style.display = 'none';
+    return;
+  }
+  const payload = buildClickUpTasks(lastPlanPayload);
+  const destNew = document.getElementById('clickupDestNew').checked;
+  const destLabel = destNew
+    ? ('قائمة جديدة: ' + (document.getElementById('clickupNewListName').value.trim() || payload.listName))
+    : ('قائمة موجودة: ' + (document.getElementById('clickupList').selectedOptions[0]?.text || '—'));
+  wrap.style.display = 'block';
+  list.innerHTML = [
+    '<li><strong>' + escapeHtml(destLabel) + '</strong></li>',
+    ...payload.items.map(item => '<li>' + escapeHtml(item.name) + '</li>')
+  ].join('');
+  if(destNew && !document.getElementById('clickupNewListName').value.trim()){
+    document.getElementById('clickupNewListName').value = payload.listName;
+  }
+}
+
+function fillSelect(id, options, placeholder){
+  const sel = document.getElementById(id);
+  sel.innerHTML = '<option value="">' + escapeHtml(placeholder) + '</option>' +
+    options.map(o => '<option value="' + escapeHtml(o.id) + '">' + escapeHtml(o.name) + '</option>').join('');
+}
+
+function flattenClickUpMembers(team){
+  return (team.members || []).map(m => m.user || m).filter(u => u && u.id);
+}
+
+function matchClickUpAssignees(){
+  const names = selectedAssignees.slice();
+  if(!names.length || !clickupState.members.length) return [];
+  const ids = [];
+  names.forEach(arName => {
+    const emp = EMPLOYEE_LIST.find(e => e.ar === arName);
+    const candidates = [arName, emp && emp.en].filter(Boolean).map(s => s.toLowerCase());
+    const hit = clickupState.members.find(u => {
+      const hay = [u.username, u.email, u.initials].filter(Boolean).join(' ').toLowerCase();
+      return candidates.some(c => {
+        const first = c.split(/\s+/)[0];
+        return hay.includes(c) || (first.length > 3 && hay.includes(first));
+      });
+    });
+    if(hit && !ids.includes(hit.id)) ids.push(hit.id);
+  });
+  return ids;
+}
+
+async function loadClickUpSpaces(teamId){
+  const data = await clickupApi('GET', '/v2/team/' + teamId + '/space?archived=false');
+  clickupState.spaces = data.spaces || [];
+  fillSelect('clickupSpace', clickupState.spaces.map(s => ({id: String(s.id), name: s.name})), '— اختر المساحة —');
+  fillSelect('clickupList', [], '— اختر القائمة —');
+}
+
+async function loadClickUpLists(spaceId){
+  const folderless = await clickupApi('GET', '/v2/space/' + spaceId + '/list?archived=false');
+  const folders = await clickupApi('GET', '/v2/space/' + spaceId + '/folder?archived=false');
+  const lists = [];
+  (folderless.lists || []).forEach(l => lists.push({id: String(l.id), name: l.name}));
+  for(const folder of (folders.folders || [])){
+    (folder.lists || []).forEach(l => lists.push({id: String(l.id), name: folder.name + ' / ' + l.name}));
+  }
+  clickupState.lists = lists;
+  fillSelect('clickupList', lists, lists.length ? '— اختر القائمة —' : 'لا توجد قوائم في هذه المساحة');
+}
+
+async function connectClickUp(){
+  const input = document.getElementById('clickupToken');
+  const token = input.value.trim() || clickupState.token;
+  if(!token){
+    clickupSetStatus('clickupConnStatus', 'أدخل رمز API أولًا.', 'err');
+    return;
+  }
+  clickupState.token = token;
+  const btn = document.getElementById('clickupConnectBtn');
+  btn.disabled = true;
+  clickupSetStatus('clickupConnStatus', 'جاري الاتصال...', '');
+  try{
+    const data = await clickupApi('GET', '/v2/team');
+    clickupState.teams = data.teams || [];
+    if(!clickupState.teams.length) throw new Error('NO_TEAMS');
+    clickupState.connected = true;
+    if(document.getElementById('clickupRemember').checked){
+      localStorage.setItem(CLICKUP_TOKEN_KEY, token);
+    }else{
+      sessionStorage.setItem(CLICKUP_TOKEN_KEY, token);
+    }
+    fillSelect('clickupTeam', clickupState.teams.map(t => ({id: String(t.id), name: t.name})), '— اختر مساحة العمل —');
+    document.getElementById('clickupSelects').hidden = false;
+    document.getElementById('clickupDisconnectBtn').hidden = false;
+    clickupSetStatus('clickupConnStatus', 'تم الاتصال بـ ' + clickupState.teams.length + ' مساحة عمل.', 'ok');
+    if(clickupState.teams.length === 1){
+      document.getElementById('clickupTeam').value = String(clickupState.teams[0].id);
+      clickupState.members = flattenClickUpMembers(clickupState.teams[0]);
+      await loadClickUpSpaces(clickupState.teams[0].id);
+    }
+    refreshClickUpPreview();
+  }catch(err){
+    clickupState.connected = false;
+    hideClickUpSelects();
+    if(err.message === 'PROXY_DOWN'){
+      clickupSetStatus('clickupConnStatus', 'تعذّر الوصول إلى ClickUp من المتصفح. شغّل clickup-proxy.py في مجلد المشروع ثم أعد المحاولة.', 'err');
+    }else if(err.status === 401){
+      clickupSetStatus('clickupConnStatus', 'رمز API غير صالح أو منتهي.', 'err');
+    }else{
+      clickupSetStatus('clickupConnStatus', 'فشل الاتصال: ' + err.message, 'err');
+    }
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+function disconnectClickUp(){
+  clickupState.token = '';
+  clickupState.connected = false;
+  clickupState.teams = [];
+  clickupState.spaces = [];
+  clickupState.lists = [];
+  clickupState.members = [];
+  document.getElementById('clickupToken').value = '';
+  localStorage.removeItem(CLICKUP_TOKEN_KEY);
+  sessionStorage.removeItem(CLICKUP_TOKEN_KEY);
+  hideClickUpSelects();
+  clickupSetStatus('clickupConnStatus', 'تم قطع الاتصال. لم يُرسل شيء إلى ClickUp.', 'warn');
+}
+
+function buildTaskBody(item, extras){
+  const body = {name: item.name};
+  if(item.markdown_description) body.markdown_description = item.markdown_description;
+  if(item.tags) body.tags = item.tags;
+  if(item.start_date) body.start_date = item.start_date;
+  if(item.due_date) body.due_date = item.due_date;
+  if(extras && extras.parent) body.parent = extras.parent;
+  if(extras && extras.assignees && extras.assignees.length) body.assignees = extras.assignees;
+  return body;
+}
+
+async function sendPlanToClickUp(){
+  if(!clickupState.connected){
+    clickupSetStatus('clickupSendStatus', 'اتصل بـ ClickUp أولًا.', 'err');
+    return;
+  }
+  if(!lastPlanPayload || !hasGeneratedOnce()){
+    clickupSetStatus('clickupSendStatus', 'ولّد الخطة أولًا ثم أرسلها.', 'err');
+    return;
+  }
+  const teamId = document.getElementById('clickupTeam').value;
+  const spaceId = document.getElementById('clickupSpace').value;
+  const destNew = document.getElementById('clickupDestNew').checked;
+  const existingList = document.getElementById('clickupList').value;
+  if(!teamId || !spaceId){
+    clickupSetStatus('clickupSendStatus', 'اختر مساحة العمل والمساحة قبل الإرسال.', 'err');
+    return;
+  }
+  if(!destNew && !existingList){
+    clickupSetStatus('clickupSendStatus', 'اختر قائمة موجودة أو أنشئ قائمة جديدة.', 'err');
+    return;
+  }
+  const payload = buildClickUpTasks(lastPlanPayload);
+  const listName = document.getElementById('clickupNewListName').value.trim() || payload.listName;
+  const unmatched = selectedAssignees.length && !matchClickUpAssignees().length;
+  askConfirm({
+    title: 'تأكيد الإرسال إلى ClickUp',
+    text: 'سيتم إنشاء العناصر التالية في ClickUp. لن يُعدَّل شيء في خُطّة.',
+    confirmLabel: 'إرسال الآن',
+    items: [
+      destNew ? 'إنشاء قائمة: ' + listName : 'إضافة إلى قائمة موجودة',
+      payload.items.length + ' مهمة',
+      unmatched ? 'تعيين الموظفين: غير محدد — لم يُعثر على تطابق في ClickUp' : (selectedAssignees.length ? 'سيُحاول تعيين الأعضاء المطابقين فقط' : 'بدون تعيين موظفين')
+    ].concat(payload.items.slice(0, 8).map(i => i.name)).concat(payload.items.length > 8 ? ['… و' + (payload.items.length - 8) + ' عناصر أخرى'] : []),
+    onConfirm: () => performClickUpSend({destNew, listName, existingList, payload, spaceId})
+  });
+}
+
+async function performClickUpSend({destNew, listName, existingList, payload, spaceId}){
+  const btn = document.getElementById('clickupSendBtn');
+  btn.disabled = true;
+  clickupSetStatus('clickupSendStatus', 'جاري إنشاء الخطة في ClickUp...', '');
+  try{
+    let listId = existingList;
+    if(destNew){
+      const created = await clickupApi('POST', '/v2/space/' + spaceId + '/list', {name: listName});
+      listId = String(created.id);
+    }
+    const assignees = matchClickUpAssignees();
+    const phaseIds = {};
+    let createdCount = 0;
+    let lastUrl = '';
+    for(const item of payload.items){
+      const extras = {};
+      if(item.kind === 'summary' && assignees.length) extras.assignees = assignees;
+      if(item.kind === 'feature' && item.phaseIndex >= 0 && phaseIds[item.phaseIndex]){
+        extras.parent = phaseIds[item.phaseIndex];
+      }
+      const created = await clickupApi('POST', '/v2/list/' + listId + '/task', buildTaskBody(item, extras));
+      createdCount++;
+      if(item.kind === 'phase') phaseIds[item.phaseIndex] = created.id;
+      lastUrl = created.url || lastUrl;
+      await sleep(120);
+    }
+    const listUrl = lastUrl ? lastUrl.replace(/\/t\/.*/, '') : ('https://app.clickup.com');
+    clickupSetStatus('clickupSendStatus', 'تم إنشاء ' + createdCount + ' مهمة في ClickUp.', 'ok');
+    const status = document.getElementById('clickupSendStatus');
+    status.innerHTML = 'تم إنشاء ' + createdCount + ' مهمة. <a class="clickup-link" href="' + escapeHtml(lastUrl || listUrl) + '" target="_blank" rel="noopener">فتح في ClickUp</a>';
+  }catch(err){
+    if(err.message === 'PROXY_DOWN'){
+      clickupSetStatus('clickupSendStatus', 'انقطع الوكيل المحلي. شغّل clickup-proxy.py ثم أعد الإرسال.', 'err');
+    }else{
+      clickupSetStatus('clickupSendStatus', 'توقف الإرسال: ' + err.message, 'err');
+    }
+  }finally{
+    btn.disabled = false;
+  }
+}
+
+function restoreClickUpToken(){
+  const saved = localStorage.getItem(CLICKUP_TOKEN_KEY) || sessionStorage.getItem(CLICKUP_TOKEN_KEY);
+  if(saved){
+    document.getElementById('clickupToken').value = saved;
+    document.getElementById('clickupRemember').checked = !!localStorage.getItem(CLICKUP_TOKEN_KEY);
+  }
+}
+
+function syncClickUpDestUi(){
+  const isNew = document.getElementById('clickupDestNew').checked;
+  document.getElementById('clickupNewListName').style.display = isNew ? 'block' : 'none';
+  document.getElementById('clickupList').style.display = isNew ? 'none' : 'block';
+  refreshClickUpPreview();
+}
+
+document.getElementById('generateBtn').addEventListener('click', () => {
+  refreshHealthCheck();
+  generatePlan();
+});
+document.getElementById('aiAnalyzeBtn').addEventListener('click', runProjectAnalysis);
+document.getElementById('aiReqAnalyzeBtn').addEventListener('click', runRequirementsAnalysis);
+document.getElementById('whatIfBtn').addEventListener('click', runWhatIf);
+document.getElementById('clickupConnectBtn').addEventListener('click', connectClickUp);
+document.getElementById('clickupDisconnectBtn').addEventListener('click', disconnectClickUp);
+document.getElementById('clickupSendBtn').addEventListener('click', sendPlanToClickUp);
+document.getElementById('clickupToolbarBtn').addEventListener('click', () => {
+  revealClickUpBox();
+  document.getElementById('clickupBox').scrollIntoView({behavior:'smooth', block:'start'});
+});
+document.getElementById('clickupTeam').addEventListener('change', async () => {
+  const id = document.getElementById('clickupTeam').value;
+  const team = clickupState.teams.find(t => String(t.id) === id);
+  clickupState.members = team ? flattenClickUpMembers(team) : [];
+  if(id){
+    try{ await loadClickUpSpaces(id); }
+    catch(err){ clickupSetStatus('clickupConnStatus', 'تعذّر تحميل المساحات: ' + err.message, 'err'); }
+  }
+});
+document.getElementById('clickupSpace').addEventListener('change', async () => {
+  const id = document.getElementById('clickupSpace').value;
+  if(id){
+    try{ await loadClickUpLists(id); }
+    catch(err){ clickupSetStatus('clickupConnStatus', 'تعذّر تحميل القوائم: ' + err.message, 'err'); }
+  }
+  refreshClickUpPreview();
+});
+document.getElementById('clickupDestNew').addEventListener('change', syncClickUpDestUi);
+document.getElementById('clickupDestExisting').addEventListener('change', syncClickUpDestUi);
+document.getElementById('clickupNewListName').addEventListener('input', refreshClickUpPreview);
+document.getElementById('clickupList').addEventListener('change', refreshClickUpPreview);
+restoreClickUpToken();
+syncClickUpDestUi();
+document.getElementById('confirmCancelBtn').addEventListener('click', closeConfirm);
+document.getElementById('confirmApplyBtn').addEventListener('click', () => {
+  const action = pendingConfirmAction;
+  closeConfirm();
+  if(typeof action === 'function') action();
+});
+document.getElementById('confirmOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'confirmOverlay') closeConfirm();
+});
+refreshHealthCheck();
 
 function requiredFieldsFilled(){
   const hasScope = reqItems.some(item => item.text.trim());
@@ -2144,13 +4539,25 @@ function scheduleRegen(delay){
   clearTimeout(autoRegenTimer);
   autoRegenTimer = setTimeout(generatePlan, delay || 400);
 }
-document.querySelector('.panel').addEventListener('input', () => {
+document.querySelector('.panel').addEventListener('input', (e) => {
+  if(e.target.closest('.ai-ignore-regen')){
+    refreshHealthCheck();
+    return;
+  }
   updateGenerateBtnState();
+  refreshHealthCheck();
+  refreshTeamCard();
   scheduleRegen(700);
 });
 document.querySelector('.panel').addEventListener('change', (e) => {
+  if(e.target.closest('.ai-ignore-regen')){
+    refreshHealthCheck();
+    return;
+  }
   updateGenerateBtnState();
-  if(e.target.closest('.multiselect')) return; // handled separately via toggleAssignee
+  refreshHealthCheck();
+  refreshTeamCard();
+  if(e.target.closest('.multiselect')) return;
   scheduleRegen(200);
 });
 updateGenerateBtnState();
@@ -2172,8 +4579,18 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'pt', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    let heightLeft = pdfHeight;
+    let position = 0;
+    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+    heightLeft -= pageHeight;
+    while(heightLeft > 0){
+      position -= pageHeight;
+      pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, pdfHeight);
+      heightLeft -= pageHeight;
+    }
     pdf.save('frontend-implementation-plan.pdf');
     showSuccessModal();
   }catch(err){
