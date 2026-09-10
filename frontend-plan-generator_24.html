@@ -81,6 +81,13 @@
     gap:6px;
     min-width:0;
   }
+  .tips-help-copy{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    min-width:0;
+  }
   .tips-nudge{
     margin:0;
     font-size:11px;
@@ -181,7 +188,7 @@
     line-height:16px;
     text-align:center;
   }
-  input[type=text], input[type=number], input[type=date], textarea, select{
+  input[type=text], input[type=number], input[type=date], input[type=email], input[type=password], textarea, select{
     width:100%;
     padding:9px 10px;
     border:1px solid var(--border);
@@ -193,32 +200,164 @@
     touch-action:manipulation;
   }
   textarea{resize:vertical; min-height:70px;}
-  .req-list{display:flex; flex-direction:column; gap:10px; margin-bottom:8px;}
+  .req-toolbar{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:8px;
+  }
+  .req-toolbar[hidden]{display:none !important;}
+  .req-count{
+    font-size:12px;
+    font-weight:700;
+    color:var(--navy);
+    white-space:nowrap;
+  }
+  .req-toolbar input[type=search]{
+    flex:1;
+    min-width:140px;
+    padding:7px 10px;
+    font-size:12.5px;
+  }
+  .req-tool-btn{
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--navy);
+    padding:7px 10px;
+    border-radius:8px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+    white-space:nowrap;
+  }
+  .req-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .req-list.is-scroll{
+    max-height:min(58vh, 520px);
+    overflow:auto;
+    padding:8px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    background:#fff;
+  }
+  .req-empty-filter{
+    display:none;
+    font-size:12.5px;
+    color:#6b7280;
+    text-align:center;
+    padding:14px 8px;
+  }
+  .req-list.is-empty-filter .req-empty-filter{display:block;}
   .req-item-card{
     border:1px solid var(--border);
     border-radius:10px;
-    padding:10px;
+    padding:8px 10px;
     background:#fafbfc;
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 30px;
-    grid-template-areas:
-      "text remove"
-      "feat feat"
-      "dates dates";
-    gap:8px 10px;
-    align-items:start;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
   }
-  .req-item-text{grid-area:text; min-width:0;}
+  .req-item-card.has-date-error{
+    border-color:#e8b4ae;
+    background:#fff8f7;
+  }
+  .req-item-head{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .req-item-toggle{
+    flex:1;
+    min-width:0;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:none;
+    border:0;
+    padding:0;
+    cursor:pointer;
+    font-family:inherit;
+    text-align:right;
+    color:inherit;
+  }
+  .req-item-num{
+    flex-shrink:0;
+    width:22px;
+    height:22px;
+    border-radius:6px;
+    background:#eef2f7;
+    color:var(--navy);
+    font-size:11px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .req-item-preview{
+    flex:1;
+    min-width:0;
+    font-size:13px;
+    font-weight:700;
+    color:var(--navy);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .req-item-preview.is-empty{
+    font-weight:600;
+    color:#9aa0ad;
+  }
+  .req-item-chips{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-shrink:0;
+  }
+  .req-chip{
+    font-size:11px;
+    font-weight:700;
+    color:#5b6470;
+    background:#eef2f7;
+    border-radius:20px;
+    padding:2px 7px;
+    white-space:nowrap;
+  }
+  .req-chip.is-warn{
+    color:#c0392b;
+    background:#fde8e6;
+  }
+  .req-item-chevron{
+    flex-shrink:0;
+    color:#8a8d9a;
+    font-size:12px;
+    line-height:1;
+  }
+  .req-item-card.is-expanded .req-item-chevron{transform:rotate(180deg);}
+  .req-item-card.is-collapsed .req-item-body{display:none;}
+  .req-item-card.is-expanded .req-item-preview,
+  .req-item-card.is-expanded .req-item-chips{display:none;}
+  .req-item-text{min-width:0;}
   .req-item-text textarea{
     width:100%;
-    min-height:64px;
+    min-height:48px;
     resize:vertical;
     line-height:1.55;
   }
-  .req-item-main{min-width:0; grid-area:feat;}
+  .req-item-body-meta{
+    display:grid;
+    grid-template-columns:88px minmax(0,1fr);
+    gap:8px;
+    align-items:start;
+  }
+  .req-item-main{min-width:0;}
   .req-item-main input[type=text]{width:100%;}
   .req-dates-col{
-    grid-area:dates;
     display:flex;
     flex-direction:column;
     gap:6px;
@@ -232,8 +371,127 @@
   .req-dates-fields{
     display:flex;
     gap:8px;
+    position:relative;
   }
   .req-dates-fields .req-meta-field{flex:1; min-width:0;}
+  .range-picker-hidden{
+    position:absolute !important;
+    width:1px !important;
+    height:1px !important;
+    padding:0 !important;
+    margin:-1px !important;
+    overflow:hidden !important;
+    clip:rect(0,0,0,0);
+    border:0 !important;
+    pointer-events:none;
+  }
+  .range-picker-trigger{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    width:100%;
+    padding:6px 8px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fafbfc;
+    font-family:inherit;
+    font-size:12px;
+    color:var(--text);
+    cursor:pointer;
+    text-align:right;
+    touch-action:manipulation;
+  }
+  .range-picker-trigger .range-picker-label{
+    flex:1;
+    min-width:0;
+    font-weight:700;
+    font-size:12px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .range-picker-trigger.is-empty .range-picker-label{
+    color:#9aa0ad;
+    font-weight:600;
+  }
+  .range-picker-trigger.is-open{
+    border-color:#c5d4ea;
+    background:#fff;
+  }
+  .range-picker-trigger.date-invalid{
+    border-color:#c0392b;
+    background:#fff6f5;
+  }
+  .range-picker-icon{
+    flex-shrink:0;
+    width:16px;
+    height:16px;
+    color:#8a8d9a;
+    display:block;
+  }
+  .range-picker-pop{
+    position:fixed;
+    z-index:180;
+    width:min(320px, calc(100vw - 24px));
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:12px;
+    box-shadow:0 10px 28px rgba(15,17,71,.16);
+    padding:10px;
+    direction:rtl;
+  }
+  .range-picker-pop[hidden]{display:none !important;}
+  .range-grid{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:3px;
+  }
+  #rangeGrid .leave-day.in-range:not(.selected){
+    background:var(--blue-light);
+    color:var(--navy);
+    border-radius:0;
+  }
+  #rangeGrid .leave-day.range-start{
+    border-start-start-radius:7px;
+    border-end-start-radius:7px;
+    border-start-end-radius:0;
+    border-end-end-radius:0;
+  }
+  #rangeGrid .leave-day.range-end{
+    border-start-end-radius:7px;
+    border-end-end-radius:7px;
+    border-start-start-radius:0;
+    border-end-start-radius:0;
+  }
+  #rangeGrid .leave-day.range-start.range-end{
+    border-radius:7px;
+  }
+  .range-picker-foot{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:8px;
+  }
+  .range-picker-hint{
+    font-size:11px;
+    color:#8a8d9a;
+    font-weight:600;
+    line-height:1.4;
+  }
+  .range-picker-clear{
+    background:#fff;
+    border:1px solid var(--border);
+    color:var(--navy);
+    border-radius:7px;
+    padding:4px 8px;
+    font-family:inherit;
+    font-size:11.5px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
   .date-error{
     display:none;
     margin-top:8px;
@@ -269,6 +527,33 @@
     padding:6px 8px;
     font-size:12px;
   }
+  .release-phases-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:8px;
+  }
+  .release-phases-list[hidden],
+  #releasePhasesHint[hidden]{display:none !important;}
+  .release-phase-row{
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    background:#fafbfc;
+  }
+  .release-phase-name{
+    font-size:13px;
+    font-weight:700;
+    color:var(--navy);
+    margin:0 0 8px;
+  }
+  .release-phase-dates{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    position:relative;
+  }
+  .release-phase-dates .req-meta-field{flex:1; min-width:0;}
   .req-remove{
     flex-shrink:0;
     width:30px;
@@ -328,6 +613,7 @@
     justify-content:space-between;
     gap:8px;
     margin-bottom:8px;
+    direction:rtl;
   }
   .leave-cal-title{
     font-size:13px;
@@ -345,6 +631,8 @@
     font-size:14px;
     line-height:1;
     padding:0;
+    direction:ltr;
+    unicode-bidi:isolate;
   }
   .leave-nav:disabled{
     opacity:.35;
@@ -525,6 +813,14 @@
   }
   .row2{display:flex; gap:14px;}
   .row2 > div{flex:1;}
+  .project-dates-field{position:relative;}
+  .project-dates-field .range-picker-trigger{
+    padding:9px 10px;
+    font-size:13.5px;
+  }
+  .project-dates-field .range-picker-trigger .range-picker-label{
+    font-size:13.5px;
+  }
   .checkbox-line{display:flex; align-items:center; gap:6px; font-size:13px; margin-top:6px;}
   .features-box{
     border:1.5px solid var(--blue-light);
@@ -533,9 +829,14 @@
     padding:12px 14px;
   }
   .features-box .hint{margin-top:8px;}
-  #featuresManualWrap.disabled{
-    opacity:.45;
-    pointer-events:none;
+  .features-auto-total{
+    margin:10px 0 0;
+    font-size:13px;
+    color:#4b5563;
+  }
+  .features-auto-total strong{
+    color:var(--navy);
+    font-size:15px;
   }
   .file-drop{
     border:1.5px dashed var(--border);
@@ -736,7 +1037,12 @@
     color:#1a1d29;
     padding:0 0 40px;
     position:relative;
-    overflow:hidden;
+    overflow:visible;
+  }
+  .pdf-page-spacer{
+    display:block;
+    width:100%;
+    pointer-events:none;
   }
   #docPreview::after{
     content:'';
@@ -851,12 +1157,28 @@
     border:1px solid #c9d0dc;
   }
   table.doc-table td.center{text-align:center; vertical-align:middle;}
+  table.doc-table td.task-num,
+  table.doc-table th.task-num{
+    width:46px;
+    text-align:center;
+    vertical-align:middle;
+    font-weight:700;
+    white-space:nowrap;
+  }
   table.doc-table td.task-text{text-align:left; vertical-align:middle;}
   table.doc-table td.task-date{
     text-align:center;
     vertical-align:middle;
     white-space:nowrap;
-    width:28%;
+    width:22%;
+    font-weight:600;
+  }
+  table.doc-table td.task-days,
+  table.doc-table th.task-days{
+    text-align:center;
+    vertical-align:middle;
+    white-space:nowrap;
+    width:12%;
     font-weight:600;
   }
   .task-list{margin:0; padding-inline-start:18px;}
@@ -1106,8 +1428,51 @@
   .header-actions{
     display:flex;
     align-items:center;
-    gap:8px;
+    gap:10px;
     min-width:0;
+    flex:1;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+  }
+  .header-nav-cluster{
+    display:flex;
+    align-items:center;
+    gap:4px;
+    padding:3px;
+    border-radius:999px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    flex-shrink:0;
+  }
+  .header-nav-cluster .curious-header-btn,
+  .header-nav-cluster .advocate-header-btn{
+    border:none;
+    padding:6px 11px;
+    font-size:12px;
+  }
+  .header-nav-cluster .curious-header-btn:hover,
+  .header-nav-cluster .advocate-header-btn:hover{
+    background:rgba(255,255,255,.1);
+    border-radius:999px;
+    border-color:transparent;
+  }
+  .header-nav-sep{
+    width:1px;
+    height:22px;
+    background:rgba(255,255,255,.2);
+    flex-shrink:0;
+  }
+  .header-nav-core{
+    background:transparent;
+    border:none;
+    padding:0;
+  }
+  .header-actions-tail{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-inline-start:auto;
+    flex-shrink:0;
   }
   .clickup-announce-badge{
     display:inline-flex;
@@ -1429,6 +1794,12 @@
     pointer-events:none;
   }
   .khutta-tour.open{display:block;}
+  .khutta-tour-shield{
+    position:fixed;
+    inset:0;
+    z-index:188;
+    pointer-events:auto;
+  }
   .khutta-tour-spot{
     position:fixed;
     border-radius:14px;
@@ -1891,6 +2262,7 @@
     display:none;
     position:relative;
     flex-shrink:0;
+    margin-inline-start:2px;
   }
   .header-more-btn{
     width:36px;
@@ -1922,6 +2294,241 @@
     z-index:95;
   }
   .header-more-menu.open{display:block;}
+  .header-account{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-inline-start:4px;
+    position:relative;
+    flex-shrink:0;
+  }
+  .header-auth-btn,
+  .my-plans-header-btn{
+    border:1px solid rgba(255,255,255,.34);
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    border-radius:999px;
+    padding:7px 14px;
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .header-auth-btn:hover,
+  .my-plans-header-btn:hover{
+    background:rgba(255,255,255,.16);
+    border-color:rgba(255,255,255,.48);
+  }
+  .header-auth-btn[hidden],
+  .header-profile-btn[hidden],
+  .my-plans-header-btn[hidden]{
+    display:none !important;
+  }
+  .header-profile-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid rgba(255,255,255,.28);
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    border-radius:999px;
+    padding:4px 10px 4px 4px;
+    font-family:inherit;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    max-width:148px;
+  }
+  .header-avatar{
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#fff;
+    color:var(--navy);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:800;
+    flex-shrink:0;
+  }
+  .header-user-name{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .header-profile-menu{
+    display:none;
+    position:absolute;
+    top:calc(100% + 8px);
+    left:0;
+    min-width:180px;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 12px 28px rgba(15,17,71,.2);
+    padding:6px;
+    z-index:95;
+  }
+  .header-profile-menu.open{display:block;}
+  .header-profile-menu button{
+    display:block;
+    width:100%;
+    border:none;
+    background:transparent;
+    color:var(--navy);
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
+    text-align:right;
+    padding:9px 10px;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  .header-profile-menu button:hover,
+  .header-profile-menu button:focus-visible{
+    background:#f4f7fb;
+  }
+  .auth-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.48);
+    align-items:center;
+    justify-content:center;
+    z-index:170;
+    padding:20px;
+  }
+  .auth-overlay.open{display:flex;}
+  .auth-modal{
+    position:relative;
+    background:#fff;
+    border-radius:18px;
+    width:min(420px, 100%);
+    direction:rtl;
+    font-family:'Tajawal', sans-serif;
+    box-shadow:0 14px 44px rgba(15,17,71,.22);
+    padding:26px 24px 20px;
+    animation:welcomeIn .32s ease;
+  }
+  .auth-modal h2{
+    margin:0 0 6px;
+    color:var(--navy);
+    font-size:22px;
+    text-align:center;
+  }
+  .auth-lead{
+    margin:0 0 14px;
+    color:#6b7280;
+    font-size:13px;
+    line-height:1.7;
+    text-align:center;
+  }
+  .auth-guest-note{
+    margin:0 0 14px;
+    padding:10px 12px;
+    background:#f5f8fc;
+    border:1px solid #e4ebf3;
+    border-inline-start:3px solid var(--blue);
+    border-radius:10px;
+    color:#334155;
+    font-size:13px;
+    line-height:1.7;
+  }
+  .auth-tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    background:#f4f6fa;
+    border-radius:12px;
+    padding:4px;
+    margin-bottom:16px;
+  }
+  .auth-tab{
+    border:none;
+    background:transparent;
+    color:#64748b;
+    border-radius:9px;
+    padding:8px 10px;
+    font-family:inherit;
+    font-size:13.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .auth-tab.is-on{
+    background:#fff;
+    color:var(--navy);
+    box-shadow:0 1px 3px rgba(15,17,71,.08);
+  }
+  .auth-form .field{margin-bottom:12px;}
+  .auth-form input{direction:ltr; text-align:start;}
+  .auth-form input[name="name"],
+  .auth-form #authName{direction:rtl; text-align:start;}
+  .auth-error{
+    min-height:18px;
+    margin:0 0 10px;
+    color:#c0392b;
+    font-size:12.5px;
+    font-weight:700;
+  }
+  .auth-submit{
+    width:100%;
+    border:none;
+    background:var(--navy);
+    color:#fff;
+    border-radius:10px;
+    padding:11px 14px;
+    font-family:inherit;
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .auth-submit:hover{background:#16186a;}
+  .auth-switch{
+    margin:12px 0 0;
+    text-align:center;
+    color:#6b7280;
+    font-size:12.5px;
+  }
+  .auth-switch button{
+    border:none;
+    background:none;
+    color:var(--blue);
+    font-family:inherit;
+    font-weight:700;
+    cursor:pointer;
+    padding:0 4px;
+  }
+  .plan-card-facts{
+    display:grid;
+    gap:4px;
+    margin:0 0 10px;
+    font-size:12px;
+    color:#64748b;
+    line-height:1.6;
+  }
+  .plan-card-facts span{display:block;}
+  .plan-status-pill{
+    display:inline-flex;
+    align-items:center;
+    background:#eef6ff;
+    color:var(--blue);
+    border-radius:999px;
+    padding:2px 8px;
+    font-size:11px;
+    font-weight:700;
+  }
+  .saved-empty .saved-empty-actions{
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    margin-top:14px;
+    flex-wrap:wrap;
+  }
+  .saved-empty-actions .plan-action-btn.primary{
+    grid-column:auto;
+    min-width:132px;
+  }
   .header-more-menu button{
     display:block;
     width:100%;
@@ -2867,7 +3474,7 @@
     border-color:#f0d4d1;
     background:#fff8f7;
   }
-  .plan-action-btn[data-plan-action="versions"]{grid-column:1 / -1;}
+  .plan-action-btn[data-plan-action="delete"]{grid-column:1 / -1;}
   .saved-view-all,
   .new-plan-btn{
     background:transparent;
@@ -3174,6 +3781,157 @@
   }
   .delete-plan-overlay .success-modal button.danger{
     background:#c0392b;
+  }
+
+  .plan-email-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.48);
+    align-items:center;
+    justify-content:center;
+    z-index:125;
+    padding:20px;
+  }
+  .plan-email-overlay.open{display:flex;}
+  .plan-email-modal{
+    position:relative;
+    background:#fff;
+    border-radius:18px;
+    width:min(640px, 100%);
+    max-height:min(90vh, 860px);
+    overflow:auto;
+    direction:rtl;
+    font-family:'Tajawal', sans-serif;
+    box-shadow:0 14px 44px rgba(15,17,71,.22);
+    padding:26px 24px 20px;
+    animation:popIn .25s ease;
+  }
+  .plan-email-close{
+    position:absolute;
+    top:14px;
+    left:14px;
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:9px;
+    color:var(--navy);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .plan-email-modal h2{
+    margin:0 0 6px;
+    color:var(--navy);
+    font-size:21px;
+  }
+  .plan-email-lead{
+    margin:0 0 14px;
+    color:#6b7280;
+    font-size:13px;
+    line-height:1.7;
+  }
+  .plan-email-missing{
+    margin-bottom:14px;
+    padding:12px 14px;
+    background:#fef9ec;
+    border:1px solid #f3e4b5;
+    border-radius:12px;
+  }
+  .plan-email-missing-lead{
+    margin:0 0 10px;
+    color:#92400e;
+    font-size:13px;
+    line-height:1.6;
+  }
+  .plan-email-fields{
+    display:grid;
+    gap:10px;
+  }
+  .plan-email-field label{
+    display:block;
+    margin-bottom:4px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .plan-email-field input{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:8px 10px;
+    font-family:inherit;
+    font-size:13px;
+    direction:rtl;
+  }
+  .plan-email-field input[data-dir="ltr"]{direction:ltr; text-align:start;}
+  .plan-email-label{
+    display:block;
+    margin-bottom:6px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .plan-email-body{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-family:inherit;
+    font-size:13.5px;
+    line-height:1.85;
+    color:#1f2937;
+    resize:vertical;
+    min-height:260px;
+    background:#f9fafb;
+  }
+  .plan-email-body.is-editing{
+    background:#fff;
+    border-color:var(--blue);
+  }
+  .plan-email-status{
+    min-height:18px;
+    margin:8px 0 0;
+    font-size:12px;
+    color:#059669;
+    text-align:center;
+  }
+  .plan-email-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin-top:14px;
+  }
+  .plan-email-actions button{
+    border:none;
+    border-radius:9px;
+    padding:10px 16px;
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .plan-email-primary{
+    background:var(--blue);
+    color:#fff;
+  }
+  .plan-email-secondary{
+    background:#fff;
+    color:var(--navy);
+    border:1px solid var(--border) !important;
+  }
+  .plan-email-ghost{
+    background:transparent;
+    color:#64748b;
+    border:1px solid transparent !important;
+  }
+  .plan-email-actions button:disabled{
+    opacity:.5;
+    cursor:default;
   }
 
   @keyframes khuttaReveal{
@@ -3654,6 +4412,13 @@
   }
 
   /* ---- Responsive ---- */
+  @media (max-width: 1180px){
+    .header-nav-secondary,
+    .header-nav-sep-core{display:none;}
+    .header-more{display:block;}
+    .header-user-name{display:none;}
+    .header-profile-btn{max-width:none; padding:4px;}
+  }
   @media (max-width: 900px){
     .saved-home{
       width:100%;
@@ -3679,10 +4444,16 @@
     .clickup-announce-copy{width:100%; max-width:none;}
     .clickup-announce-main{font-size:12.5px;}
     .clickup-announce-note{font-size:11.5px;}
-    .vision-header-btn{white-space:normal; max-width:260px;}
+    .vision-header-btn{display:none;}
     .header-secondary-btn,
     .guide-header-link{display:none;}
+    .header-nav-secondary,
+    .header-nav-sep-core{display:none;}
     .header-more{display:block;}
+    .header-user-name{display:none;}
+    .header-profile-btn{max-width:none; padding:4px;}
+    .header-actions-tail{margin-inline-start:0;}
+    .header-nav-sep-account{display:none;}
     .advocate-header-btn[data-tooltip]::after{display:none;}
     .advocate-actions{flex-direction:column;}
     .curious-modal{padding:22px 16px 16px;}
@@ -3726,6 +4497,7 @@
     .req-meta-field input,
     .cost-table select,
     .multiselect-trigger,
+    .range-picker-trigger,
     .multiselect-panel input[type=text],
     .prefixed-input input[type=text]{
       font-size:16px !important;
@@ -3752,9 +4524,10 @@
     .cost-table th,
     .cost-table td{padding:6px 6px;}
     .leave-day{min-height:28px; font-size:11.5px;}
-    .req-item-card{
-      grid-template-columns:minmax(0,1fr) 30px;
+    .req-item-body-meta{
+      grid-template-columns:1fr;
     }
+    .req-item-chips{display:none;}
     .toolbar{
       width:100%;
       flex-wrap:wrap;
@@ -3777,7 +4550,8 @@
     .doc-section-title{font-size:18px;}
     table.doc-table{font-size:11.5px;}
     table.doc-table th, table.doc-table td{padding:7px 8px;}
-    table.doc-table td.task-date{white-space:normal; width:auto;}
+    table.doc-table td.task-date,
+    table.doc-table td.task-days{white-space:normal; width:auto;}
   }
   @media (max-width: 520px){
     .khutta-chip-grid{grid-template-columns:1fr;}
@@ -3830,21 +4604,45 @@
     <div class="app-toolbar-inner">
       <div class="header-actions">
         <button type="button" class="vision-header-btn" id="openVisionBtn">عندنا سالفة</button>
-        <button type="button" class="curious-header-btn header-secondary-btn" id="openCuriousBtn">أنا فضولي 👀</button>
-        <button type="button" class="advocate-header-btn header-secondary-btn" id="openAdvocateBtn" data-tooltip="خُطّة تبي مصلحتك" aria-label="عزّز لنا، خُطّة تبي مصلحتك">عزّز لنا</button>
+        <div class="header-nav-cluster header-nav-secondary" aria-label="روابط إضافية">
+          <button type="button" class="curious-header-btn header-secondary-btn" id="openCuriousBtn">أنا فضولي 👀</button>
+          <button type="button" class="advocate-header-btn header-secondary-btn" id="openAdvocateBtn" data-tooltip="خُطّة تبي مصلحتك" aria-label="عزّز لنا، خُطّة تبي مصلحتك">عزّز لنا</button>
+        </div>
+        <span class="header-nav-sep header-nav-sep-core" aria-hidden="true"></span>
+        <div class="header-nav-cluster header-nav-core">
+          <button type="button" class="my-plans-header-btn" id="openMyPlansHeaderBtn">خططي</button>
+        </div>
         <div class="header-more">
           <button type="button" class="header-more-btn" id="headerMoreBtn" aria-expanded="false" aria-controls="headerMoreMenu" aria-haspopup="true" aria-label="المزيد">⋯</button>
           <div class="header-more-menu" id="headerMoreMenu" role="menu">
             <button type="button" role="menuitem" id="openCuriousBtnMobile">أنا فضولي 👀</button>
             <button type="button" role="menuitem" id="openAdvocateBtnMobile">عزّز لنا</button>
+            <button type="button" role="menuitem" id="openVisionBtnMobile">عندنا سالفة</button>
+            <button type="button" role="menuitem" id="openMyPlansBtnMobile">خططي</button>
             <button type="button" role="menuitem" id="startGuideFromMenu">علّمني خُطّة</button>
+          </div>
+        </div>
+        <div class="header-actions-tail">
+          <span class="header-nav-sep header-nav-sep-account" aria-hidden="true"></span>
+          <div class="header-account" id="headerAccount">
+            <button type="button" class="header-auth-btn" id="openAuthBtn">دخول</button>
+            <button type="button" class="header-profile-btn" id="headerProfileBtn" hidden aria-expanded="false" aria-controls="headerProfileMenu" aria-haspopup="true">
+              <span class="header-avatar" id="headerAvatar">؟</span>
+              <span class="header-user-name" id="headerUserName"></span>
+            </button>
+            <div class="header-profile-menu" id="headerProfileMenu" role="menu">
+              <button type="button" role="menuitem" id="openMyPlansFromProfile">خططي</button>
+              <button type="button" role="menuitem" id="logoutBtn">تسجيل خروج</button>
+            </div>
           </div>
         </div>
       </div>
       <div class="tips-help-wrap">
         <button type="button" class="tips-help-btn" id="openTipsBtn" title="نصائح خُطّة" aria-label="نصائح خُطّة"><span class="tips-help-icon" aria-hidden="true">💡</span></button>
-        <p class="tips-nudge">نصائح خُطّة</p>
-        <button type="button" class="guide-header-link" id="startGuideFromHeader">علّمني خُطّة</button>
+        <div class="tips-help-copy">
+          <p class="tips-nudge">نصائح خُطّة</p>
+          <button type="button" class="guide-header-link" id="startGuideFromHeader">علّمني خُطّة</button>
+        </div>
       </div>
     </div>
   </div>
@@ -4072,38 +4870,40 @@
     <div class="field" id="tourScope">
       <label>نطاق العمل / المتطلبات</label>
       <div id="tourFeatures">
+      <div class="req-toolbar" id="reqToolbar" hidden>
+        <span class="req-count" id="reqCount"></span>
+        <input type="search" id="reqSearch" placeholder="ابحث في البنود..." autocomplete="off">
+        <button type="button" class="req-tool-btn" id="collapseReqBtn">طي الكل</button>
+      </div>
       <div class="req-list" id="reqList"></div>
       <button type="button" id="addReqBtn" class="add-item-btn">+ إضافة بند</button>
       </div>
-      <div class="hint">كل بند يظهر كمهمة في الخطة، والتاريخ يظهر في عمود مستقل. عمود الميزات يظهر فقط إذا كان العدد أكبر من 1.</div>
+      <!-- <div class="hint">كل بند يظهر كمهمة في الخطة. Enter يضيف بند جديد، وShift+Enter لسطر جديد. إذا البنود كثيرة، الصقها دفعة واحدة (كل سطر = بند) أو ابحث فوق القائمة.</div> -->
     </div>
 
-    <div class="field" style="display:none;">
+    <div class="field optional-field">
+      <label>الميزات <span class="optional-badge">اختياري</span></label>
       <div class="features-box">
-        <div class="checkbox-line" style="margin-top:0;">
-          <input type="checkbox" id="includeFeatures">
-          <label for="includeFeatures" style="font-weight:700; margin:0; font-size:13.5px;">تضمين عمود الميزات (Features) في الخطة</label>
+        <div class="checkbox-line">
+          <input type="checkbox" id="includeFeaturesToggle">
+          <label for="includeFeaturesToggle" style="font-weight:600; margin:0;">احسب الميزات تلقائياً من البنود</label>
         </div>
-        <div id="featuresManualWrap" style="margin-top:10px;">
-          <input type="number" id="featuresManual" min="0" placeholder="عدد الميزات (اختياري)">
-          <div class="hint">اتركه فارغًا ليُحسب العدد تلقائيًا بالذكاء الاصطناعي، أو أدخلي رقمًا محددًا ليظهر كما هو في الخطة.</div>
-        </div>
+        <p class="features-auto-total" id="featuresAutoTotal" hidden>الإجمالي من البنود: <strong>0</strong> ميزة</p>
+        <div class="hint">إذا فعلت الخيار، نحسب الميزات تلقائياً من البنود (كل بند = ميزة واحدة، أو الرقم اللي تحطه في البند). وإذا ما فعلته، ما يظهر عمود الميزات في الخطة.</div>
       </div>
     </div>
 
 
-    <div class="row2" id="tourDates">
-      <div class="field">
-        <label>تاريخ البداية</label>
-        <input type="date" id="startDate">
-      </div>
-      <div class="field">
-        <label>تاريخ النهاية</label>
-        <input type="date" id="endDate">
-        <div class="checkbox-line">
-          <input type="checkbox" id="tbdEnd">
-          <label for="tbdEnd" style="font-weight:400; margin:0;">غير محدد (TBD)</label>
-        </div>
+    <div class="field project-dates-field" id="tourDates">
+      <label>تاريخ البداية والنهاية</label>
+      <button type="button" class="range-picker-trigger" id="projectRangeTrigger" aria-haspopup="dialog" aria-expanded="false">
+        <span class="range-picker-label">حدد الفترة</span>
+      </button>
+      <input type="date" id="startDate" class="range-picker-hidden" tabindex="-1" aria-hidden="true">
+      <input type="date" id="endDate" class="range-picker-hidden" tabindex="-1" aria-hidden="true">
+      <div class="checkbox-line">
+        <input type="checkbox" id="tbdEnd">
+        <label for="tbdEnd" style="font-weight:400; margin:0;">غير محدد (TBD)</label>
       </div>
     </div>
     <div class="date-error" id="projectDateError">سلامات شيك ع التواريخ</div>
@@ -4154,6 +4954,15 @@
       <textarea id="depsNotes" placeholder="مثال: بانتظار موافقة التصميم، تعديل API من الباك إند..."></textarea>
     </div>
 
+    <div class="field optional-field" id="releasePhasesField" hidden>
+      <div class="checkbox-line leave-toggle">
+        <input type="checkbox" id="includeReleasePhases">
+        <label for="includeReleasePhases">مراحل الإغلاق <span class="optional-badge">اختياري</span></label>
+      </div>
+      <div class="hint" id="releasePhasesHint" hidden>حط تاريخ المرحلة اللي تبيها في الخطة. اللي بدون تاريخ ما تنضاف. Store Review يظهر لفريق الموبايل فقط.</div>
+      <div class="release-phases-list" id="releasePhasesList" hidden></div>
+    </div>
+
     <button id="generateBtn" disabled>توليد الخطة</button>
     <div id="status"></div>
   </div>
@@ -4161,6 +4970,7 @@
   <div class="preview-wrap">
     <div class="toolbar">
       <button id="downloadBtn" class="primary" disabled>تنزيل الخطة</button>
+      <button id="planEmailBtn" type="button" hidden disabled>صياغة الإيميل</button>
     </div>
     <div id="docPreview">
       <div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>
@@ -4175,6 +4985,40 @@
   <span class="year">2026</span>
   ELM
 </footer>
+
+<div id="authOverlay" class="auth-overlay" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <div class="auth-modal">
+    <button type="button" class="welcome-close" id="authClose" aria-label="إغلاق">×</button>
+    <h2 id="authTitle">حياك في خُطّة</h2>
+    <p class="auth-lead" id="authLead">سجّل دخولك عشان خططك تبقى عندك، حتى بعد ما تسكّر المتصفح.</p>
+    <p class="auth-guest-note" id="authGuestNote" hidden>لازم تسجّل دخول قبل إنشاء أو حفظ الخطة، حتى ما تضيع خططك.</p>
+    <div class="auth-tabs" role="tablist">
+      <button type="button" class="auth-tab is-on" id="authTabLogin" role="tab" aria-selected="true">دخول</button>
+      <button type="button" class="auth-tab" id="authTabRegister" role="tab" aria-selected="false">إنشاء حساب</button>
+    </div>
+    <form class="auth-form" id="authForm" novalidate>
+      <div class="field" id="authNameField" hidden>
+        <label for="authName">الاسم</label>
+        <input type="text" id="authName" name="name" autocomplete="name" placeholder="اسمك">
+      </div>
+      <div class="field">
+        <label for="authEmail">الإيميل</label>
+        <input type="email" id="authEmail" name="email" autocomplete="email" placeholder="you@elm.sa" dir="ltr">
+      </div>
+      <div class="field">
+        <label for="authPassword">كلمة المرور</label>
+        <input type="password" id="authPassword" name="password" autocomplete="current-password" placeholder="••••••••" dir="ltr">
+      </div>
+      <div class="field" id="authConfirmField" hidden>
+        <label for="authPasswordConfirm">تأكيد كلمة المرور</label>
+        <input type="password" id="authPasswordConfirm" name="passwordConfirm" autocomplete="new-password" placeholder="••••••••" dir="ltr">
+      </div>
+      <p class="auth-error" id="authError" role="alert"></p>
+      <button type="submit" class="auth-submit" id="authSubmit">دخول</button>
+    </form>
+    <p class="auth-switch" id="authSwitchLine">ما عندك حساب؟ <button type="button" id="authSwitchBtn">أنشئ حساب</button></p>
+  </div>
+</div>
 
 <div id="welcomeOverlay" class="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
   <div class="welcome-modal">
@@ -4204,6 +5048,7 @@
 </div>
 
 <div id="khuttaTour" class="khutta-tour" aria-hidden="true">
+  <div class="khutta-tour-shield" id="khuttaTourShield"></div>
   <div class="khutta-tour-spot" id="khuttaTourSpot"></div>
   <div class="khutta-tour-tip" id="khuttaTourTip" role="dialog" aria-modal="true" aria-labelledby="khuttaTourTitle">
     <p class="khutta-tour-progress" id="khuttaTourProgress">1 من 7</p>
@@ -4278,8 +5123,8 @@
   <div class="plans-library">
     <div class="plans-library-head">
       <div>
-        <h2 id="plansLibraryTitle">خططك جاهزة 👋</h2>
-        <p>كل خطة طلّعتها من خُطّة تلقاها هنا، ارجع لها، عدّل عليها، أو كمّل من وين وقفت.</p>
+        <h2 id="plansLibraryTitle">خططي</h2>
+        <p>كل خططك محفوظة هنا: افتحها، عدّل عليها، خذ نسخة، أو ارجع لنسخة سابقة.</p>
       </div>
       <button type="button" class="plans-library-close" id="plansLibraryClose" aria-label="إغلاق">×</button>
     </div>
@@ -4291,7 +5136,7 @@
   <div class="plan-versions-panel">
     <div class="plan-versions-head">
       <button type="button" class="plan-versions-close" id="planVersionsClose" aria-label="إغلاق">×</button>
-      <h2 id="planVersionsTitle">نسخ الخطة</h2>
+      <h2 id="planVersionsTitle">سجل النسخ</h2>
       <p>كل مرة تغيّرت فيها الخطة… حفظناها لك.</p>
     </div>
     <div class="plan-versions-list" id="planVersionsList"></div>
@@ -4299,7 +5144,8 @@
       <p id="planVersionsHint">أنت تشوف نسخة قديمة من الخطة</p>
       <div class="plan-version-actions">
         <button type="button" class="plan-version-btn" id="viewOldVersionBtn">عرض فقط</button>
-        <button type="button" class="plan-version-btn primary" id="useOldVersionPanelBtn">استخدمها كأساس لنسخة جديدة</button>
+        <button type="button" class="plan-version-btn" id="useOldVersionPanelBtn">استخدمها كأساس لنسخة جديدة</button>
+        <button type="button" class="plan-version-btn primary" id="restoreVersionBtn">استرجع هالنسخة</button>
       </div>
     </div>
   </div>
@@ -4311,23 +5157,199 @@
     <h2 id="deletePlanTitle">نحذف هالخطة؟</h2>
     <p>بتختفي من قائمتك، وما نقدر نرجعها بعد كذا.</p>
     <div class="modal-actions">
-      <button type="button" class="ghost" id="deletePlanCancel">أبقِها</button>
+      <button type="button" class="ghost" id="deletePlanCancel">أبقها</button>
       <button type="button" class="danger" id="deletePlanConfirm">نعم، احذفها</button>
     </div>
+  </div>
+</div>
+
+<div id="planEmailOverlay" class="plan-email-overlay" role="dialog" aria-modal="true" aria-labelledby="planEmailTitle" hidden>
+  <div class="plan-email-modal">
+    <button type="button" class="plan-email-close" id="planEmailClose" aria-label="إغلاق">×</button>
+    <h2 id="planEmailTitle">صياغة الإيميل</h2>
+    <p class="plan-email-lead">إيميل رسمي جاهز للنسخ والإرسال، معبّأ من بيانات خطتك الحالية.</p>
+    <div class="plan-email-missing" id="planEmailMissing" hidden>
+      <p class="plan-email-missing-lead">كم معلومة ناقصة — أكملها عشان يطلع الإيميل كامل:</p>
+      <div class="plan-email-fields" id="planEmailFields"></div>
+    </div>
+    <label for="planEmailBody" class="plan-email-label">نص الإيميل</label>
+    <textarea id="planEmailBody" class="plan-email-body" rows="14" readonly></textarea>
+    <p class="plan-email-status" id="planEmailStatus" aria-live="polite"></p>
+    <div class="plan-email-actions">
+      <button type="button" class="plan-email-primary" id="planEmailCopy" disabled>نسخ الإيميل</button>
+      <button type="button" class="plan-email-secondary" id="planEmailEdit">تعديل</button>
+      <button type="button" class="plan-email-ghost" id="planEmailCancel">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<div id="rangePickerPop" class="range-picker-pop" hidden role="dialog" aria-label="اختيار الفترة">
+  <div class="leave-cal-head">
+    <button type="button" class="leave-nav" id="rangePrev" aria-label="الشهر السابق">›</button>
+    <div class="leave-cal-title" id="rangeTitle"></div>
+    <button type="button" class="leave-nav" id="rangeNext" aria-label="الشهر التالي">‹</button>
+  </div>
+  <div class="leave-weekdays" id="rangeWeekdays"></div>
+  <div class="range-grid" id="rangeGrid"></div>
+  <div class="range-picker-foot">
+    <span class="range-picker-hint" id="rangeHint">حدد البداية، بعدين النهاية</span>
+    <button type="button" class="range-picker-clear" id="rangeClearBtn">مسح</button>
   </div>
 </div>
 
 <script>
 const ELM_LOGO_FIXED = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAACUCAMAAABV5TcGAAABPlBMVEX///8FHUl2PLwAoeD/oWjMi9sAcc7/XTYFHkkAAA8AADsAADnw8fMACkBkZHcAFUUAAEDc3OEAGUcAADOrrre/wcj3+fzl5ukAEUMnMFRtc4gAADYAAC94fY8AACNRUGeXnauKjp0VJ1Dz8PlFUW3/8u/n3vKUbMoAVcdwLrmsddAAZcu7zer/ppT/gWe/q92UXceoiNP/Th1/TcCfn6f/m1z/5dgAABc7R2X/s4iOY8cAAAAAl93/p3P/2cX/wJ5qIbfGe9fSm99vvemb0O8fIEr/Z0CuktXRwue2ntkyM05dALJVV2Daz+zMq+JGitbmye0ASMSau+Zimdubd8x/pN3d6vdkZskAf9RoVMNlfNG+3/RKsOWPfdTzrKBsj7b/RwDUeHNTm8uqjKDpaFSPi6u7eoLial7/hlb/zLBEkulcAAAJ4klEQVR4nO2c+0ObSB7AJYlKCSQBCXm/jEmXtXdqNTHaGOOjatuLervW2jX32Nvbu/r//wMHyUAGGGBIINC9+fw4/YJ8P5kZ5kVXVggEAoFAIBAIBAKBQCAQCAQCgUAgEKJEsxn2E0SJ0fVO2I8QHdo7+0OiA9DcOR7KMaJjys2eLMdiRMeE9t6+KiNsHblQ/7pG8wOQEa6OXKoR4l/XudmP6YSoo/6xHAEd7d1hLAI6sj0mnQxdh7T3SY6Fr4PfquYpOnQdO0O4aoSlI9dgkhQdvo52zEwYOqRKVaAUwtexHw0dSYro0CE6DBAdBogOA4oOmujQ+b+sHZIF/V9cdCAuCYYl6eArheph1cSrv2jzVwcdrJgqQVceVoJ4PB2zjiCWfyS+V03mKTM0l2K1CLu+I9colRkBuigTbGsy6pDl4xvf/wTbOMzQFhkKBh3I2pHtlQXKcO0ydci7H/xfR2eLZRppg3KtHSLFmK9Zno7h/nXb/z+g/fBz1I4szVmuWZYOOfbgfztRONgULDnh6cj1LHVjWTpk+fVNIPtNfA/8wjQlaGDqqJR1CfqlArMMHcP9nYA23xpafWfKGQ6QxtLBlqfeaKHKcDpL0CEPr9sBDW/4FDPtRjNFXiNX53B0iKByCEyWhwh2qV3R8ek4KBlKb1iYVgWuxs8KxQyOji1uKrKcDerhELRjnwLpQQF1kHmmAhnH06GNvphlbr20MQahC9SdgxLIybMOSetI/dIhjfZuXTpIaXSN0YXeNecWEh0d7b3h/tnqvUO6Uvt6eIyh469rPz3O+RBR0dHeiQ3l3dXVs/ORXcLq6QX5NYaOH9a2797MJyQaOpo3x+ruiaJDEXKLfHFMTy9g6lhb2/75zTwtJgo6pJuHydGEqY7Vs9Vb61wEhGDrWNte+/zs/VEioGOkHU0AOhTOTV3IaC82DcHXoQi5++y5xYSuAzqaMNOhCpk9T/taD/GiQ+HuJ48tJmwdO/D6BaRDEQJajLSzG9OFedSxvXb3xtPjhKujvW/YjDfoUISoqY924RCPOlR+9tJicHU0AtAhvTYeTTDrWD27bz4MDSFz6Fjb/ozfYnB11DeADn1leHEdD6ajCRYdq6u7ppB5dKz9gN9gZjqgQquOlSxIPl3QShbXsSe76vhR9kHHto2OnBXQCCimyM8KtQl+PqUXZtNgwpbRyvgNoCPDm28KiLiObIHJmNEXO/OowvSsTF9cZsqgRCsQNpHQvWjrYIsZwQKl41KoF2mLiLOgNJJMxHWIhTR6/yAQ6Hy0deRSiHVvTwna7MbYEHEdYtp2AwFLhpAsZygPQqKtQ99AmBOGqfDFsod7RFqHVLfda8NBKPey0oqU3awymB3QHH2HHDtblo7su3evFqAsgvvwKRrzRu8y3nTI8kOzee6i40v/gnW562O8/4Q3DIsYsA45djxSy+7PHXR8vYvH+/1LpynI40U/HjcJ+e50yPLuB5Bk89ZOx9df4hP642c7IexlvD8Nenr6fnXIhqMJ7VuEDvnrl/44DuhfIIVIz+N+XI95+k51yLG9kfEf7m9NOuTYl7u4gUvLKob0fGEM0YX4poMN9ODbRIfSg1qPJjTvz89mOqwy1BZjEvJ4Ee9bgp581SEeuHXjC6HqGO6ijyY071fPgA756y+WRFXGUJ/6eDlGxfQnQvzRka28TwWsQ5Y/2J1nktq3Z6oOOYaWoXIBtg6ky7FdSP/OHx1so5dMBqzj02unowlS+/zsR/mLrYyJEPV6pZ040H/yQYdYy+fh1bAguB65dE3S6G9PTpmqXDrLUHlaVAefyqvHTAPWgcHf/4Ghw7H+qCELvhDEEjeZ/Yav40///PVfTplOGsuzbc+hhyyECKZ7EdDx9u36b7ZCxtq71r4rHc+xUWtGZKKjY3397b9/RwoZX87ibN4tcMj8REuHIuTX3xGZGhuBtUftm0PmJWo61t+u/8fUp15YtxrNg/QLrHaS47MGeKtChA7TRdMrZ7KQhT4AdKgtBu5CMKZw6BAz2UaxVoDppSqiOQOrDrayWbBQq9Snpy/5BqLQF3QdCv/9TWsEz3bKH8EE32ENAIavfEwyXB7aDclzTJJOicYwhI5iybKRkueSXK3OrrD1WnJ2S47J9Bq+Ha2EdaxfqV1IHzGZnSGpoxAlBKuKijUmb1kMp2mB2TSenEbpQCy10pTAUcV6Ks0ZbkdxwpZfFcSgQxWidBrOv7v0OL7Am4iLBbuF8LRhxxpXh5q8kBasGxYCU/DJh0nH+ts/t1yvwXydZG1tqAnA9QNfhx2Zgj/tZR4dePA1xmFLIM1B/cfiOqjSli9vmOB01LUDCEIeRvtYg0nNfk8nHenZpbPkofuBlkMf+nJwPzAdvPaBQXqzBvMR+BCg6uGgQyjoV/a01Kk0dD9qej86s+XHUwemIwtSTBfEHAuRrQEfpYZeve110ExD0q7kG9oRjzJ0R+0TCKrqR2sJSod2uItKmz/7BV+00MzsixYHHaU6dGkPVLgq3DCKjI+fuQSlIweeUnhvGnKtsLVpJ5Df1J8fV0cDHCzbgAu1j6CSfnxuHZiOVMZFB8XMraNkeEuXfew8QtSxMa8OOlmECjUd3PepQ9J0lJaso3vkmtogcRWsDkqZZDSMFIQwdLSOOonOqWtIwijEfx15xoQ2elimjtZLR0210xnYh5yqEQrfAtVhy/J0tAYnINVE56hrE5LQQk4S367+wDpa3SMt00kFOUUIMYQoQq6uAtNBo6GSy9HRPe3AqSpCEi9dc0jCGKIEXQWkg0uaOw9AdRk6Wi+WTNUWM4Cy7L6cWEMS0xbjuw6h1qjY4HmQ7llHa3CEylRpMUcDPQQpAwgJYNwhsTboy0hB6RgcIaoGEHIy7UIcQpSgb+uBD8MQeB2k4+noHtnmOUER0j21rRqggvikgwUfs82vg0bpoD3UjoHD7z6tIF2MkIUs6EgHYIKfx5hoBtRYWuZ3iiHTzssKNPayCfFraXC2/PP+wDU2uK4U3ZOqqR6BkK5tc+mc+iZDXTnWXi2lahnJ4dwTfA8v2sEJMlW4EbygbfjVTgAHbmvhLhN8ZN/hsXaonFqFnLy4h9hPbuaDT7l8fbGsQbp5zHli7RFMbxjlLexjOwE4bTth6Fj4zTIDGlxo4w1LyCksw992oj1oIWNjYqm1YwUanc5Go3YhncSp3+1EI7u1Yd2yXlyHl65Uo6VOTIxzFUvIwDVkQfh6oczkbb6Jw1krpXB0TIW7LQ4qM1u3TJVexr+RBgqJF4s9ZgMJ9KJ9pf33rbqOVBUEwYvmjcNpYTUFFYqvQGFhxZmWe6YYIYvC5ngb9G0z1vo/xOWsRTaFiIsJBAKBQCAQCAQCgUAgEAgEAoFAIBDc+B8GTOCbLjuFNwAAAABJRU5ErkJggg==";
 let logoDataUrl = null; // product logo (optional, per-project)
-let reqItems = [{text:'', features:1, startDate:'', endDate:''}];
+let reqItems = [{text:'', features:'', startDate:'', endDate:''}];
+let expandedReqIndex = 0;
+let reqSearchQuery = '';
+let rangePickerState = {
+  open: false,
+  trigger: null,
+  apply: null,
+  draftStart: '',
+  draftEnd: '',
+  pickingEnd: false,
+  viewYear: 0,
+  viewMonth: 0
+};
 
-function renderReqList(){
+function reqCountLabel(count){
+  if(count === 1) return 'بند واحد';
+  if(count === 2) return 'بندين';
+  return `${count} بنود`;
+}
+function defaultExpandedReqIndex(){
+  if(reqItems.length <= 3) return Math.max(0, reqItems.length - 1);
+  return -1;
+}
+function reqPreviewDate(item){
+  if(!item.startDate && !item.endDate) return '';
+  if(typeof fmtTaskDate === 'function') return fmtTaskDate(item.startDate, item.endDate);
+  return [item.startDate, item.endDate].filter(Boolean).join(' – ');
+}
+function syncReqDateChip(chip, item){
+  if(!chip) return;
+  const text = reqPreviewDate(item);
+  chip.textContent = text;
+  chip.hidden = !text;
+}
+function syncReqToolbar(){
+  const toolbar = document.getElementById('reqToolbar');
+  const countEl = document.getElementById('reqCount');
+  const search = document.getElementById('reqSearch');
+  if(!toolbar || !countEl) return;
+  const filled = reqItems.filter(item => String(item.text || '').trim()).length;
+  const total = reqItems.length;
+  countEl.textContent = filled === total
+    ? reqCountLabel(total)
+    : `${filled} من ${reqCountLabel(total)}`;
+  toolbar.hidden = total < 4;
+  if(search && document.activeElement !== search) search.value = reqSearchQuery;
+}
+function filterReqCards(){
   const box = document.getElementById('reqList');
+  if(!box) return;
+  const q = reqSearchQuery.trim().toLowerCase();
+  let visible = 0;
+  box.querySelectorAll('.req-item-card').forEach(card => {
+    const i = Number(card.dataset.reqIndex);
+    const text = String((reqItems[i] && reqItems[i].text) || '').toLowerCase();
+    const show = !q || text.includes(q);
+    card.hidden = !show;
+    if(show) visible += 1;
+  });
+  box.classList.toggle('is-empty-filter', !!q && visible === 0);
+}
+function renderReqList(opts){
+  if(typeof closeRangePicker === 'function') closeRangePicker(true);
+  const box = document.getElementById('reqList');
+  if(!box) return;
+  const focusIndex = opts && opts.focusIndex;
   box.innerHTML = '';
+  box.classList.toggle('is-scroll', reqItems.length >= 8);
+  const empty = document.createElement('div');
+  empty.className = 'req-empty-filter';
+  empty.textContent = 'ما فيه بند بهذا الاسم';
+  box.appendChild(empty);
+
   reqItems.forEach((item, i) => {
+    const expanded = reqItems.length <= 1 || expandedReqIndex === i;
     const card = document.createElement('div');
-    card.className = 'req-item-card';
+    card.className = `req-item-card ${expanded ? 'is-expanded' : 'is-collapsed'}`;
+    card.dataset.reqIndex = String(i);
+
+    const head = document.createElement('div');
+    head.className = 'req-item-head';
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'req-item-toggle';
+    toggle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    toggle.setAttribute('aria-label', expanded ? 'طي البند' : 'فتح البند');
+
+    const num = document.createElement('span');
+    num.className = 'req-item-num';
+    num.textContent = String(i + 1);
+
+    const preview = document.createElement('span');
+    const previewText = String(item.text || '').trim();
+    preview.className = `req-item-preview${previewText ? '' : ' is-empty'}`;
+    preview.textContent = previewText || 'بند فارغ';
+
+    const chips = document.createElement('span');
+    chips.className = 'req-item-chips';
+    const featChip = document.createElement('span');
+    featChip.className = 'req-chip';
+    const featVal = String(item.features ?? '').trim();
+    featChip.hidden = !isFeaturesEnabled();
+    if(!featChip.hidden){
+      const n = featVal !== '' && Number(featVal) > 0 ? Number(featVal) : 1;
+      featChip.textContent = `${n} ميزة`;
+    }
+    const dateChip = document.createElement('span');
+    dateChip.className = 'req-chip';
+    syncReqDateChip(dateChip, item);
+    chips.appendChild(featChip);
+    chips.appendChild(dateChip);
+
+    const chevron = document.createElement('span');
+    chevron.className = 'req-item-chevron';
+    chevron.textContent = '▾';
+
+    toggle.appendChild(num);
+    toggle.appendChild(preview);
+    toggle.appendChild(chips);
+    toggle.appendChild(chevron);
+    toggle.addEventListener('click', () => {
+      expandedReqIndex = expandedReqIndex === i ? -1 : i;
+      renderReqList({focusIndex: expandedReqIndex === i ? i : undefined});
+    });
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'req-remove';
+    removeBtn.setAttribute('aria-label', 'حذف البند');
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if(reqItems.length > 1){
+        reqItems.splice(i, 1);
+        if(expandedReqIndex === i) expandedReqIndex = Math.min(i, reqItems.length - 1);
+        else if(expandedReqIndex > i) expandedReqIndex -= 1;
+      }else{
+        reqItems[0] = {text:'', features:'', startDate:'', endDate:''};
+        expandedReqIndex = 0;
+      }
+      renderReqList();
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    });
+
+    head.appendChild(toggle);
+    head.appendChild(removeBtn);
+
+    const body = document.createElement('div');
+    body.className = 'req-item-body';
 
     const textWrap = document.createElement('div');
     textWrap.className = 'req-item-text';
@@ -4335,24 +5357,66 @@ function renderReqList(){
     input.placeholder = 'بند من المتطلبات...';
     input.rows = 2;
     input.value = item.text;
-    input.addEventListener('input', () => { reqItems[i].text = input.value; });
+    input.addEventListener('input', () => {
+      reqItems[i].text = input.value;
+      preview.textContent = String(input.value || '').trim() || 'بند فارغ';
+      preview.classList.toggle('is-empty', !String(input.value || '').trim());
+      syncReqToolbar();
+      updateFeaturesAutoTotal();
+    });
+    input.addEventListener('keydown', (e) => {
+      if(e.key !== 'Enter' || e.shiftKey || e.altKey || e.metaKey || e.ctrlKey || e.isComposing) return;
+      e.preventDefault();
+      reqItems[i].text = input.value;
+      if(!String(reqItems[i].text || '').trim()) return;
+      addReqItem(i);
+    });
+    input.addEventListener('paste', (e) => {
+      const pasted = (e.clipboardData || window.clipboardData).getData('text');
+      const lines = String(pasted || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      if(lines.length < 2) return;
+      e.preventDefault();
+      const start = input.selectionStart || 0;
+      const end = input.selectionEnd || 0;
+      const current = reqItems[i].text || '';
+      reqItems[i].text = (current.slice(0, start) + lines[0] + current.slice(end)).trim();
+      const extras = lines.slice(1).map(text => ({text, features:'', startDate:'', endDate:''}));
+      reqItems.splice(i + 1, 0, ...extras);
+      expandedReqIndex = i + extras.length;
+      reqSearchQuery = '';
+      renderReqList({focusIndex: expandedReqIndex});
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    });
     textWrap.appendChild(input);
+
+    const meta = document.createElement('div');
+    meta.className = 'req-item-body-meta';
 
     const main = document.createElement('div');
     main.className = 'req-item-main';
-
     const metaRow = document.createElement('div');
     metaRow.className = 'req-item-meta';
-
     const featuresWrap = document.createElement('div');
     featuresWrap.className = 'req-meta-field';
     const featuresLabel = document.createElement('label');
-    featuresLabel.textContent = 'عدد الميزات';
+    featuresLabel.textContent = 'عدد الميزات (اختياري)';
     const featuresInput = document.createElement('input');
     featuresInput.type = 'number';
     featuresInput.min = '0';
-    featuresInput.value = item.features;
-    featuresInput.addEventListener('input', () => { reqItems[i].features = featuresInput.value; });
+    featuresInput.placeholder = 'اختياري';
+    featuresInput.value = item.features === 0 || item.features ? item.features : '';
+    featuresInput.addEventListener('input', () => {
+      reqItems[i].features = featuresInput.value;
+      const val = String(reqItems[i].features || '').trim();
+      featChip.hidden = !isFeaturesEnabled();
+      if(!featChip.hidden){
+        const n = val !== '' && Number(val) > 0 ? Number(val) : 1;
+        featChip.textContent = `${n} ميزة`;
+      }
+      updateFeaturesAutoTotal();
+      if(typeof scheduleRegen === 'function') scheduleRegen(400);
+    });
+    featuresWrap.hidden = !isFeaturesEnabled();
     featuresWrap.appendChild(featuresLabel);
     featuresWrap.appendChild(featuresInput);
     metaRow.appendChild(featuresWrap);
@@ -4364,40 +5428,41 @@ function renderReqList(){
     datesTitle.className = 'req-dates-title';
     datesTitle.textContent = 'التاريخ';
 
-    const startWrap = document.createElement('div');
-    startWrap.className = 'req-meta-field';
-    const startLabel = document.createElement('label');
-    startLabel.textContent = 'البداية';
     const startInput = document.createElement('input');
     startInput.type = 'date';
+    startInput.className = 'range-picker-hidden';
+    startInput.tabIndex = -1;
+    startInput.setAttribute('aria-hidden', 'true');
     startInput.value = item.startDate;
     startInput.addEventListener('input', () => {
       reqItems[i].startDate = startInput.value;
+      syncReqDateChip(dateChip, reqItems[i]);
+      updateRangeTrigger(datesFields.querySelector('.range-picker-trigger'), reqItems[i].startDate, reqItems[i].endDate);
       syncAllDateLimits();
       validateAllDates();
     });
-    startWrap.appendChild(startLabel);
-    startWrap.appendChild(startInput);
 
-    const endWrap = document.createElement('div');
-    endWrap.className = 'req-meta-field';
-    const endLabel = document.createElement('label');
-    endLabel.textContent = 'النهاية';
     const endInput = document.createElement('input');
     endInput.type = 'date';
+    endInput.className = 'range-picker-hidden';
+    endInput.tabIndex = -1;
+    endInput.setAttribute('aria-hidden', 'true');
     endInput.value = item.endDate;
     endInput.addEventListener('input', () => {
       reqItems[i].endDate = endInput.value;
+      syncReqDateChip(dateChip, reqItems[i]);
+      updateRangeTrigger(datesFields.querySelector('.range-picker-trigger'), reqItems[i].startDate, reqItems[i].endDate);
       syncAllDateLimits();
       validateAllDates();
     });
-    endWrap.appendChild(endLabel);
-    endWrap.appendChild(endInput);
 
     const datesFields = document.createElement('div');
     datesFields.className = 'req-dates-fields';
-    datesFields.appendChild(startWrap);
-    datesFields.appendChild(endWrap);
+    const rangeTrigger = createRangeTrigger();
+    datesFields.appendChild(rangeTrigger);
+    datesFields.appendChild(startInput);
+    datesFields.appendChild(endInput);
+    bindRangePicker(rangeTrigger, startInput, endInput);
     const itemDateError = document.createElement('div');
     itemDateError.className = 'date-error';
     itemDateError.textContent = 'سلامات شيك ع التواريخ';
@@ -4405,35 +5470,49 @@ function renderReqList(){
     datesCol.appendChild(datesFields);
     datesCol.appendChild(itemDateError);
 
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.className = 'req-remove';
-    removeBtn.textContent = '×';
-    removeBtn.addEventListener('click', () => {
-      if(reqItems.length > 1){
-        reqItems.splice(i, 1);
-      }else{
-        reqItems[0] = {text:'', features:1, startDate:'', endDate:''};
-      }
-      renderReqList();
-      if(typeof scheduleRegen === 'function') scheduleRegen(200);
-    });
+    meta.appendChild(main);
+    meta.appendChild(datesCol);
+    body.appendChild(textWrap);
+    body.appendChild(meta);
 
-    card.appendChild(textWrap);
-    card.appendChild(main);
-    card.appendChild(datesCol);
-    card.appendChild(removeBtn);
+    card.appendChild(head);
+    card.appendChild(body);
     box.appendChild(card);
   });
+
+  syncReqToolbar();
+  filterReqCards();
+  updateFeaturesAutoTotal();
   if(typeof syncAllDateLimits === 'function') syncAllDateLimits();
+
+  if(focusIndex != null && focusIndex >= 0){
+    const card = box.querySelector(`.req-item-card[data-req-index="${focusIndex}"]`);
+    const ta = card && card.querySelector('textarea');
+    if(card) card.scrollIntoView({block:'nearest'});
+    if(ta) ta.focus();
+  }
+}
+
+function addReqItem(afterIndex){
+  const insertAt = afterIndex == null ? reqItems.length : afterIndex + 1;
+  reqItems.splice(insertAt, 0, {text:'', features:'', startDate:'', endDate:''});
+  expandedReqIndex = insertAt;
+  reqSearchQuery = '';
+  renderReqList({focusIndex: insertAt});
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
 }
 
 document.getElementById('addReqBtn').addEventListener('click', () => {
-  reqItems.push({text:'', features:1, startDate:'', endDate:''});
+  addReqItem(reqItems.length - 1);
+});
+document.getElementById('reqSearch').addEventListener('input', (e) => {
+  e.stopPropagation();
+  reqSearchQuery = e.target.value;
+  filterReqCards();
+});
+document.getElementById('collapseReqBtn').addEventListener('click', () => {
+  expandedReqIndex = -1;
   renderReqList();
-  const inputs = document.querySelectorAll('#reqList .req-item-text textarea');
-  if(inputs.length) inputs[inputs.length - 1].focus();
-  if(typeof scheduleRegen === 'function') scheduleRegen(200);
 });
 
 renderReqList();
@@ -4534,7 +5613,8 @@ const ELM_PRODUCT_NAMES = [
   {ar:"البورصة العقارية (الفرز والدمج)", en:"Real Estate Exchange (Subdivision & Merging)"},
   {ar:"إحكام", en:"Ihkam"},
   {ar:"المزاد الإلكتروني", en:"Electronic Auction"},
-  {ar:"تحديث الصكوك", en:"Deed Update"}
+  {ar:"تحديث الصكوك", en:"Deed Update"},
+  {ar:"رواج", en:"Rawaj"}
 ];
 let productNameValue = ''; // Arabic label shown in the trigger/search
 function updateProductTrigger(){
@@ -4639,7 +5719,9 @@ const EMPLOYEE_LIST = [
   {en:"Ahmed Abbas", ar:"أحمد عباس"},
   {en:"Dania Mohammed Alkathiri", ar:"دانية محمد الكثيري"},
   {en:"Dina Helmy", ar:"دينا حلمي"},
-  {en:"Abdulrahman Ahmed", ar:"عبدالرحمن أحمد"}
+  {en:"Abdulrahman Ahmed", ar:"عبدالرحمن أحمد"},
+  {en:"Ashwaq Alruwaitea", ar:"أشواق الرويتع"},
+  {en:"Amr H. Yaseen", ar:"عمرو ياسين"}
 ];
 
 const GRADE_OPTIONS = [
@@ -4769,6 +5851,282 @@ function parseIsoDate(str){
   const d = new Date(str + 'T00:00:00');
   return isNaN(d) ? null : d;
 }
+
+function rangePickerIconHtml(){
+  return '<svg class="range-picker-icon" viewBox="0 0 16 16" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6.5h13M5 1.5v3M11 1.5v3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>';
+}
+function rangeTriggerLabel(start, end){
+  if(!start && !end) return 'حدد الفترة';
+  if(typeof fmtTaskDate === 'function') return fmtTaskDate(start, end);
+  return [start, end].filter(Boolean).join(' – ');
+}
+function createRangeTrigger(){
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'range-picker-trigger is-empty';
+  trigger.setAttribute('aria-haspopup', 'dialog');
+  trigger.setAttribute('aria-expanded', 'false');
+  trigger.innerHTML = `<span class="range-picker-label">حدد الفترة</span>${rangePickerIconHtml()}`;
+  return trigger;
+}
+function updateRangeTrigger(trigger, start, end){
+  if(!trigger) return;
+  const label = trigger.querySelector('.range-picker-label');
+  trigger.classList.toggle('is-empty', !(start || end));
+  if(label) label.textContent = rangeTriggerLabel(start, end);
+}
+function applyRangePicker(){
+  if(typeof rangePickerState.apply === 'function'){
+    rangePickerState.apply(rangePickerState.draftStart, rangePickerState.draftEnd);
+  }
+}
+function closeRangePicker(apply){
+  if(!rangePickerState.open) return;
+  if(apply) applyRangePicker();
+  const pop = document.getElementById('rangePickerPop');
+  if(pop) pop.hidden = true;
+  if(rangePickerState.trigger){
+    rangePickerState.trigger.classList.remove('is-open');
+    rangePickerState.trigger.setAttribute('aria-expanded', 'false');
+  }
+  rangePickerState.open = false;
+  rangePickerState.trigger = null;
+  rangePickerState.apply = null;
+  rangePickerState.pickingEnd = false;
+}
+function shiftRangePickerMonth(delta){
+  const next = new Date(rangePickerState.viewYear, rangePickerState.viewMonth + delta, 1);
+  rangePickerState.viewYear = next.getFullYear();
+  rangePickerState.viewMonth = next.getMonth();
+  renderRangePicker();
+  if(rangePickerState.trigger) positionRangePicker(rangePickerState.trigger);
+}
+function positionRangePicker(trigger){
+  const pop = document.getElementById('rangePickerPop');
+  if(!pop || !trigger) return;
+  const rect = trigger.getBoundingClientRect();
+  const popW = pop.offsetWidth || 320;
+  const popH = pop.offsetHeight || 320;
+  const gap = 6;
+  let top = rect.bottom + gap;
+  if(top + popH > window.innerHeight - 8){
+    top = Math.max(8, rect.top - popH - gap);
+  }
+  let left = rect.right - popW;
+  if(left < 8) left = 8;
+  if(left + popW > window.innerWidth - 8) left = Math.max(8, window.innerWidth - 8 - popW);
+  pop.style.top = `${top}px`;
+  pop.style.left = `${left}px`;
+}
+function rangePickerHint(){
+  if(rangePickerState.draftStart && rangePickerState.draftEnd){
+    return rangeTriggerLabel(rangePickerState.draftStart, rangePickerState.draftEnd);
+  }
+  if(rangePickerState.draftStart) return 'حدد تاريخ النهاية';
+  return 'حدد البداية، بعدين النهاية';
+}
+function renderRangePicker(){
+  const title = document.getElementById('rangeTitle');
+  const grid = document.getElementById('rangeGrid');
+  const hint = document.getElementById('rangeHint');
+  if(!grid) return;
+  const year = rangePickerState.viewYear;
+  const month = rangePickerState.viewMonth;
+  if(title) title.textContent = `${MONTH_LABELS[month]} ${year}`;
+  if(hint) hint.textContent = rangePickerHint();
+
+  const firstDow = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const todayIso = toIsoDate(new Date());
+  const start = rangePickerState.draftStart;
+  const end = rangePickerState.draftEnd;
+  let html = '';
+  for(let i = 0; i < firstDow; i++) html += '<span></span>';
+  for(let day = 1; day <= daysInMonth; day++){
+    const date = new Date(year, month, day);
+    const iso = toIsoDate(date);
+    const weekend = date.getDay() === 5 || date.getDay() === 6;
+    const isStart = iso === start;
+    const isEnd = iso === end;
+    const inRange = !!(start && end && iso > start && iso < end);
+    const classes = ['leave-day'];
+    if(weekend) classes.push('weekend');
+    if(iso === todayIso) classes.push('today');
+    if(isStart) classes.push('selected', 'range-start');
+    if(isEnd) classes.push('selected', 'range-end');
+    if(inRange) classes.push('in-range');
+    html += `<button type="button" class="${classes.join(' ')}" data-iso="${iso}">${day}</button>`;
+  }
+  grid.innerHTML = html;
+}
+function pickRangeDay(iso){
+  if(!rangePickerState.draftStart || rangePickerState.draftEnd){
+    rangePickerState.draftStart = iso;
+    rangePickerState.draftEnd = '';
+    rangePickerState.pickingEnd = true;
+    requestAnimationFrame(() => {
+      renderRangePicker();
+      if(rangePickerState.trigger) positionRangePicker(rangePickerState.trigger);
+    });
+    return;
+  }
+  if(iso < rangePickerState.draftStart){
+    rangePickerState.draftEnd = rangePickerState.draftStart;
+    rangePickerState.draftStart = iso;
+  }else{
+    rangePickerState.draftEnd = iso;
+  }
+  rangePickerState.pickingEnd = false;
+  applyRangePicker();
+  closeRangePicker(false);
+}
+function openRangePicker(trigger, start, end, apply){
+  const pop = document.getElementById('rangePickerPop');
+  if(!pop || !trigger) return;
+  rangePickerState.open = true;
+  rangePickerState.trigger = trigger;
+  rangePickerState.apply = apply;
+  rangePickerState.draftStart = start || '';
+  rangePickerState.draftEnd = end || '';
+  rangePickerState.pickingEnd = !!(start && !end);
+  const anchor = parseIsoDate(start || end) || parseIsoDate(document.getElementById('startDate')?.value) || new Date();
+  rangePickerState.viewYear = anchor.getFullYear();
+  rangePickerState.viewMonth = anchor.getMonth();
+  const weekdays = document.getElementById('rangeWeekdays');
+  if(weekdays && !weekdays.childElementCount){
+    weekdays.innerHTML = WEEKDAY_LABELS.map(d => `<span>${d}</span>`).join('');
+  }
+  trigger.classList.add('is-open');
+  trigger.setAttribute('aria-expanded', 'true');
+  pop.hidden = false;
+  renderRangePicker();
+  positionRangePicker(trigger);
+}
+function emitDateFieldEvents(el){
+  if(!el) return;
+  el.dispatchEvent(new Event('input', {bubbles:true}));
+  el.dispatchEvent(new Event('change', {bubbles:true}));
+}
+function bindRangePicker(trigger, startInput, endInput){
+  if(!trigger || !startInput || !endInput) return;
+  updateRangeTrigger(trigger, startInput.value, endInput.value);
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if(rangePickerState.open && rangePickerState.trigger === trigger){
+      closeRangePicker(true);
+      return;
+    }
+    if(rangePickerState.open) closeRangePicker(true);
+    openRangePicker(trigger, startInput.value, endInput.value, (start, end) => {
+      const startChanged = startInput.value !== (start || '');
+      const endChanged = endInput.value !== (end || '');
+      startInput.value = start || '';
+      endInput.value = end || '';
+      if(startChanged) emitDateFieldEvents(startInput);
+      if(endChanged) emitDateFieldEvents(endInput);
+      updateRangeTrigger(trigger, start, end);
+    });
+  });
+}
+function syncProjectRangeTrigger(){
+  const trigger = document.getElementById('projectRangeTrigger');
+  const startEl = document.getElementById('startDate');
+  const endEl = document.getElementById('endDate');
+  const tbd = document.getElementById('tbdEnd')?.checked;
+  if(!trigger || !startEl || !endEl) return;
+  const start = startEl.value;
+  const end = endEl.value;
+  const label = trigger.querySelector('.range-picker-label');
+  let text;
+  if(tbd){
+    text = start && typeof fmtShortDate === 'function' ? `${fmtShortDate(start)} – TBD` : (start ? `${start} – TBD` : 'حدد الفترة');
+  }else{
+    text = rangeTriggerLabel(start, end);
+  }
+  trigger.classList.toggle('is-empty', !(start || (!tbd && end)));
+  if(label) label.textContent = text;
+}
+function bindProjectRangePicker(){
+  const trigger = document.getElementById('projectRangeTrigger');
+  const startInput = document.getElementById('startDate');
+  const endInput = document.getElementById('endDate');
+  if(!trigger || !startInput || !endInput || trigger.dataset.ready) return;
+  trigger.dataset.ready = '1';
+  if(!trigger.querySelector('.range-picker-label')){
+    trigger.innerHTML = `<span class="range-picker-label">حدد الفترة</span>${rangePickerIconHtml()}`;
+  }else if(!trigger.querySelector('.range-picker-icon')){
+    trigger.insertAdjacentHTML('beforeend', rangePickerIconHtml());
+  }
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if(rangePickerState.open && rangePickerState.trigger === trigger){
+      closeRangePicker(true);
+      return;
+    }
+    if(rangePickerState.open) closeRangePicker(true);
+    const tbd = document.getElementById('tbdEnd')?.checked;
+    openRangePicker(trigger, startInput.value, tbd ? '' : endInput.value, (start, end) => {
+      const startChanged = startInput.value !== (start || '');
+      const endChanged = endInput.value !== (end || '');
+      startInput.value = start || '';
+      endInput.value = end || '';
+      const tbdEl = document.getElementById('tbdEnd');
+      if(end && tbdEl?.checked){
+        tbdEl.checked = false;
+        tbdEl.dispatchEvent(new Event('change', {bubbles:true}));
+      }
+      if(startChanged) emitDateFieldEvents(startInput);
+      if(endChanged) emitDateFieldEvents(endInput);
+      syncProjectRangeTrigger();
+    });
+  });
+  syncProjectRangeTrigger();
+}
+function initRangePicker(){
+  const pop = document.getElementById('rangePickerPop');
+  if(!pop || pop.dataset.ready) return;
+  pop.dataset.ready = '1';
+  document.getElementById('rangePrev').addEventListener('click', (e) => {
+    e.stopPropagation();
+    shiftRangePickerMonth(-1);
+  });
+  document.getElementById('rangeNext').addEventListener('click', (e) => {
+    e.stopPropagation();
+    shiftRangePickerMonth(1);
+  });
+  document.getElementById('rangeClearBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    rangePickerState.draftStart = '';
+    rangePickerState.draftEnd = '';
+    rangePickerState.pickingEnd = false;
+    applyRangePicker();
+    closeRangePicker(false);
+  });
+  document.getElementById('rangeGrid').addEventListener('click', (e) => {
+    e.stopPropagation();
+    const btn = e.target.closest('.leave-day');
+    if(!btn) return;
+    pickRangeDay(btn.dataset.iso);
+  });
+  document.addEventListener('click', (e) => {
+    if(!rangePickerState.open) return;
+    if(e.target.closest('#rangePickerPop')) return;
+    if(e.target.closest('.range-picker-trigger')) return;
+    if(e.target.closest('.leave-day')) return;
+    closeRangePicker(true);
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && rangePickerState.open) closeRangePicker(true);
+  });
+  window.addEventListener('scroll', () => {
+    if(rangePickerState.open && rangePickerState.trigger) positionRangePicker(rangePickerState.trigger);
+  }, true);
+  window.addEventListener('resize', () => {
+    if(rangePickerState.open && rangePickerState.trigger) positionRangePicker(rangePickerState.trigger);
+  });
+  bindProjectRangePicker();
+}
+initRangePicker();
 function getProjectRange(){
   const start = parseIsoDate(document.getElementById('startDate').value);
   const tbdEnd = document.getElementById('tbdEnd').checked;
@@ -5022,6 +6380,10 @@ function syncAllDateLimits(){
     const dateInputs = card.querySelectorAll('.req-dates-fields input[type=date]');
     syncDatePair(dateInputs[0], dateInputs[1], true);
   });
+  document.querySelectorAll('#releasePhasesList .release-phase-row').forEach((row) => {
+    const dateInputs = row.querySelectorAll('input[type=date]');
+    syncDatePair(dateInputs[0], dateInputs[1], true);
+  });
 }
 
 function projectDatesOutOfOrder(){
@@ -5029,7 +6391,7 @@ function projectDatesOutOfOrder(){
   const end = document.getElementById('endDate').value;
   const tbdEnd = document.getElementById('tbdEnd').checked;
   if(start && end && !tbdEnd && start > end) return true;
-  return reqItems.some(itemDatesOutOfOrder);
+  return reqItems.some(itemDatesOutOfOrder) || selectedReleasePhases().some(itemDatesOutOfOrder);
 }
 
 function showDateOrderError(){
@@ -5057,13 +6419,32 @@ function paintDateErrors(){
   if(projectError) projectError.classList.toggle('show', projectInvalid);
   startEl.classList.toggle('date-invalid', projectInvalid);
   endEl.classList.toggle('date-invalid', projectInvalid);
+  const projectTrigger = document.getElementById('projectRangeTrigger');
+  if(projectTrigger) projectTrigger.classList.toggle('date-invalid', projectInvalid);
 
-  document.querySelectorAll('#reqList .req-item-card').forEach((card, i) => {
+  document.querySelectorAll('#reqList .req-item-card').forEach((card) => {
     const dateInputs = card.querySelectorAll('.req-dates-fields input[type=date]');
     const err = card.querySelector('.date-error');
+    const i = Number(card.dataset.reqIndex);
     const invalid = itemDatesOutOfOrder(reqItems[i]);
     if(err) err.classList.toggle('show', invalid);
     dateInputs.forEach(input => input.classList.toggle('date-invalid', invalid));
+    const trigger = card.querySelector('.range-picker-trigger');
+    if(trigger) trigger.classList.toggle('date-invalid', invalid);
+    card.classList.toggle('has-date-error', invalid);
+    const dateChip = card.querySelector('.req-item-chips .req-chip:last-child');
+    if(dateChip) dateChip.classList.toggle('is-warn', invalid);
+  });
+
+  document.querySelectorAll('#releasePhasesList .release-phase-row').forEach((row) => {
+    const dateInputs = row.querySelectorAll('input[type=date]');
+    const err = row.querySelector('.date-error');
+    const phase = releasePhases.find(item => item.id === row.dataset.phaseId);
+    const invalid = isReleasePhasesEnabled() && itemDatesOutOfOrder(phase);
+    if(err) err.classList.toggle('show', invalid);
+    dateInputs.forEach(input => input.classList.toggle('date-invalid', invalid));
+    const trigger = row.querySelector('.range-picker-trigger');
+    if(trigger) trigger.classList.toggle('date-invalid', invalid);
   });
 }
 
@@ -5087,12 +6468,19 @@ function validateAllDates(){
     if(isLeaveEnabled()) renderLeaveCalendar();
     renderCostTable();
     validateAllDates();
+    if(typeof syncProjectRangeTrigger === 'function') syncProjectRangeTrigger();
   });
 });
 
 document.getElementById('includeLeave').addEventListener('change', () => {
   syncLeaveCalendarVisibility();
   renderCostTable();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+});
+
+document.getElementById('includeReleasePhases').addEventListener('change', () => {
+  renderReleasePhases();
+  validateAllDates();
   if(typeof scheduleRegen === 'function') scheduleRegen(200);
 });
 
@@ -5142,8 +6530,8 @@ document.getElementById('logoInput').addEventListener('change', (e) => {
   reader.readAsDataURL(file);
 });
 
-document.getElementById('tbdEnd').addEventListener('change', (e) => {
-  document.getElementById('endDate').disabled = e.target.checked;
+document.getElementById('tbdEnd').addEventListener('change', () => {
+  syncProjectRangeTrigger();
 });
 
 const ARABIC_INDIC_DIGITS = {'٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'};
@@ -5165,13 +6553,42 @@ document.getElementById('successOverlay').addEventListener('click', (e) => {
   if(e.target.id === 'successOverlay') hideSuccessModal();
 });
 
-function syncFeaturesManualState(){
-  const wrap = document.getElementById('featuresManualWrap');
-  const enabled = document.getElementById('includeFeatures').checked;
-  wrap.classList.toggle('disabled', !enabled);
+function isFeaturesEnabled(){
+  const toggle = document.getElementById('includeFeaturesToggle');
+  return toggle ? toggle.checked : false;
 }
-document.getElementById('includeFeatures').addEventListener('change', syncFeaturesManualState);
-syncFeaturesManualState();
+
+function getScopedReqItems(items){
+  return (items || reqItems).filter(item => String(item.text || '').trim());
+}
+
+function getPlanFeatureCount(scopeItems){
+  if(!isFeaturesEnabled()) return 0;
+  return sumScopeFeatures(getScopedReqItems(scopeItems));
+}
+
+function updateFeaturesAutoTotal(){
+  const box = document.getElementById('featuresAutoTotal');
+  const toggle = document.getElementById('includeFeaturesToggle');
+  if(!box || !toggle) return;
+  const count = sumScopeFeatures(getScopedReqItems());
+  box.hidden = !toggle.checked;
+  const strong = box.querySelector('strong');
+  if(strong) strong.textContent = String(count);
+}
+
+function syncFeaturesToggleState(){
+  updateFeaturesAutoTotal();
+}
+
+function resolveIncludeFeaturesFromForm(form, legacyCount){
+  if(!form || typeof form !== 'object') return Number(legacyCount) > 0;
+  if(form.includeFeaturesToggle != null) return !!form.includeFeaturesToggle;
+  if(form.includeFeatures != null) return !!form.includeFeatures;
+  const manual = String(form.featuresManual ?? '').trim();
+  if(manual !== '' && Number(manual) > 0) return true;
+  return Number(legacyCount) > 0;
+}
 
 function isWorkingDay(date){
   const day = date.getDay(); // 0=Sun ... 6=Sat
@@ -5211,25 +6628,147 @@ function fmtShortDate(str){
 }
 
 function fmtTaskDate(start, end){
-  if(!start && !end) return 'TBD';
+  if(!start && !end) return '';
   if(start && end) return `${fmtShortDate(start)} – ${fmtShortDate(end)}`;
   return fmtShortDate(start || end);
 }
+function fmtTaskDays(start, end, holidays){
+  if(!start || !end) return '';
+  const n = workingDaysBetween(start, end, holidays || []);
+  return n == null ? '' : String(n);
+}
+function taskHasDates(task){
+  return !!(task && typeof task === 'object' && (task.startDate || task.endDate));
+}
 
-function buildLocalPlan(scopeItems, depsNotes, lang){
-  const tasks = scopeItems.map(item => ({
-    text: item.text.trim(),
-    startDate: item.startDate || '',
-    endDate: item.endDate || '',
-    features: Number(item.features)
+const FIXED_RELEASE_PHASES = [
+  { id: 'defect-testing', text: 'Defect Testing' },
+  { id: 'regression-testing', text: 'Regression Testing' },
+  { id: 'buffer', text: 'Buffer' },
+  { id: 'store-review', text: 'Store Review', mobileOnly: true },
+  { id: 'release-to-operation', text: 'Release to Operation' }
+];
+
+function defaultReleasePhases(){
+  return FIXED_RELEASE_PHASES.map(phase => ({
+    id: phase.id,
+    text: phase.text,
+    mobileOnly: !!phase.mobileOnly,
+    startDate: '',
+    endDate: ''
   }));
-  const totalFeatures = scopeItems.reduce((sum, item) => {
+}
+let releasePhases = defaultReleasePhases();
+
+function isMobilePlan(teamTag){
+  return teamTag === 'فريق تطوير الموبايل';
+}
+function isWebOrMobilePlan(teamTag){
+  return teamTag === 'فريق تطوير الويب' || teamTag === 'فريق تطوير الموبايل';
+}
+function isReleasePhasesEnabled(){
+  const box = document.getElementById('includeReleasePhases');
+  return !!(box && box.checked);
+}
+function visibleReleasePhases(teamTag){
+  const team = teamTag || document.getElementById('teamTag')?.value || '';
+  return releasePhases.filter(phase => !phase.mobileOnly || isMobilePlan(team));
+}
+function phaseHasDates(phase){
+  return !!(phase && (phase.startDate || phase.endDate));
+}
+function selectedReleasePhases(teamTag){
+  if(!isReleasePhasesEnabled()) return [];
+  return visibleReleasePhases(teamTag).filter(phaseHasDates);
+}
+function sumScopeFeatures(items){
+  return (items || []).reduce((sum, item) => {
     const n = Number(item.features);
     return sum + (Number.isFinite(n) && n > 0 ? n : 1);
   }, 0);
+}
+function renderReleasePhases(){
+  if(typeof closeRangePicker === 'function') closeRangePicker(true);
+  const box = document.getElementById('releasePhasesList');
+  const field = document.getElementById('releasePhasesField');
+  const hint = document.getElementById('releasePhasesHint');
+  if(!box || !field) return;
+  const teamTag = document.getElementById('teamTag')?.value || '';
+  const showField = isWebOrMobilePlan(teamTag);
+  field.hidden = !showField;
+  const showList = showField && isReleasePhasesEnabled();
+  box.hidden = !showList;
+  if(hint) hint.hidden = !showList;
+  if(!showField){
+    box.innerHTML = '';
+    return;
+  }
+  box.innerHTML = visibleReleasePhases(teamTag).map(phase => `
+    <div class="release-phase-row" data-phase-id="${escapeHtml(phase.id)}">
+      <p class="release-phase-name">${escapeHtml(phase.text)}</p>
+      <div class="release-phase-dates">
+        <button type="button" class="range-picker-trigger${phase.startDate || phase.endDate ? '' : ' is-empty'}" aria-haspopup="dialog" aria-expanded="false">
+          <span class="range-picker-label">${escapeHtml(rangeTriggerLabel(phase.startDate, phase.endDate))}</span>
+          ${rangePickerIconHtml()}
+        </button>
+        <input type="date" class="range-picker-hidden" data-phase-date="start" tabindex="-1" aria-hidden="true" value="${escapeHtml(phase.startDate || '')}">
+        <input type="date" class="range-picker-hidden" data-phase-date="end" tabindex="-1" aria-hidden="true" value="${escapeHtml(phase.endDate || '')}">
+      </div>
+      <div class="date-error">سلامات شيك ع التواريخ</div>
+    </div>
+  `).join('');
+  box.querySelectorAll('.release-phase-row').forEach(row => {
+    const startInput = row.querySelector('input[data-phase-date="start"]');
+    const endInput = row.querySelector('input[data-phase-date="end"]');
+    const trigger = row.querySelector('.range-picker-trigger');
+    const onDateInput = (which) => {
+      const phase = releasePhases.find(item => item.id === row.dataset.phaseId);
+      if(!phase) return;
+      if(which === 'start') phase.startDate = startInput.value;
+      else phase.endDate = endInput.value;
+      syncAllDateLimits();
+      validateAllDates();
+    };
+    startInput.addEventListener('input', () => onDateInput('start'));
+    endInput.addEventListener('input', () => onDateInput('end'));
+    bindRangePicker(trigger, startInput, endInput);
+  });
+  syncAllDateLimits();
+}
+function appendFixedReleasePhases(tasks, teamTag){
+  const list = Array.isArray(tasks) ? tasks.slice() : [];
+  if(!isWebOrMobilePlan(teamTag) || !isReleasePhasesEnabled()) return list;
+  const existing = new Set(list.map(t => String(typeof t === 'string' ? t : (t.text || '')).trim().toLowerCase()));
+  selectedReleasePhases(teamTag).forEach(phase => {
+    if(existing.has(phase.text.toLowerCase())) return;
+    list.push({
+      text: phase.text,
+      startDate: phase.startDate || '',
+      endDate: phase.endDate || '',
+      features: 0,
+      fixedPhase: true
+    });
+  });
+  return list;
+}
+
+function buildLocalPlan(scopeItems, depsNotes, lang, includeFeatures){
+  const showFeatures = includeFeatures !== false && (includeFeatures || isFeaturesEnabled());
+  const tasks = scopeItems.map(item => {
+    const featNum = Number(item.features);
+    return {
+      text: item.text.trim(),
+      startDate: item.startDate || '',
+      endDate: item.endDate || '',
+      features: showFeatures
+        ? (Number.isFinite(featNum) && featNum > 0 ? featNum : 1)
+        : 0
+    };
+  });
+  const totalFeatures = showFeatures ? sumScopeFeatures(scopeItems) : 0;
   return {
     tasks,
-    featureCount: totalFeatures || 1,
+    featureCount: totalFeatures,
     dependencies: depsNotes ? [depsNotes] : []
   };
 }
@@ -5284,12 +6823,13 @@ const TEAM_NAME_EN = {
   'فريق تطوير الموبايل': 'Mobile Development'
 };
 
-function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCount, includeFeatures, startDate, endDate, tbdEnd, assigned, totalWorkingDays, feedbackDays, costAmount, dependencies, lang, createdDate}){
+function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCount, includeFeatures, startDate, endDate, tbdEnd, assigned, totalWorkingDays, feedbackDays, costAmount, dependencies, lang, createdDate, holidays}){
   const L = lang === 'ar' ? {
     planTitle: 'خطة تنفيذ الفرونت-إند',
     working: 'خطة العمل',
     task: 'المهمة',
     date: 'التاريخ',
+    days: 'الأيام',
     features: 'الميزات',
     estimations: 'التقديرات',
     sprint: 'السبرنت',
@@ -5297,17 +6837,19 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
     end: 'تاريخ النهاية',
     assigned: 'المكلّفون',
     totalDays: 'إجمالي أيام العمل',
+    totalFeatures: 'إجمالي الميزات',
     excl: 'باستثناء وقت الفيدباك.',
     feedback: 'وقت الفيدباك',
     deps: 'التبعيات / الملاحظات',
     tbd: 'غير محدد',
-    days: 'يوم عمل',
+    workingDays: 'يوم عمل',
     created: 'تاريخ الإنشاء'
   } : {
     planTitle: 'Frontend Implementation Plan',
     working: 'Working Plan',
     task: 'Task',
     date: 'Date',
+    days: 'Days',
     features: 'Features',
     estimations: 'Estimations',
     sprint: 'Sprint',
@@ -5315,11 +6857,12 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
     end: 'End Date',
     assigned: 'Assigned',
     totalDays: 'Total Working Days',
+    totalFeatures: 'Total Features',
     excl: 'Excluding the feedback time.',
     feedback: 'Feedback Time',
     deps: 'Dependencies / Buffer Notes',
     tbd: 'TBD',
-    days: 'Working Days',
+    workingDays: 'Working Days',
     created: 'Created'
   };
 
@@ -5328,19 +6871,37 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
   const teamNameEn = TEAM_NAME_EN[teamTag] || 'Frontend';
   const planSubtitle = `${teamNameEn} Implementation Plan`;
 
-  const taskRows = (tasks || []).map(t => {
+  const holidayList = Array.isArray(holidays) ? holidays : [];
+  const showTaskDates = (tasks || []).some(taskHasDates);
+
+  const taskRows = (tasks || []).map((t, i) => {
     const text = typeof t === 'string' ? t : (t.text || '');
-    const dateText = typeof t === 'string' ? 'TBD' : fmtTaskDate(t.startDate, t.endDate);
+    const dateText = typeof t === 'string' ? '' : fmtTaskDate(t.startDate, t.endDate);
+    const daysText = typeof t === 'string' ? '' : fmtTaskDays(t.startDate, t.endDate, holidayList);
     const feat = typeof t === 'string' ? '' : t.features;
+    const isFixed = typeof t === 'object' && t && t.fixedPhase;
     const featCell = includeFeatures
-      ? `<td class="center">${Number.isFinite(Number(feat)) && Number(feat) > 0 ? Number(feat) : 1}</td>`
+      ? `<td class="center">${isFixed ? '—' : (Number.isFinite(Number(feat)) && Number(feat) > 0 ? Number(feat) : 1)}</td>`
+      : '';
+    const dateCells = showTaskDates
+      ? `<td class="task-date">${escapeHtml(dateText)}</td><td class="task-days">${escapeHtml(daysText)}</td>`
       : '';
     return `<tr>
+      <td class="task-num">${i + 1}</td>
       <td class="task-text">${escapeHtml(text)}</td>
-      <td class="task-date">${escapeHtml(dateText)}</td>
+      ${dateCells}
       ${featCell}
     </tr>`;
   }).join('');
+
+  const featuresTotal = Number(featureCount) || 0;
+  const taskColCount = 2 + (showTaskDates ? 2 : 0) + (includeFeatures ? 1 : 0);
+  const featuresTotalRow = includeFeatures
+    ? `<tr class="total-row">
+         <td class="label" colspan="${taskColCount - 1}">${escapeHtml(L.totalFeatures)}</td>
+         <td class="center">${featuresTotal}</td>
+       </tr>`
+    : '';
 
   const totalDaysDisplay = tbdEnd || totalWorkingDays === null
     ? L.tbd
@@ -5384,13 +6945,16 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
       <div class="doc-section-underline"></div>
       <table class="doc-table">
         <tr>
+          <th class="task-num">#</th>
           <th>${L.task}</th>
-          <th>${L.date}</th>
+          ${showTaskDates ? `<th>${L.date}</th><th class="task-days">${L.days}</th>` : ''}
           ${includeFeatures ? `<th style="width:18%">${L.features}</th>` : ''}
         </tr>
         ${taskRows}
+        ${featuresTotalRow}
       </table>
 
+      <div class="doc-estimations">
       <div class="doc-section-title">${L.estimations}</div>
       <div class="doc-section-underline"></div>
       <table class="doc-table">
@@ -5413,17 +6977,351 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
         ${costRowHtml}
       </table>
       ${depsHtml}
+      </div>
     </div>
   `;
 }
 
+function renderDocFromSnapshot(snapshot, plan){
+  if(!snapshot) return '';
+  const form = snapshot.form || (plan && plan.form) || {};
+  const scopeItems = (snapshot.scope || form.reqItems || []).filter(item => String(item.text || '').trim());
+  const depsNotes = String(snapshot.dependencies || form.dependencies || '').trim();
+  const lang = 'en';
+  const fc = Number((snapshot.estimations && snapshot.estimations.featureCount) || snapshot.featureCount || (plan && plan.featureCount)) || 0;
+  const includeFeatures = shouldIncludeFeatures(form, fc);
+  const aiResult = buildLocalPlan(scopeItems, depsNotes, lang, includeFeatures);
+  aiResult.tasks = appendFixedReleasePhases(aiResult.tasks, form.teamTag || '');
+  const featureCount = includeFeatures ? sumScopeFeatures(scopeItems) : 0;
+  const ticketNum = String(form.ticketNum || snapshot.projectCode || '').replace(/^DSBI-/i, '');
+  const ticketId = ticketNum ? 'DSBI-' + ticketNum : (snapshot.projectCode || '');
+  const tbdEnd = !!(snapshot.tbdEnd ?? form.tbdEnd);
+  const startDate = snapshot.startDate || form.startDate || '';
+  const endDate = snapshot.targetDate || form.endDate || '';
+  const holidaysArr = Array.isArray(snapshot.vacations) ? snapshot.vacations : (form.selectedHolidays || []);
+  let totalWorkingDays = snapshot.duration;
+  if((totalWorkingDays === null || totalWorkingDays === undefined) && !tbdEnd && endDate && startDate){
+    totalWorkingDays = workingDaysBetween(startDate, endDate, holidaysArr);
+  }
+  const assignees = (snapshot.team && snapshot.team.assignees) || form.selectedAssignees || [];
+  const assigned = Array.isArray(assignees) ? assignees.join('، ') : '';
+  const createdDate = String(snapshot.createdAt || (plan && plan.createdAt) || new Date().toISOString()).slice(0, 10);
+  const costRaw = snapshot.cost;
+  const costAmountVal = costRaw === '' || costRaw == null ? '' : Number(costRaw);
+  return renderDoc({
+    ticketId,
+    projectName: snapshot.projectNameEn || form.projectName || snapshot.projectName || '',
+    teamTag: form.teamTag || '',
+    sprintNum: form.sprintNum || (snapshot.estimations && snapshot.estimations.sprints) || '',
+    tasks: aiResult.tasks || [],
+    featureCount,
+    includeFeatures,
+    startDate,
+    endDate,
+    tbdEnd,
+    assigned,
+    totalWorkingDays,
+    feedbackDays: form.feedbackDays || (snapshot.estimations && snapshot.estimations.feedbackDays) || '',
+    costAmount: costAmountVal,
+    dependencies: depsNotes ? [depsNotes] : [],
+    lang,
+    createdDate,
+    holidays: holidaysArr
+  });
+}
+
+function resolvePlanHtml(plan, snapshot){
+  if(snapshot){
+    const cached = snapshot.generatedPlan && snapshot.generatedPlan.planHtml;
+    if(cached) return cached;
+    return renderDocFromSnapshot(snapshot, plan);
+  }
+  if(plan && plan.planHtml) return plan.planHtml;
+  if(plan && plan.id){
+    const latest = getLatestPlanVersion(plan.id);
+    if(latest){
+      const html = latest.generatedPlan && latest.generatedPlan.planHtml;
+      if(html) return html;
+      return renderDocFromSnapshot(latest, plan);
+    }
+  }
+  if(plan) return renderDocFromSnapshot(plan, plan);
+  return '';
+}
+
+function resolvedFeatureCount(manualVal){
+  const raw = String(manualVal ?? '').trim();
+  if(raw === '') return null;
+  const n = Number(raw);
+  if(!Number.isFinite(n) || n <= 0) return null;
+  return n;
+}
+
+function shouldIncludeFeatures(formOrManual, legacyCount){
+  if(typeof formOrManual === 'object' && formOrManual){
+    return resolveIncludeFeaturesFromForm(formOrManual, legacyCount);
+  }
+  const resolved = resolvedFeatureCount(formOrManual);
+  if(resolved != null) return true;
+  if(formOrManual !== undefined && String(formOrManual).trim() === '') return false;
+  return Number(legacyCount) > 0;
+}
+
+const KhuttaStorage = {
+  keys: {
+    users: 'khutta_users_v1',
+    session: 'khutta_session_v1',
+    meta: 'khutta_store_meta_v1',
+    plansPrefix: 'khutta_user_plans_',
+    legacyPlans: 'khutta_saved_plans'
+  },
+  getJson(key, fallback){
+    try{
+      const raw = localStorage.getItem(key);
+      if(raw == null || raw === '') return fallback;
+      return JSON.parse(raw);
+    }catch(_err){
+      return fallback;
+    }
+  },
+  setJson(key, value){
+    localStorage.setItem(key, JSON.stringify(value));
+  },
+  remove(key){
+    localStorage.removeItem(key);
+  }
+};
+
+const userRepository = {
+  list(){
+    const users = KhuttaStorage.getJson(KhuttaStorage.keys.users, []);
+    return Array.isArray(users) ? users : [];
+  },
+  saveAll(users){
+    KhuttaStorage.setJson(KhuttaStorage.keys.users, users);
+    return users;
+  },
+  findByEmail(email){
+    const needle = String(email || '').trim().toLowerCase();
+    return this.list().find(user => user.email === needle) || null;
+  },
+  findById(id){
+    return this.list().find(user => user.id === id) || null;
+  },
+  create(user){
+    const users = this.list();
+    users.push(user);
+    this.saveAll(users);
+    return user;
+  }
+};
+
+const sessionRepository = {
+  get(){
+    const session = KhuttaStorage.getJson(KhuttaStorage.keys.session, null);
+    if(!session || !session.userId) return null;
+    return session;
+  },
+  set(session){
+    KhuttaStorage.setJson(KhuttaStorage.keys.session, session);
+    return session;
+  },
+  clear(){
+    KhuttaStorage.remove(KhuttaStorage.keys.session);
+  }
+};
+
+const metaRepository = {
+  get(){
+    const meta = KhuttaStorage.getJson(KhuttaStorage.keys.meta, {});
+    return meta && typeof meta === 'object' ? meta : {};
+  },
+  set(meta){
+    KhuttaStorage.setJson(KhuttaStorage.keys.meta, meta);
+    return meta;
+  }
+};
+
+const planRepository = {
+  keyFor(userId){
+    return KhuttaStorage.keys.plansPrefix + userId;
+  },
+  listByUser(userId){
+    if(!userId) return [];
+    const plans = KhuttaStorage.getJson(this.keyFor(userId), []);
+    return Array.isArray(plans) ? plans : [];
+  },
+  saveForUser(userId, plans){
+    if(!userId) return [];
+    KhuttaStorage.setJson(this.keyFor(userId), plans);
+    return plans;
+  },
+  readLegacy(){
+    const raw = KhuttaStorage.getJson(KhuttaStorage.keys.legacyPlans, []);
+    return Array.isArray(raw) ? raw : [];
+  }
+};
+
+function bytesToHex(buffer){
+  return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function fallbackHash(text){
+  let h = 2166136261;
+  for(let i = 0; i < text.length; i++){
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0).toString(16).padStart(8, '0');
+}
+
+async function hashSecret(password, salt){
+  const payload = String(salt || '') + String(password || '');
+  if(window.crypto && window.crypto.subtle){
+    const encoded = new TextEncoder().encode(payload);
+    const digest = await window.crypto.subtle.digest('SHA-256', encoded);
+    return bytesToHex(digest);
+  }
+  return fallbackHash(payload);
+}
+
+function createEntityId(prefix){
+  const rand = (window.crypto && window.crypto.randomUUID)
+    ? window.crypto.randomUUID().replace(/-/g, '').slice(0, 12)
+    : Math.random().toString(36).slice(2, 10);
+  return prefix + '_' + Date.now().toString(36) + '_' + rand;
+}
+
+function publicUser(user){
+  if(!user) return null;
+  return { id: user.id, name: user.name, email: user.email };
+}
+
+const authService = {
+  currentUser(){
+    const session = sessionRepository.get();
+    if(!session) return null;
+    const user = userRepository.findById(session.userId);
+    if(!user){
+      sessionRepository.clear();
+      return null;
+    }
+    return publicUser(user);
+  },
+  isLoggedIn(){
+    return !!this.currentUser();
+  },
+  async register({name, email, password}){
+    const cleanName = String(name || '').trim();
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    if(!cleanName) throw new Error('اكتب اسمك');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) throw new Error('الإيميل غير صحيح');
+    if(String(password || '').length < 6) throw new Error('كلمة المرور لازم 6 خانات على الأقل');
+    if(userRepository.findByEmail(cleanEmail)) throw new Error('هذا الإيميل مسجّل مسبقًا');
+    const salt = createEntityId('salt');
+    const passwordHash = await hashSecret(password, salt);
+    const user = userRepository.create({
+      id: createEntityId('usr'),
+      name: cleanName,
+      email: cleanEmail,
+      passwordHash,
+      salt,
+      createdAt: new Date().toISOString()
+    });
+    sessionRepository.set({ userId: user.id, name: user.name, email: user.email });
+    migrateLegacyPlansToUser(user.id);
+    return publicUser(user);
+  },
+  async login({email, password}){
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    const user = userRepository.findByEmail(cleanEmail);
+    if(!user) throw new Error('الإيميل أو كلمة المرور غير صحيحة');
+    const passwordHash = await hashSecret(password, user.salt || '');
+    if(passwordHash !== user.passwordHash) throw new Error('الإيميل أو كلمة المرور غير صحيحة');
+    sessionRepository.set({ userId: user.id, name: user.name, email: user.email });
+    migrateLegacyPlansToUser(user.id);
+    return publicUser(user);
+  },
+  logout(){
+    sessionRepository.clear();
+  }
+};
+
+const planService = {
+  list(){
+    return getSavedPlans();
+  },
+  getById(planId){
+    return findPlanRecord(planId);
+  },
+  saveGenerated(meta){
+    return saveGeneratedPlan(meta);
+  },
+  duplicate(planId){
+    return duplicateSavedPlan(planId);
+  },
+  delete(planId){
+    openDeletePlanConfirm(planId);
+  },
+  confirmDelete(){
+    confirmDeleteSavedPlan();
+  },
+  getVersions(planId){
+    return getPlanVersions(planId);
+  },
+  openVersionHistory(planId){
+    openPlanVersionsPanel(planId);
+  },
+  restoreVersion(planId, version){
+    restoreThisPlanVersion(planId, version);
+  },
+  viewVersion(planId, version, asBase){
+    viewOldPlanVersion(planId, version, asBase);
+  },
+  open(planId, mode){
+    openSavedPlan(planId, mode);
+  },
+  resolveHtml(plan, snapshot){
+    return resolvePlanHtml(plan, snapshot);
+  },
+  migrate(){
+    migrateSavedPlansStorage();
+  }
+};
+
+function migrateLegacyPlansToUser(userId){
+  if(!userId) return;
+  const meta = metaRepository.get();
+  const legacy = planRepository.readLegacy();
+  if(!legacy.length) return;
+  if(meta.legacyClaimedBy && meta.legacyClaimedBy !== userId) return;
+  const existing = planRepository.listByUser(userId);
+  const existingIds = new Set(existing.map(plan => plan.id));
+  const claimed = legacy
+    .map(plan => ({
+      ...plan,
+      userId,
+      status: plan.status || (plan.planHtml ? 'جاهزة' : 'مسودة')
+    }))
+    .filter(plan => plan.id && !existingIds.has(plan.id));
+  if(claimed.length){
+    planRepository.saveForUser(userId, [...claimed, ...existing]);
+  }
+  meta.legacyClaimedBy = userId;
+  meta.legacyMigratedAt = new Date().toISOString();
+  metaRepository.set(meta);
+}
+
 const SAVED_PLANS_KEY = 'khutta_saved_plans';
-const SAVED_PLANS_LIMIT = 10;
+const SAVED_PLANS_LIMIT = 40;
+const PLAN_VERSIONS_MAX = 30;
 let activeSavedPlanId = null;
 let isRestoringPlan = false;
 let pendingDeletePlanId = null;
 let versionsPanelPlanId = null;
 let selectedHistoryVersion = null;
+let pendingAuthAction = null;
+let authMode = 'login';
 let versionWorkspace = {
   planId: null,
   draftVersion: null,
@@ -5441,42 +7339,69 @@ function resetVersionWorkspace(){
 }
 
 function createPlanId(){
-  return 'plan_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 8);
+  return createEntityId('plan');
+}
+
+function requireCurrentUserId(){
+  const user = authService.currentUser();
+  return user ? user.id : null;
 }
 
 function readPlansStore(){
-  try{
-    const raw = localStorage.getItem(SAVED_PLANS_KEY);
-    const plans = raw ? JSON.parse(raw) : [];
-    return Array.isArray(plans) ? plans : [];
-  }catch(err){
-    return [];
-  }
+  const userId = requireCurrentUserId();
+  if(!userId) return [];
+  const owned = planRepository.listByUser(userId);
+  if(owned.length) return owned;
+  return [];
 }
 
-function slimPlanForStorage(plan){
-  const slimForm = (form) => form ? {...form, logoDataUrl: null} : form;
+function slimFormForStorage(form){
+  if(!form || typeof form !== 'object') return form;
+  return {...form, logoDataUrl: null};
+}
+
+function compactVersionForStorage(version){
+  if(!version || typeof version !== 'object') return version;
+  const {features, generatedPlan, ...rest} = version;
   return {
-    ...plan,
-    form: slimForm(plan.form),
-    versions: Array.isArray(plan.versions)
-      ? plan.versions.map(version => ({
-          ...version,
-          form: slimForm(version.form)
-        }))
-      : plan.versions
+    ...rest,
+    form: slimFormForStorage(version.form)
   };
 }
 
+function compactPlanForStorage(plan){
+  if(!plan || typeof plan !== 'object') return plan;
+  let versions = Array.isArray(plan.versions)
+    ? plan.versions.map(compactVersionForStorage)
+    : plan.versions;
+  if(Array.isArray(versions) && versions.length > PLAN_VERSIONS_MAX){
+    versions = [...versions]
+      .sort((a, b) => (b.version || 0) - (a.version || 0))
+      .slice(0, PLAN_VERSIONS_MAX);
+  }
+  return {
+    ...plan,
+    form: slimFormForStorage(plan.form),
+    versions
+  };
+}
+
+function slimPlanForStorage(plan){
+  return compactPlanForStorage(plan);
+}
+
 function writePlansStore(plans){
+  const userId = requireCurrentUserId();
+  if(!userId) return [];
   const sorted = [...plans]
+    .map(plan => compactPlanForStorage({...plan, userId: plan.userId || userId}))
     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
     .slice(0, SAVED_PLANS_LIMIT);
   try{
-    localStorage.setItem(SAVED_PLANS_KEY, JSON.stringify(sorted));
+    planRepository.saveForUser(userId, sorted);
   }catch(err){
     try{
-      localStorage.setItem(SAVED_PLANS_KEY, JSON.stringify(sorted.map(slimPlanForStorage)));
+      planRepository.saveForUser(userId, sorted.map(compactPlanForStorage));
     }catch(e){
       console.warn('تعذّر حفظ الخطط محليًا', e);
     }
@@ -5505,10 +7430,11 @@ function buildPlanVersionSnapshot(source, version, when, changeSummary){
   const vacations = Array.isArray(source.vacations)
     ? source.vacations.slice()
     : (Array.isArray(form.selectedHolidays) ? form.selectedHolidays.slice() : []);
-  const planHtml = (source.generatedPlan && source.generatedPlan.planHtml) || source.planHtml || '';
   const sprintValue = Array.isArray(source.sprints)
     ? source.sprints
     : (source.sprints || form.sprintNum ? [source.sprints || form.sprintNum] : []);
+  const includeFeatures = shouldIncludeFeatures(form, source.featureCount);
+  const scopedItems = scope.filter(item => String(item.text || '').trim());
   return {
     version,
     createdAt: source.createdAt || when,
@@ -5518,13 +7444,9 @@ function buildPlanVersionSnapshot(source, version, when, changeSummary){
     projectCode: source.projectCode || '',
     projectNameEn: source.projectNameEn || form.projectName || '',
     scope,
-    features: scope.map(item => ({
-      text: item.text || '',
-      features: Number(item.features) || 0
-    })),
     team,
     estimations: {
-      featureCount: Number(source.featureCount) || 0,
+      featureCount: includeFeatures ? sumScopeFeatures(scopedItems) : 0,
       feedbackDays: form.feedbackDays || '',
       duration: source.duration == null ? null : source.duration,
       sprints: source.sprints || form.sprintNum || ''
@@ -5538,7 +7460,6 @@ function buildPlanVersionSnapshot(source, version, when, changeSummary){
     duration: source.duration == null ? null : source.duration,
     sprints: sprintValue,
     cost: source.cost,
-    generatedPlan: { planHtml },
     form
   };
 }
@@ -5627,7 +7548,13 @@ function getPlanComparePayload(source){
     feedbackDays: String((source.estimations && source.estimations.feedbackDays) || form.feedbackDays || ''),
     sprints: String(sprints).trim(),
     cost: source.cost === '' || source.cost == null ? '' : Number(source.cost),
-    featureCount: Number(source.featureCount || (source.estimations && source.estimations.featureCount) || 0)
+    featureCount: Number(source.featureCount || (source.estimations && source.estimations.featureCount) || 0),
+    releasePhases: (form.releasePhases || []).map(phase => ({
+      id: String(phase.id || phase.text || ''),
+      startDate: phase.startDate || '',
+      endDate: phase.endDate || ''
+    })),
+    includeReleasePhases: !!form.includeReleasePhases
   });
 }
 
@@ -5660,6 +7587,7 @@ function comparePlanVersions(oldVersion, newVersion){
   if(prev.sprints !== next.sprints) changes.push('sprints');
   if(prev.cost !== next.cost) changes.push('cost');
   if(prev.projectName !== next.projectName || prev.projectNameEn !== next.projectNameEn) changes.push('name');
+  if(!sameCompareValue(prev.releasePhases, next.releasePhases) || prev.includeReleasePhases !== next.includeReleasePhases) changes.push('dates');
   return { changed: changes.length > 0, changes };
 }
 
@@ -5768,10 +7696,19 @@ function updatePlanVersion(planId, versionNumber, data, baseline){
 }
 
 function migrateSavedPlansStorage(){
+  const user = authService.currentUser();
+  if(user) migrateLegacyPlansToUser(user.id);
   const raw = readPlansStore();
-  const needsWrite = raw.some(plan => !plan || !Array.isArray(plan.versions) || !plan.versions.length);
+  const needsWrite = raw.some(plan => {
+    if(!plan || !Array.isArray(plan.versions) || !plan.versions.length || !plan.userId) return true;
+    return plan.versions.some(version => version.generatedPlan || version.features);
+  });
   if(!needsWrite) return;
-  persistPlans(raw.map(ensurePlanVersions));
+  persistPlans(raw.map(plan => ensurePlanVersions({
+    ...plan,
+    userId: plan.userId || (user && user.id),
+    status: plan.status || (plan.planHtml ? 'جاهزة' : 'مسودة')
+  })));
 }
 
 function fmtVersionDate(iso){
@@ -5779,7 +7716,9 @@ function fmtVersionDate(iso){
   const d = new Date(iso);
   if(isNaN(d)) return '';
   const months = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} · ${hh}:${mm}`;
 }
 
 function planVersionNumber(plan){
@@ -5818,17 +7757,24 @@ function collectFormSnapshot(){
     productNameValue,
     projectName: document.getElementById('projectName').value.trim(),
     reqItems: reqItems.map(item => ({...item})),
-    includeFeatures: document.getElementById('includeFeatures').checked,
-    featuresManual: document.getElementById('featuresManual').value.trim(),
+    includeFeaturesToggle: isFeaturesEnabled(),
+    includeFeatures: isFeaturesEnabled(),
     startDate: document.getElementById('startDate').value,
     endDate: document.getElementById('endDate').value,
     tbdEnd: document.getElementById('tbdEnd').checked,
     includeLeave: isLeaveEnabled(),
+    includeReleasePhases: isReleasePhasesEnabled(),
     selectedHolidays: selectedHolidays.slice(),
     selectedAssignees: selectedAssignees.slice(),
     assigneeGrades: {...assigneeGrades},
     feedbackDays: document.getElementById('feedbackDays').value,
-    dependencies: document.getElementById('depsNotes').value.trim()
+    dependencies: document.getElementById('depsNotes').value.trim(),
+    releasePhases: releasePhases.map(phase => ({
+      id: phase.id,
+      text: phase.text,
+      startDate: phase.startDate || '',
+      endDate: phase.endDate || ''
+    }))
   };
 }
 
@@ -5843,33 +7789,43 @@ function applyFormSnapshot(form){
     document.getElementById('ticketId').value = data.ticketNum || '';
     document.getElementById('sprintNum').value = data.sprintNum || '';
 
-    productNameValue = data.productNameValue || '';
-    document.getElementById('projectName').value = data.projectName || '';
+    productNameValue = data.productNameValue || data.projectName || '';
+    document.getElementById('projectName').value = data.projectName || data.projectNameEn || data.productNameValue || '';
     updateProductTrigger();
 
     reqItems = (data.reqItems && data.reqItems.length)
       ? data.reqItems.map(item => ({
           text: item.text || '',
-          features: item.features ?? 1,
+          features: item.features == null ? '' : item.features,
           startDate: item.startDate || '',
           endDate: item.endDate || ''
         }))
-      : [{text:'', features:1, startDate:'', endDate:''}];
+      : [{text:'', features:'', startDate:'', endDate:''}];
+    expandedReqIndex = defaultExpandedReqIndex();
+    reqSearchQuery = '';
     renderReqList();
 
-    document.getElementById('includeFeatures').checked = !!data.includeFeatures;
-    document.getElementById('featuresManual').value = data.featuresManual || '';
-    syncFeaturesManualState();
+    const featuresToggle = document.getElementById('includeFeaturesToggle');
+    if(featuresToggle){
+      featuresToggle.checked = resolveIncludeFeaturesFromForm(data, data.featureCount);
+    }
+    syncFeaturesToggleState();
 
     document.getElementById('startDate').value = data.startDate || '';
     document.getElementById('endDate').value = data.endDate || '';
     document.getElementById('tbdEnd').checked = !!data.tbdEnd;
-    document.getElementById('endDate').disabled = !!data.tbdEnd;
+    if(typeof syncProjectRangeTrigger === 'function') syncProjectRangeTrigger();
 
     selectedHolidays = Array.isArray(data.selectedHolidays) ? data.selectedHolidays.slice() : [];
     document.getElementById('includeLeave').checked = data.includeLeave != null
       ? !!data.includeLeave
       : selectedHolidays.length > 0;
+    const releaseToggle = document.getElementById('includeReleasePhases');
+    if(releaseToggle){
+      releaseToggle.checked = data.includeReleasePhases != null
+        ? !!data.includeReleasePhases
+        : Array.isArray(data.releasePhases) && data.releasePhases.some(phase => phase.startDate || phase.endDate);
+    }
     selectedAssignees = Array.isArray(data.selectedAssignees) ? data.selectedAssignees.slice() : [];
     assigneeGrades = data.assigneeGrades && typeof data.assigneeGrades === 'object'
       ? {...data.assigneeGrades}
@@ -5877,6 +7833,16 @@ function applyFormSnapshot(form){
 
     document.getElementById('feedbackDays').value = data.feedbackDays || '';
     document.getElementById('depsNotes').value = data.dependencies || '';
+    releasePhases = defaultReleasePhases();
+    if(Array.isArray(data.releasePhases)){
+      data.releasePhases.forEach(saved => {
+        const row = releasePhases.find(phase => phase.id === saved.id || phase.text === saved.text);
+        if(!row) return;
+        row.startDate = saved.startDate || '';
+        row.endDate = saved.endDate || '';
+      });
+    }
+    renderReleasePhases();
 
     const start = parseIsoDate(data.startDate);
     if(start) calendarView = {year: start.getFullYear(), month: start.getMonth()};
@@ -5911,9 +7877,14 @@ function findExistingSavedPlan(plans, payload){
 }
 
 function saveGeneratedPlan(meta){
+  const user = authService.currentUser();
+  if(!user) return { planId: null, createdVersion: false, versionNumber: 1, requiresAuth: true };
   const now = new Date().toISOString();
   const form = collectFormSnapshot();
+  const includeFeatures = shouldIncludeFeatures(form, 0);
+  const scopedItems = getScopedReqItems(form.reqItems);
   const payload = {
+    userId: user.id,
     projectName: form.productNameValue || form.projectName || 'خطة بدون اسم',
     projectNameEn: form.projectName,
     projectCode: meta.ticketId || '',
@@ -5921,7 +7892,8 @@ function saveGeneratedPlan(meta){
     startDate: form.startDate || '',
     targetDate: form.tbdEnd ? '' : (form.endDate || ''),
     tbdEnd: !!form.tbdEnd,
-    featureCount: Number(meta.featureCount) || 0,
+    featureCount: includeFeatures ? sumScopeFeatures(scopedItems) : 0,
+    includeFeatures,
     teamCount: selectedAssignees.length,
     duration: meta.totalWorkingDays,
     sprints: form.sprintNum || '',
@@ -5935,6 +7907,7 @@ function saveGeneratedPlan(meta){
     dependencies: form.dependencies,
     risks: Array.isArray(meta.risks) ? meta.risks : [],
     cost: meta.costAmountVal,
+    status: 'جاهزة',
     planHtml: document.getElementById('docPreview').innerHTML,
     form
   };
@@ -5946,6 +7919,7 @@ function saveGeneratedPlan(meta){
     first.createdAt = now;
     const plan = {
       id: createPlanId(),
+      userId: user.id,
       createdAt: now,
       updatedAt: now,
       currentVersion: 1,
@@ -6001,17 +7975,40 @@ function saveGeneratedPlan(meta){
 }
 
 function planCardMeta(plan){
-  const features = `${plan.featureCount || 0} ميزة`;
+  const includeFeatures = shouldIncludeFeatures(plan.form || {}, plan.featureCount);
+  const features = includeFeatures ? `${plan.featureCount || sumScopeFeatures((plan.form && plan.form.reqItems) || plan.scope || [])} ميزة` : '';
   const scope = Array.isArray(plan.scope) ? plan.scope : ((plan.form && plan.form.reqItems) || []);
   const phases = scope.filter(item => String(item.text || '').trim()).length;
   const duration = (plan.duration === null || plan.duration === undefined || plan.duration === '')
     ? 'المدة غير محددة'
     : `${plan.duration} يوم عمل`;
   const members = `${plan.teamCount || 0} أعضاء`;
+  const line1Parts = [features, phases ? `${phases} مراحل` : ''].filter(Boolean);
   return {
-    line1: `${features} · ${phases} مراحل`,
+    line1: line1Parts.join(' · '),
     line2: `${duration} · ${members}`
   };
+}
+
+function planStatusLabel(plan){
+  return plan.status || (plan.planHtml ? 'جاهزة' : 'مسودة');
+}
+
+function fmtCardDateTime(iso){
+  if(!iso) return '—';
+  const d = new Date(iso);
+  if(isNaN(d)) return '—';
+  return fmtVersionDate(iso);
+}
+
+function planCardFactsHtml(plan){
+  const product = plan.projectNameEn || plan.form && plan.form.projectName || plan.projectName || '—';
+  return `<div class="plan-card-facts">
+    <span>المنتج: ${escapeHtml(product)}</span>
+    <span>تاريخ الإنشاء: ${escapeHtml(fmtCardDateTime(plan.createdAt || plan.generatedDate))}</span>
+    <span>آخر تعديل: ${escapeHtml(fmtCardDateTime(plan.updatedAt || plan.generatedDate || plan.createdAt))}</span>
+    <span>الحالة: <span class="plan-status-pill">${escapeHtml(planStatusLabel(plan))}</span></span>
+  </div>`;
 }
 
 function planCardDateHtml(plan){
@@ -6038,8 +8035,9 @@ function renderHomePlanCard(plan){
     </div>
     <p class="plan-card-meta">${escapeHtml(meta.line1)}</p>
     <p class="plan-card-meta">${escapeHtml(meta.line2)}</p>
-    ${planCardDateHtml(plan)}
+    ${planCardFactsHtml(plan)}
     <button type="button" class="plan-card-cta" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="continue">افتح الخطة</button>
+    <button type="button" class="plan-card-cta ghost" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="duplicate">نسخ الخطة</button>
     <button type="button" class="plan-card-cta ghost" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="versions">النسخ السابقة</button>
   </article>`;
 }
@@ -6054,12 +8052,13 @@ function renderLibraryPlanCard(plan){
     </div>
     <p class="plan-card-meta">${escapeHtml(meta.line1)}</p>
     <p class="plan-card-meta">${escapeHtml(meta.line2)}</p>
-    ${planCardDateHtml(plan)}
+    ${planCardFactsHtml(plan)}
     <div class="plan-card-actions">
-      <button type="button" class="plan-action-btn primary" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="continue">افتح الخطة</button>
-      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="versions">النسخ السابقة</button>
-      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="view">عرض الخطة</button>
-      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="duplicate">خذ منها نسخة</button>
+      <button type="button" class="plan-action-btn primary" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="continue">فتح</button>
+      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="edit">تعديل</button>
+      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="duplicate">نسخ</button>
+      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="versions">سجل النسخ</button>
+      <button type="button" class="plan-action-btn" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="view">عرض</button>
       <button type="button" class="plan-action-btn danger" data-plan-id="${escapeHtml(plan.id)}" data-plan-action="delete">حذف</button>
     </div>
   </article>`;
@@ -6069,6 +8068,17 @@ function renderSavedHome(){
   const box = document.getElementById('savedHome');
   if(!box) return;
   const plans = getSavedPlans();
+  if(!authService.isLoggedIn()){
+    box.innerHTML = `
+      <div class="saved-empty">
+        <h2>خططي</h2>
+        <p>سجل دخولك عشان خططك تنحفظ هنا وما تضيع بعد ما تسكّر الصفحة.</p>
+        <div class="saved-empty-actions">
+          <button type="button" class="plan-action-btn primary" id="guestLoginFromHome">دخول / إنشاء حساب</button>
+        </div>
+      </div>`;
+    return;
+  }
   if(!plans.length){
     box.innerHTML = `
       <div class="saved-empty">
@@ -6081,7 +8091,7 @@ function renderSavedHome(){
   const recent = plans.slice(0, 3);
   box.innerHTML = `
     <div class="saved-home-head">
-      <h2>خططك جاهزة 👋</h2>
+      <h2>خططي</h2>
       <p>كل خطة طلّعتها من خُطّة تلقاها هنا، ارجع لها وعدّل عليها بأي وقت.</p>
     </div>
     <div class="saved-kicker">آخر خططك</div>
@@ -6095,6 +8105,13 @@ function renderSavedHome(){
 function renderPlansLibrary(){
   const grid = document.getElementById('plansLibraryGrid');
   if(!grid) return;
+  if(!authService.isLoggedIn()){
+    grid.innerHTML = `<div class="saved-empty" style="grid-column:1 / -1">
+      <h2>سجل دخولك أول</h2>
+      <p>كل مستخدم يشوف خططه فقط، وخططك تبقى محفوظة في هذا المتصفح.</p>
+    </div>`;
+    return;
+  }
   const plans = getSavedPlans();
   if(!plans.length){
     grid.innerHTML = `<div class="saved-empty" style="grid-column:1 / -1">
@@ -6133,16 +8150,41 @@ function syncEditingBanner(){
   }
 }
 
+function formFromPlan(plan){
+  const form = plan && plan.form ? {...plan.form} : {};
+  if(form.includeFeaturesToggle == null && resolveIncludeFeaturesFromForm(form, plan && plan.featureCount)){
+    form.includeFeaturesToggle = true;
+  }
+  if(!form.ticketNum && plan && plan.projectCode){
+    form.ticketNum = String(plan.projectCode).replace(/^DSBI-/i, '');
+  }
+  if(!form.endDate && plan && plan.targetDate){
+    form.endDate = plan.targetDate;
+  }
+  if(form.tbdEnd == null && plan && plan.tbdEnd != null){
+    form.tbdEnd = !!plan.tbdEnd;
+  }
+  if(!form.startDate && plan && plan.startDate){
+    form.startDate = plan.startDate;
+  }
+  return form;
+}
+
 function startNewPlan(){
+  if(!authService.isLoggedIn()){
+    openAuthOverlay('create');
+    return;
+  }
   activeSavedPlanId = null;
   resetVersionWorkspace();
   applyFormSnapshot({
     startDate: toIsoDate(new Date()),
-    reqItems: [{text:'', features:1, startDate:'', endDate:''}]
+    reqItems: [{text:'', features:'', startDate:'', endDate:''}]
   });
   document.getElementById('logoInput').value = '';
   document.getElementById('docPreview').innerHTML = '<div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>';
   document.getElementById('downloadBtn').disabled = true;
+  syncPlanEmailBtn();
   document.getElementById('generateBtn').textContent = 'توليد الخطة';
   document.getElementById('status').textContent = '';
   document.getElementById('status').className = '';
@@ -6161,6 +8203,10 @@ function renderSavedPlansUI(){
 }
 
 function openPlansLibrary(){
+  if(!authService.isLoggedIn()){
+    openAuthOverlay('plans');
+    return;
+  }
   renderPlansLibrary();
   document.getElementById('plansLibraryOverlay').classList.add('open');
 }
@@ -6171,9 +8217,14 @@ function closePlansLibrary(){
 
 function revealGeneratedPlan(planHtml){
   if(!planHtml) return;
-  document.getElementById('docPreview').innerHTML = planHtml;
+  const preview = document.getElementById('docPreview');
+  preview.innerHTML = planHtml;
+  const saved = activeSavedPlanId ? findPlanRecord(activeSavedPlanId) : null;
+  preview.dataset.projectName = (saved && (saved.projectNameEn || saved.projectName)) || productNameValue || document.getElementById('projectName').value.trim() || '';
+  layoutPlanPages(preview);
   document.getElementById('downloadBtn').disabled = false;
   document.getElementById('generateBtn').textContent = 'تحديث الخطة';
+  syncPlanEmailBtn();
 }
 
 function openSavedPlan(id, mode){
@@ -6186,8 +8237,8 @@ function openSavedPlan(id, mode){
     viewingVersion: null,
     usingOldAsBase: false
   };
-  applyFormSnapshot(plan.form || {});
-  revealGeneratedPlan(plan.planHtml);
+  applyFormSnapshot(formFromPlan(plan));
+  revealGeneratedPlan(resolvePlanHtml(plan));
   closePlansLibrary();
   renderSavedPlansUI();
   const target = mode === 'view'
@@ -6197,25 +8248,33 @@ function openSavedPlan(id, mode){
 }
 
 function duplicateSavedPlan(id){
+  if(!authService.isLoggedIn()){
+    openAuthOverlay('save');
+    return;
+  }
   const plans = getSavedPlans();
   const src = plans.find(item => item.id === id);
   if(!src) return;
+  const user = authService.currentUser();
   const now = new Date().toISOString();
   const copy = JSON.parse(JSON.stringify(src));
+  const sourceName = src.projectName || src.projectNameEn || 'خطة';
   copy.id = createPlanId();
+  copy.userId = user.id;
   copy.createdAt = now;
   copy.updatedAt = now;
   copy.generatedDate = now;
-  copy.projectName = (src.projectName || src.projectNameEn || 'خطة') + ' — نسخة';
+  copy.projectName = `نسخة من ${sourceName}`;
   copy.projectCode = '';
+  copy.status = src.status || 'جاهزة';
   if(copy.form){
     copy.form.ticketNum = '';
     copy.form.productNameValue = copy.projectName;
     copy.form.projectName = src.form && src.form.projectName
-      ? src.form.projectName + ' — Copy'
+      ? src.form.projectName
       : copy.projectName;
   }
-  const firstCopy = buildPlanVersionSnapshot(copy, 1, now, 'أول نسخة');
+  const firstCopy = buildPlanVersionSnapshot(copy, 1, now, 'نسخة مستقلة');
   firstCopy.createdAt = now;
   copy.currentVersion = 1;
   copy.versions = [firstCopy];
@@ -6228,12 +8287,12 @@ function duplicateSavedPlan(id){
     viewingVersion: null,
     usingOldAsBase: false
   };
-  applyFormSnapshot(copy.form || {});
-  revealGeneratedPlan(copy.planHtml);
+  applyFormSnapshot(formFromPlan(copy));
+  revealGeneratedPlan(resolvePlanHtml(copy));
   closePlansLibrary();
   renderSavedPlansUI();
   document.querySelector('.panel').scrollIntoView({behavior:'smooth', block:'start'});
-  showAppToast('خذيت منها نسخة، عدّل براحتك ✓');
+  showAppToast('تم نسخ الخطة، وعدّل عليها بدون ما تتأثر الأصلية ✓');
 }
 
 function openDeletePlanConfirm(id){
@@ -6249,13 +8308,25 @@ function closeDeletePlanConfirm(){
 function confirmDeleteSavedPlan(){
   const id = pendingDeletePlanId;
   if(!id) return;
+  const viewingDeleted = activeSavedPlanId === id || versionsPanelPlanId === id;
   const plans = getSavedPlans().filter(plan => plan.id !== id);
   persistPlans(plans);
   if(activeSavedPlanId === id){
     activeSavedPlanId = null;
     resetVersionWorkspace();
   }
+  if(versionsPanelPlanId === id) closePlanVersionsPanel();
   closeDeletePlanConfirm();
+  if(viewingDeleted){
+    const preview = document.getElementById('docPreview');
+    preview.innerHTML = '<div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>';
+    delete preview.dataset.projectName;
+    document.getElementById('downloadBtn').disabled = true;
+    syncPlanEmailBtn();
+    document.getElementById('generateBtn').textContent = 'توليد الخطة';
+    document.getElementById('status').textContent = '';
+    document.getElementById('status').className = '';
+  }
   renderSavedPlansUI();
   if(!getSavedPlans().length) closePlansLibrary();
   showAppToast('تم، حذفنا الخطة');
@@ -6263,7 +8334,11 @@ function confirmDeleteSavedPlan(){
 
 function handleSavedPlanAction(action, id){
   if(!action || !id) return;
-  if(action === 'continue') openSavedPlan(id, 'edit');
+  if(!authService.isLoggedIn()){
+    openAuthOverlay('plans');
+    return;
+  }
+  if(action === 'continue' || action === 'edit') openSavedPlan(id, 'edit');
   else if(action === 'view') openSavedPlan(id, 'view');
   else if(action === 'versions') openPlanVersionsPanel(id);
   else if(action === 'duplicate') duplicateSavedPlan(id);
@@ -6294,6 +8369,8 @@ function renderPlanVersionsList(){
     const selected = restorePlanVersion(versionsPanelPlanId, selectedHistoryVersion);
     const isCurrent = !!(latest && selected && selected.version === latest.version);
     foot.classList.toggle('is-open', !!selected);
+    const restoreBtn = document.getElementById('restoreVersionBtn');
+    if(restoreBtn) restoreBtn.hidden = isCurrent;
     if(hint){
       hint.textContent = isCurrent
         ? 'هذي النسخة الحالية من الخطة'
@@ -6320,6 +8397,76 @@ function closePlanVersionsPanel(){
   selectedHistoryVersion = null;
 }
 
+function payloadFromSnapshot(plan, snapshot){
+  const form = snapshot.form ? cloneData(snapshot.form) : cloneData(plan.form || {});
+  const planHtml = resolvePlanHtml(plan, snapshot);
+  const featureCount = Number((snapshot.estimations && snapshot.estimations.featureCount) || plan.featureCount) || 0;
+  return {
+    userId: plan.userId,
+    projectName: snapshot.projectName || plan.projectName,
+    projectNameEn: snapshot.projectNameEn || plan.projectNameEn,
+    projectCode: snapshot.projectCode || plan.projectCode || '',
+    generatedDate: snapshot.updatedAt || new Date().toISOString(),
+    startDate: snapshot.startDate || form.startDate || '',
+    targetDate: snapshot.targetDate || '',
+    tbdEnd: !!snapshot.tbdEnd,
+    featureCount,
+    includeFeatures: shouldIncludeFeatures(form, featureCount),
+    teamCount: (snapshot.team && Array.isArray(snapshot.team.assignees) ? snapshot.team.assignees.length : plan.teamCount) || 0,
+    duration: snapshot.duration == null ? plan.duration : snapshot.duration,
+    sprints: Array.isArray(snapshot.sprints) ? (snapshot.sprints[0] || '') : (snapshot.sprints || plan.sprints || ''),
+    scope: snapshot.scope || form.reqItems || [],
+    team: snapshot.team || plan.team,
+    vacations: snapshot.vacations || form.selectedHolidays || [],
+    dependencies: snapshot.dependencies || form.dependencies || '',
+    risks: Array.isArray(snapshot.risks) ? snapshot.risks : (plan.risks || []),
+    cost: snapshot.cost,
+    status: plan.status || 'جاهزة',
+    planHtml,
+    form
+  };
+}
+
+function restoreThisPlanVersion(planId, version){
+  const snapshot = restorePlanVersion(planId, version);
+  const plan = findPlanRecord(planId);
+  if(!snapshot || !plan) return;
+  const latest = getLatestPlanVersion(planId);
+  if(latest && Number(snapshot.version) === Number(latest.version)){
+    viewOldPlanVersion(planId, version, false);
+    return;
+  }
+  if(activeSavedPlanId === planId && hasGeneratedOnce()){
+    const livePayload = {
+      ...plan,
+      form: collectFormSnapshot(),
+      planHtml: document.getElementById('docPreview').innerHTML,
+      changeSummary: 'حفظنا النسخة الحالية قبل الاسترجاع'
+    };
+    if(comparePlanVersions(latest, livePayload).changed){
+      createPlanVersion(planId, livePayload);
+    }
+  }
+  const restored = createPlanVersion(planId, {
+    ...payloadFromSnapshot(findPlanRecord(planId) || plan, snapshot),
+    changeSummary: `تم الرجوع إلى v${snapshot.version}`
+  });
+  activeSavedPlanId = planId;
+  versionWorkspace = {
+    planId,
+    draftVersion: restored ? restored.version : null,
+    viewingVersion: null,
+    usingOldAsBase: false
+  };
+  const updated = findPlanRecord(planId);
+  applyFormSnapshot(formFromPlan(updated || plan));
+  revealGeneratedPlan(resolvePlanHtml(updated || plan, snapshot));
+  closePlanVersionsPanel();
+  renderSavedPlansUI();
+  document.querySelector('.panel').scrollIntoView({behavior:'smooth', block:'start'});
+  showAppToast('رجعنا للنسخة السابقة', 'والنسخة اللي كنت فيها محفوظة في السجل.');
+}
+
 function viewOldPlanVersion(planId, version, asBase){
   const snapshot = restorePlanVersion(planId, version);
   const plan = findPlanRecord(planId);
@@ -6334,8 +8481,8 @@ function viewOldPlanVersion(planId, version, asBase){
       viewingVersion: snapshot.version,
       usingOldAsBase: true
     };
-    applyFormSnapshot(snapshot.form || plan.form || {});
-    revealGeneratedPlan((snapshot.generatedPlan && snapshot.generatedPlan.planHtml) || plan.planHtml);
+    applyFormSnapshot(formFromPlan({...plan, form: snapshot.form || plan.form, featureCount: (snapshot.estimations && snapshot.estimations.featureCount) || plan.featureCount}));
+    revealGeneratedPlan(resolvePlanHtml(plan, snapshot));
   }else if(!isCurrent){
     versionWorkspace = {
       planId,
@@ -6343,7 +8490,7 @@ function viewOldPlanVersion(planId, version, asBase){
       viewingVersion: snapshot.version,
       usingOldAsBase: false
     };
-    revealGeneratedPlan((snapshot.generatedPlan && snapshot.generatedPlan.planHtml) || plan.planHtml);
+    revealGeneratedPlan(resolvePlanHtml(plan, snapshot));
   }else{
     versionWorkspace = {
       planId,
@@ -6351,8 +8498,8 @@ function viewOldPlanVersion(planId, version, asBase){
       viewingVersion: null,
       usingOldAsBase: false
     };
-    applyFormSnapshot(plan.form || {});
-    revealGeneratedPlan(plan.planHtml);
+    applyFormSnapshot(formFromPlan(plan));
+    revealGeneratedPlan(resolvePlanHtml(plan));
   }
   closePlanVersionsPanel();
   renderSavedPlansUI();
@@ -6385,7 +8532,15 @@ document.getElementById('useOldVersionPanelBtn').addEventListener('click', () =>
   if(!versionsPanelPlanId || !selectedHistoryVersion) return;
   viewOldPlanVersion(versionsPanelPlanId, selectedHistoryVersion, true);
 });
+document.getElementById('restoreVersionBtn').addEventListener('click', () => {
+  if(!versionsPanelPlanId || !selectedHistoryVersion) return;
+  restoreThisPlanVersion(versionsPanelPlanId, selectedHistoryVersion);
+});
 document.getElementById('savedHome').addEventListener('click', (e) => {
+  if(e.target.id === 'guestLoginFromHome'){
+    openAuthOverlay('plans');
+    return;
+  }
   if(e.target.id === 'newPlanFromHomeBtn'){
     startNewPlan();
     return;
@@ -6415,6 +8570,14 @@ document.getElementById('deletePlanCancel').addEventListener('click', closeDelet
 document.getElementById('deletePlanConfirm').addEventListener('click', confirmDeleteSavedPlan);
 document.getElementById('deletePlanOverlay').addEventListener('click', (e) => {
   if(e.target.id === 'deletePlanOverlay') closeDeletePlanConfirm();
+});
+document.getElementById('planEmailBtn').addEventListener('click', openPlanEmailModal);
+document.getElementById('planEmailClose').addEventListener('click', closePlanEmailModal);
+document.getElementById('planEmailCancel').addEventListener('click', closePlanEmailModal);
+document.getElementById('planEmailEdit').addEventListener('click', togglePlanEmailEdit);
+document.getElementById('planEmailCopy').addEventListener('click', copyPlanEmailDraft);
+document.getElementById('planEmailOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'planEmailOverlay') closePlanEmailModal();
 });
 const ONBOARDING_KEY = 'khuttaOnboardingSeen';
 const WELCOME_KEY = 'khuttaWelcomeSeen';
@@ -6516,7 +8679,7 @@ function isOtherModalOpen(){
   return [
     'welcomeOverlay', 'tipsOverlay', 'announceDismissOverlay', 'khuttaVision',
     'curiousOverlay', 'advocateOverlay', 'milestoneOverlay', 'deletePlanOverlay',
-    'planVersionsOverlay', 'plansLibraryOverlay'
+    'planVersionsOverlay', 'plansLibraryOverlay', 'authOverlay'
   ].some(id => document.getElementById(id)?.classList.contains('open'));
 }
 function maybeOfferGuide(){
@@ -6738,6 +8901,290 @@ function copyTextFallback(text){
     return false;
   }
 }
+
+const PLAN_EMAIL_FIELD_DEFS = [
+  {key:'productName', label:'اسم المنتج', placeholder:'مثال: نافذ', dir:'rtl'},
+  {key:'scopeName', label:'اسم الـ Scope', placeholder:'مثال: Nafith Mobile Release', dir:'ltr'},
+  {key:'ticketNumber', label:'رقم الطلب', placeholder:'مثال: DSBI-12345', dir:'ltr'},
+  {key:'launchDate', label:'تاريخ التسليم المخطط', placeholder:'مثال: 15/03/2026', dir:'ltr'}
+];
+let planEmailEditing = false;
+let planEmailOverrides = {};
+let planEmailLastFocus = null;
+let planEmailCopyTimer = null;
+
+function syncPlanEmailBtn(){
+  const btn = document.getElementById('planEmailBtn');
+  if(!btn) return;
+  const ready = hasGeneratedOnce();
+  btn.hidden = !ready;
+  btn.disabled = !ready;
+}
+
+function normalizePlanTicketNumber(value){
+  const raw = String(value || '').trim();
+  if(!raw || /^tbd$/i.test(raw)) return '';
+  return /^DSBI-/i.test(raw) ? raw.toUpperCase().replace(/^dsbi-/i, 'DSBI-') : ('DSBI-' + raw.replace(/^DSBI-/i, ''));
+}
+
+function collectPlanItemEndDates(items){
+  if(!Array.isArray(items)) return [];
+  return items
+    .map(item => item && item.endDate ? String(item.endDate).slice(0, 10) : '')
+    .filter(date => parseIsoDate(date));
+}
+
+function latestPlanEndIsoDate(...dateGroups){
+  const dates = dateGroups
+    .flat()
+    .filter(Boolean)
+    .map(date => String(date).slice(0, 10))
+    .filter(date => parseIsoDate(date));
+  if(!dates.length) return '';
+  return dates.sort().pop();
+}
+
+function parseTicketFromPlanPreview(){
+  const el = document.querySelector('#docPreview .doc-title .ticket');
+  return el ? normalizePlanTicketNumber(el.textContent.trim()) : '';
+}
+
+function parseScopeFromPlanPreview(){
+  const el = document.querySelector('#docPreview .doc-title .project-name');
+  return el ? String(el.textContent || '').trim() : '';
+}
+
+function parseDeliveryEndFromPlanPreview(){
+  const row = document.querySelector('#docPreview .doc-estimations .doc-table tr:nth-child(2)');
+  if(!row) return '';
+  const cell = row.querySelector('td:nth-child(3)');
+  if(!cell) return '';
+  const text = cell.textContent.trim();
+  if(!text || /^tbd$/i.test(text) || text === 'غير محدد') return '';
+  const match = text.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(!match) return '';
+  return `${match[3]}-${match[2]}-${match[1]}`;
+}
+
+function getPlanProductNameForEmail(){
+  const placeholder = 'اختر أو أضف اسم المنتج';
+  const isValidProductName = (name) => {
+    const value = String(name || '').trim();
+    return value && value !== placeholder && value !== 'خطة بدون اسم';
+  };
+  if(isValidProductName(productNameValue)) return String(productNameValue).trim();
+  const trigger = document.getElementById('productTriggerText')?.textContent.trim() || '';
+  if(isValidProductName(trigger)) return trigger;
+  const saved = activeSavedPlanId ? findPlanRecord(activeSavedPlanId) : null;
+  const form = saved && saved.form ? saved.form : null;
+  const fromForm = String(form && form.productNameValue || '').trim();
+  return isValidProductName(fromForm) ? fromForm : '';
+}
+
+function collectPlanEmailBaseContext(){
+  const saved = activeSavedPlanId ? findPlanRecord(activeSavedPlanId) : null;
+  const form = saved && saved.form ? saved.form : null;
+  const ticketNumber = normalizePlanTicketNumber(
+    document.getElementById('ticketId').value.trim()
+    || (form && form.ticketNum)
+    || (saved && saved.projectCode)
+    || parseTicketFromPlanPreview()
+  );
+
+  const scopeName = String(
+    document.getElementById('projectName').value.trim()
+    || (saved && (saved.projectNameEn || saved.projectName))
+    || (form && form.projectName)
+    || parseScopeFromPlanPreview()
+    || ''
+  ).trim();
+
+  const tbdEnd = document.getElementById('tbdEnd').checked
+    || !!(form && form.tbdEnd)
+    || !!(saved && saved.tbdEnd);
+  const deliveryEndIso = tbdEnd ? '' : latestPlanEndIsoDate(
+    [
+      document.getElementById('endDate').value,
+      form && form.endDate,
+      saved && saved.targetDate,
+      parseDeliveryEndFromPlanPreview()
+    ],
+    collectPlanItemEndDates(form && form.reqItems),
+    collectPlanItemEndDates(saved && saved.scope),
+    collectPlanItemEndDates(form && form.reqItems ? form.reqItems : reqItems),
+    collectPlanItemEndDates(form && form.releasePhases),
+    collectPlanItemEndDates(releasePhases)
+  );
+  const launchDate = deliveryEndIso ? fmtShortDate(deliveryEndIso) : '';
+  const productName = getPlanProductNameForEmail();
+
+  return {productName, scopeName, ticketNumber, launchDate};
+}
+
+function mergePlanEmailContext(){
+  const base = collectPlanEmailBaseContext();
+  return {
+    productName: String(planEmailOverrides.productName ?? base.productName ?? '').trim(),
+    scopeName: String(planEmailOverrides.scopeName ?? base.scopeName ?? '').trim(),
+    ticketNumber: String(planEmailOverrides.ticketNumber ?? base.ticketNumber ?? '').trim(),
+    launchDate: String(planEmailOverrides.launchDate ?? base.launchDate ?? '').trim()
+  };
+}
+
+function planEmailMissingKeys(ctx){
+  return PLAN_EMAIL_FIELD_DEFS
+    .filter(def => !ctx[def.key])
+    .map(def => def.key);
+}
+
+function buildPlanEmailBody(ctx){
+  const product = ctx.productName || '[اسم المنتج]';
+  const scope = ctx.scopeName || '[اسم الـ Scope]';
+  const ticket = ctx.ticketNumber || '[رقم الطلب]';
+  const launch = ctx.launchDate || '[تاريخ التسليم]';
+  return `السلام عليكم ورحمة الله وبركاته،
+
+تحية طيبة،،
+
+فريق ${product}، حفظهم الله،
+
+مرفق لكم خطة عمل ${scope} الخاصة بالطلب رقم ${ticket}، والمتضمنة نطاق العمل والجدول الزمني المخطط للتنفيذ، على أن يكون التسليم المستهدف بتاريخ ${launch}.
+
+نأمل منكم الاطلاع على الخطة والتكرم بالموافقة عليها، وفي حال وجود أي ملاحظات أو تعديلات نأمل مشاركتها معنا.
+
+شاكرين لكم تعاونكم ودعمكم المستمر.
+
+مع خالص التحية والتقدير،`;
+}
+
+function setPlanEmailStatus(message, kind){
+  const status = document.getElementById('planEmailStatus');
+  if(!status) return;
+  status.textContent = message || '';
+  status.style.color = kind === 'error' ? '#c0392b' : '#059669';
+}
+
+function renderPlanEmailMissingFields(ctx){
+  const wrap = document.getElementById('planEmailMissing');
+  const fields = document.getElementById('planEmailFields');
+  if(!wrap || !fields) return;
+  const missing = planEmailMissingKeys(ctx);
+  if(!missing.length){
+    wrap.hidden = true;
+    fields.innerHTML = '';
+    return;
+  }
+  wrap.hidden = false;
+  fields.innerHTML = PLAN_EMAIL_FIELD_DEFS
+    .filter(def => missing.includes(def.key))
+    .map(def => {
+      const value = escapeHtml(planEmailOverrides[def.key] || '');
+      const dirAttr = def.dir === 'ltr' ? ' data-dir="ltr"' : '';
+      return `<div class="plan-email-field">
+        <label for="planEmailField_${def.key}">${escapeHtml(def.label)}</label>
+        <input type="text" id="planEmailField_${def.key}" data-email-key="${def.key}" placeholder="${escapeHtml(def.placeholder)}" value="${value}"${dirAttr}>
+      </div>`;
+    })
+    .join('');
+  fields.querySelectorAll('input[data-email-key]').forEach(input => {
+    input.addEventListener('input', () => {
+      planEmailOverrides[input.dataset.emailKey] = input.value.trim();
+      refreshPlanEmailModal(false);
+    });
+  });
+}
+
+function refreshPlanEmailModal(forceBody){
+  const ctx = mergePlanEmailContext();
+  renderPlanEmailMissingFields(ctx);
+  const body = document.getElementById('planEmailBody');
+  const copyBtn = document.getElementById('planEmailCopy');
+  const complete = !planEmailMissingKeys(ctx).length;
+  if(copyBtn) copyBtn.disabled = !complete;
+  if(body && (forceBody || !planEmailEditing)){
+    body.value = buildPlanEmailBody(ctx);
+  }
+}
+
+function setPlanEmailEditMode(on){
+  planEmailEditing = !!on;
+  const body = document.getElementById('planEmailBody');
+  const editBtn = document.getElementById('planEmailEdit');
+  if(body){
+    body.readOnly = !planEmailEditing;
+    body.classList.toggle('is-editing', planEmailEditing);
+  }
+  if(editBtn){
+    editBtn.textContent = planEmailEditing ? 'إنهاء التعديل' : 'تعديل';
+  }
+}
+
+function openPlanEmailModal(){
+  if(!hasGeneratedOnce()) return;
+  planEmailOverrides = {};
+  planEmailEditing = false;
+  setPlanEmailStatus('');
+  setPlanEmailEditMode(false);
+  const overlay = document.getElementById('planEmailOverlay');
+  if(!overlay) return;
+  refreshPlanEmailModal(true);
+  planEmailLastFocus = document.activeElement;
+  overlay.hidden = false;
+  overlay.classList.add('open');
+  const firstMissing = document.querySelector('#planEmailFields input');
+  if(firstMissing){
+    firstMissing.focus();
+  }else{
+    document.getElementById('planEmailBody').focus();
+  }
+}
+
+function closePlanEmailModal(){
+  const overlay = document.getElementById('planEmailOverlay');
+  if(!overlay) return;
+  overlay.classList.remove('open');
+  overlay.hidden = true;
+  planEmailEditing = false;
+  planEmailOverrides = {};
+  setPlanEmailStatus('');
+  setPlanEmailEditMode(false);
+  if(planEmailCopyTimer){
+    clearTimeout(planEmailCopyTimer);
+    planEmailCopyTimer = null;
+  }
+  if(planEmailLastFocus && typeof planEmailLastFocus.focus === 'function'){
+    planEmailLastFocus.focus();
+  }
+}
+
+function togglePlanEmailEdit(){
+  if(planEmailEditing){
+    setPlanEmailEditMode(false);
+    return;
+  }
+  setPlanEmailEditMode(true);
+  const body = document.getElementById('planEmailBody');
+  if(body) body.focus();
+}
+
+async function copyPlanEmailDraft(){
+  const ctx = mergePlanEmailContext();
+  if(planEmailMissingKeys(ctx).length){
+    setPlanEmailStatus('أكمل البيانات الناقصة قبل النسخ.', 'error');
+    return;
+  }
+  const body = document.getElementById('planEmailBody');
+  const text = body ? body.value.trim() : buildPlanEmailBody(ctx);
+  if(!text){
+    setPlanEmailStatus('ما فيه نص للنسخ.', 'error');
+    return;
+  }
+  const ok = await copyTextSafe(text);
+  setPlanEmailStatus(ok ? 'تم نسخ الإيميل ✓' : 'ما قدرنا ننسخ — انسخه يدويًا.', ok ? 'ok' : 'error');
+  if(planEmailCopyTimer) clearTimeout(planEmailCopyTimer);
+  planEmailCopyTimer = setTimeout(() => setPlanEmailStatus(''), 2400);
+}
+
 function setAdvocateStatus(message, kind){
   const status = document.getElementById('advocateStatus');
   if(!status) return;
@@ -6826,6 +9273,122 @@ function closeHeaderMore(){
   const btn = document.getElementById('headerMoreBtn');
   if(menu) menu.classList.remove('open');
   if(btn) btn.setAttribute('aria-expanded', 'false');
+}
+function closeProfileMenu(){
+  const menu = document.getElementById('headerProfileMenu');
+  const btn = document.getElementById('headerProfileBtn');
+  if(menu) menu.classList.remove('open');
+  if(btn) btn.setAttribute('aria-expanded', 'false');
+}
+function userInitial(name){
+  const text = String(name || '').trim();
+  return text ? text.charAt(0) : '؟';
+}
+function syncHeaderAuth(){
+  const user = authService.currentUser();
+  const loginBtn = document.getElementById('openAuthBtn');
+  const profileBtn = document.getElementById('headerProfileBtn');
+  const nameEl = document.getElementById('headerUserName');
+  const avatarEl = document.getElementById('headerAvatar');
+  const myPlansBtn = document.getElementById('openMyPlansHeaderBtn');
+  const myPlansMobile = document.getElementById('openMyPlansBtnMobile');
+  if(loginBtn) loginBtn.hidden = !!user;
+  if(profileBtn) profileBtn.hidden = !user;
+  if(nameEl) nameEl.textContent = user ? user.name : '';
+  if(avatarEl) avatarEl.textContent = user ? userInitial(user.name) : '؟';
+  if(myPlansBtn) myPlansBtn.hidden = !user;
+  if(myPlansMobile) myPlansMobile.hidden = !user;
+  if(!user) closeProfileMenu();
+}
+function setAuthMode(mode){
+  authMode = mode === 'register' ? 'register' : 'login';
+  const isRegister = authMode === 'register';
+  document.getElementById('authTabLogin').classList.toggle('is-on', !isRegister);
+  document.getElementById('authTabRegister').classList.toggle('is-on', isRegister);
+  document.getElementById('authTabLogin').setAttribute('aria-selected', String(!isRegister));
+  document.getElementById('authTabRegister').setAttribute('aria-selected', String(isRegister));
+  document.getElementById('authNameField').hidden = !isRegister;
+  document.getElementById('authConfirmField').hidden = !isRegister;
+  document.getElementById('authSubmit').textContent = isRegister ? 'إنشاء حساب' : 'دخول';
+  document.getElementById('authTitle').textContent = isRegister ? 'أنشئ حسابك' : 'حياك في خُطّة';
+  document.getElementById('authLead').textContent = isRegister
+    ? 'حساب محلي على هذا المتصفح، وخططك مربوطة فيه.'
+    : 'سجّل دخولك عشان خططك تبقى عندك، حتى بعد ما تسكّر المتصفح.';
+  document.getElementById('authSwitchLine').innerHTML = isRegister
+    ? 'عندك حساب؟ <button type="button" id="authSwitchBtn">ادخل</button>'
+    : 'ما عندك حساب؟ <button type="button" id="authSwitchBtn">أنشئ حساب</button>';
+  document.getElementById('authPassword').autocomplete = isRegister ? 'new-password' : 'current-password';
+  document.getElementById('authError').textContent = '';
+  const switchBtn = document.getElementById('authSwitchBtn');
+  if(switchBtn) switchBtn.addEventListener('click', () => setAuthMode(isRegister ? 'login' : 'register'));
+}
+function openAuthOverlay(reason){
+  pendingAuthAction = reason || pendingAuthAction;
+  const note = document.getElementById('authGuestNote');
+  const showNote = reason === 'save' || reason === 'create' || reason === 'generate';
+  if(note){
+    note.hidden = !showNote;
+    if(reason === 'create') note.textContent = 'لازم تسجّل دخول قبل إنشاء خطة جديدة، حتى ما تضيع خططك بعد إغلاق الصفحة.';
+    else if(reason === 'save' || reason === 'generate') note.textContent = 'لازم تسجّل دخول قبل حفظ الخطة، حتى ما تضيع بعد ما تسكّر المتصفح.';
+    else note.textContent = 'سجل دخولك عشان تشوف خططك فقط، وتبقى محفوظة هنا.';
+  }
+  setAuthMode(authMode || 'login');
+  document.getElementById('authOverlay').classList.add('open');
+  const first = document.getElementById(authMode === 'register' ? 'authName' : 'authEmail');
+  if(first) first.focus();
+}
+function closeAuthOverlay(){
+  document.getElementById('authOverlay').classList.remove('open');
+  document.getElementById('authError').textContent = '';
+}
+function runPendingAuthAction(){
+  const action = pendingAuthAction;
+  pendingAuthAction = null;
+  if(action === 'generate' || action === 'save') generatePlan();
+  else if(action === 'create') startNewPlan();
+  else if(action === 'plans') openPlansLibrary();
+}
+async function submitAuthForm(e){
+  e.preventDefault();
+  const errorEl = document.getElementById('authError');
+  const submitBtn = document.getElementById('authSubmit');
+  errorEl.textContent = '';
+  const payload = {
+    name: document.getElementById('authName').value,
+    email: document.getElementById('authEmail').value,
+    password: document.getElementById('authPassword').value
+  };
+  try{
+    submitBtn.disabled = true;
+    if(authMode === 'register'){
+      const confirmVal = document.getElementById('authPasswordConfirm').value;
+      if(payload.password !== confirmVal) throw new Error('تأكيد كلمة المرور غير مطابق');
+      await authService.register(payload);
+    }else{
+      await authService.login(payload);
+    }
+    closeAuthOverlay();
+    syncHeaderAuth();
+    migrateSavedPlansStorage();
+    renderSavedPlansUI();
+    showAppToast(authMode === 'register' ? 'تم إنشاء الحساب ✓' : 'حياك الله ✓');
+    runPendingAuthAction();
+  }catch(err){
+    errorEl.textContent = err.message || 'تعذّر إكمال العملية';
+  }finally{
+    submitBtn.disabled = false;
+  }
+}
+function logoutCurrentUser(){
+  authService.logout();
+  activeSavedPlanId = null;
+  resetVersionWorkspace();
+  closeProfileMenu();
+  closePlansLibrary();
+  closePlanVersionsPanel();
+  syncHeaderAuth();
+  renderSavedPlansUI();
+  showAppToast('تم تسجيل الخروج');
 }
 function showAdvocateModal(){
   closeHeaderMore();
@@ -6928,9 +9491,36 @@ document.getElementById('openCuriousBtnMobile').addEventListener('click', () => 
   showCuriousModal();
 });
 document.getElementById('openAdvocateBtnMobile').addEventListener('click', showAdvocateModal);
+document.getElementById('openAuthBtn').addEventListener('click', () => openAuthOverlay());
+document.getElementById('authClose').addEventListener('click', closeAuthOverlay);
+document.getElementById('authOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'authOverlay') closeAuthOverlay();
+});
+document.getElementById('authTabLogin').addEventListener('click', () => setAuthMode('login'));
+document.getElementById('authTabRegister').addEventListener('click', () => setAuthMode('register'));
+document.getElementById('authForm').addEventListener('submit', submitAuthForm);
+document.getElementById('headerProfileBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  closeHeaderMore();
+  const menu = document.getElementById('headerProfileMenu');
+  const btn = document.getElementById('headerProfileBtn');
+  const open = menu.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+document.getElementById('logoutBtn').addEventListener('click', logoutCurrentUser);
+['openMyPlansHeaderBtn', 'openMyPlansFromProfile', 'openMyPlansBtnMobile'].forEach(id => {
+  const btn = document.getElementById(id);
+  if(btn) btn.addEventListener('click', () => {
+    closeHeaderMore();
+    closeProfileMenu();
+    openPlansLibrary();
+  });
+});
 document.addEventListener('click', (e) => {
   const more = document.querySelector('.header-more');
   if(more && !more.contains(e.target)) closeHeaderMore();
+  const account = document.getElementById('headerAccount');
+  if(account && !account.contains(e.target)) closeProfileMenu();
 });
 
 const ANNOUNCE_DISMISS_KEY = 'khuttaAnnouncementDismissedUntil';
@@ -7000,6 +9590,10 @@ document.getElementById('announceDismissOverlay').addEventListener('click', (e) 
 syncAnnouncementVisibility();
 
 document.getElementById('openVisionBtn').addEventListener('click', showKhuttaVision);
+document.getElementById('openVisionBtnMobile').addEventListener('click', () => {
+  closeHeaderMore();
+  showKhuttaVision();
+});
 document.getElementById('khuttaVisionClose').addEventListener('click', hideKhuttaVision);
 document.getElementById('khuttaVision').addEventListener('click', (e) => {
   if(e.target.id === 'khuttaVision') hideKhuttaVision();
@@ -7020,6 +9614,9 @@ document.getElementById('welcomeOverlay').addEventListener('click', (e) => {
 });
 document.getElementById('guideAskYes').addEventListener('click', acceptGuideAsk);
 document.getElementById('guideAskSkip').addEventListener('click', skipGuideAsk);
+document.getElementById('guideAskOverlay').addEventListener('click', (e) => {
+  if(e.target.id === 'guideAskOverlay') skipGuideAsk();
+});
 document.getElementById('khuttaTourNext').addEventListener('click', tourNext);
 document.getElementById('khuttaTourPrev').addEventListener('click', tourPrev);
 document.getElementById('khuttaTourSkip').addEventListener('click', () => stopKhuttaTour(false));
@@ -7032,6 +9629,15 @@ window.addEventListener('scroll', () => { if(tourActive) placeTourChrome(); }, t
 
 document.addEventListener('keydown', (e) => {
   if(e.key !== 'Escape') return;
+  if(document.getElementById('headerProfileMenu').classList.contains('open')){
+    closeProfileMenu();
+    document.getElementById('headerProfileBtn').focus();
+    return;
+  }
+  if(document.getElementById('authOverlay').classList.contains('open')){
+    closeAuthOverlay();
+    return;
+  }
   if(document.getElementById('headerMoreMenu').classList.contains('open')){
     closeHeaderMore();
     document.getElementById('headerMoreBtn').focus();
@@ -7075,6 +9681,10 @@ document.addEventListener('keydown', (e) => {
   }
   if(document.getElementById('deletePlanOverlay').classList.contains('open')){
     closeDeletePlanConfirm();
+    return;
+  }
+  if(document.getElementById('planEmailOverlay').classList.contains('open')){
+    closePlanEmailModal();
     return;
   }
   if(document.getElementById('planVersionsOverlay').classList.contains('open')){
@@ -7136,7 +9746,7 @@ const MILESTONES = {
     confetti: 'small',
     actions: [
       {label: 'نزّل الخطة', action: 'download'},
-      {label: 'يلا على اللي بعدها ←', action: 'view', ghost: true}
+      {label: 'عرض الخطة', action: 'view', ghost: true}
     ]
   },
   2: {
@@ -7505,6 +10115,7 @@ function hideMilestoneModal(){
 
 function runMilestoneAction(action){
   if(action === 'newPlan') revealPlanOnMilestoneClose = false;
+  if(action === 'view') revealPlanOnMilestoneClose = true;
   hideMilestoneModal();
   if(action === 'download'){
     const downloadBtn = document.getElementById('downloadBtn');
@@ -7611,10 +10222,16 @@ document.getElementById('milestoneOverlay').addEventListener('click', (e) => {
 
 migrateSavedPlansStorage();
 syncGamificationWithSavedPlans();
+syncHeaderAuth();
 renderSavedPlansUI();
 
 function generatePlan(){
   if(isRestoringPlan) return;
+  if(!authService.isLoggedIn()){
+    pendingAuthAction = 'generate';
+    openAuthOverlay('save');
+    return;
+  }
   const statusEl = document.getElementById('status');
   const btn = document.getElementById('generateBtn');
   const docPreview = document.getElementById('docPreview');
@@ -7634,8 +10251,8 @@ function generatePlan(){
   const feedbackDaysVal = document.getElementById('feedbackDays').value;
   const depsNotes = document.getElementById('depsNotes').value.trim();
   const lang = 'en'; // plan output is always English
-  const includeFeatures = scopeItems.some(item => Number(item.features) > 1);
-  const featuresManualVal = document.getElementById('featuresManual').value.trim();
+  const includeFeatures = isFeaturesEnabled();
+  const featureCount = includeFeatures ? sumScopeFeatures(scopeItems) : 0;
 
   if(!scopeItems.length){
     statusEl.textContent = 'الرجاء إدخال نطاق العمل / المتطلبات على الأقل.';
@@ -7652,7 +10269,8 @@ function generatePlan(){
   statusEl.className = '';
   statusEl.textContent = 'جاري تجهيز المهام...';
 
-  const aiResult = buildLocalPlan(scopeItems, depsNotes, lang);
+  const aiResult = buildLocalPlan(scopeItems, depsNotes, lang, includeFeatures);
+  aiResult.tasks = appendFixedReleasePhases(aiResult.tasks, teamTag);
 
   let totalWorkingDays = null;
   if(!tbdEnd && endDate){
@@ -7674,7 +10292,7 @@ function generatePlan(){
   docPreview.innerHTML = renderDoc({
     ticketId, projectName, teamTag, sprintNum,
     tasks: aiResult.tasks || [],
-    featureCount: featuresManualVal !== '' ? Number(featuresManualVal) : (aiResult.featureCount ?? 0),
+    featureCount,
     includeFeatures,
     startDate, endDate, tbdEnd, assigned,
     totalWorkingDays,
@@ -7682,17 +10300,20 @@ function generatePlan(){
     costAmount: costAmountVal,
     dependencies: aiResult.dependencies || [],
     lang,
-    createdDate
+    createdDate,
+    holidays: holidaysArr
   });
+  docPreview.dataset.projectName = projectName || productNameValue || '';
+  layoutPlanPages(docPreview);
 
   if(!statusEl.classList.contains('error')){
     statusEl.textContent = 'تم تحديث الخطة تلقائيًا.';
   }
   btn.textContent = 'تحديث الخطة';
   document.getElementById('downloadBtn').disabled = false;
+  syncPlanEmailBtn();
 
   if(!statusEl.classList.contains('error')){
-    const featureCount = featuresManualVal !== '' ? Number(featuresManualVal) : (aiResult.featureCount ?? 0);
     const saved = saveGeneratedPlan({
       ticketId,
       featureCount,
@@ -7700,6 +10321,7 @@ function generatePlan(){
       costAmountVal,
       risks: []
     });
+    if(!saved || saved.requiresAuth || !saved.planId) return;
     const unique = registerUniquePlan(saved.planId);
     if(unique.isNewUnique){
       celebrateNewUniquePlan(unique.count);
@@ -7737,6 +10359,11 @@ function showVersionCreatedToast(version){
 }
 
 document.getElementById('generateBtn').addEventListener('click', generatePlan);
+document.getElementById('includeFeaturesToggle').addEventListener('change', () => {
+  syncFeaturesToggleState();
+  renderReqList();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+});
 
 function requiredFieldsFilled(){
   const hasScope = reqItems.some(item => item.text.trim());
@@ -7754,6 +10381,7 @@ function hasGeneratedOnce(){
 function scheduleRegen(delay){
   updateGenerateBtnState();
   if(isRestoringPlan) return;
+  if(!authService.isLoggedIn()) return;
   if(!hasGeneratedOnce()) return;
   if(!validateAllDates()) return;
   clearTimeout(autoRegenTimer);
@@ -7775,11 +10403,15 @@ document.querySelector('.panel').addEventListener('change', (e) => {
   startEl.value = toIsoDate(new Date());
   const start = parseIsoDate(startEl.value);
   if(start) calendarView = {year: start.getFullYear(), month: start.getMonth()};
+  if(typeof syncProjectRangeTrigger === 'function') syncProjectRangeTrigger();
   syncLeaveCalendarVisibility();
   renderCostTable();
   syncAllDateLimits();
 })();
 updateGenerateBtnState();
+syncFeaturesToggleState();
+renderReleasePhases();
+document.getElementById('teamTag').addEventListener('change', renderReleasePhases);
 
 if(!hasWelcomeSeen() && localStorage.getItem(ONBOARDING_KEY)){
   markWelcomeSeen();
@@ -8103,6 +10735,111 @@ function initKhuttaFeedback(){
 
 initKhuttaFeedback();
 
+function sanitizeDownloadPart(value){
+  return String(value || '')
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, ' ')
+    .replace(/-+/g, '-')
+    .replace(/^[-.\s]+|[-.\s]+$/g, '')
+    .trim();
+}
+function getDownloadProjectName(){
+  const placeholder = 'اختر أو أضف اسم المنتج';
+  const hidden = document.getElementById('projectName')?.value.trim() || '';
+  const typed = String(productNameValue || '').trim();
+  const trigger = document.getElementById('productTriggerText')?.textContent.trim() || '';
+  const fromTrigger = trigger && trigger !== placeholder ? trigger : '';
+  const fromPreview = document.getElementById('docPreview')?.dataset.projectName
+    || document.querySelector('#docPreview .project-name')?.textContent.trim()
+    || '';
+  const saved = (typeof findPlanRecord === 'function' && activeSavedPlanId)
+    ? findPlanRecord(activeSavedPlanId)
+    : null;
+  const fromSaved = saved
+    ? String(
+        saved.projectNameEn ||
+        saved.projectName ||
+        (saved.form && (saved.form.projectName || saved.form.productNameValue)) ||
+        ''
+      ).trim()
+    : '';
+  return sanitizeDownloadPart(hidden || typed || fromTrigger || fromPreview || fromSaved);
+}
+function buildPlanDownloadName(){
+  const product = getDownloadProjectName() || 'Plan';
+  const teamTag = document.getElementById('teamTag').value.trim();
+  const team = sanitizeDownloadPart(TEAM_NAME_EN[teamTag] || teamTag) || 'Team';
+  const date = toIsoDate(new Date());
+  return `${product} - ${team} - ${date}.pdf`;
+}
+
+const PLAN_PAGE_PX = 1123;
+const PLAN_PAGE_TOP_PAD = 28;
+const PLAN_PAGE_TAIL_MERGE_PX = 56;
+
+function yInPreview(el, root){
+  const rootRect = root.getBoundingClientRect();
+  const elRect = el.getBoundingClientRect();
+  const scale = root.offsetWidth ? (rootRect.width / root.offsetWidth) : 1;
+  return (elRect.top - rootRect.top) / (scale || 1);
+}
+
+function planPageCount(contentHeight){
+  const h = Math.max(0, Number(contentHeight) || 0);
+  if(h <= PLAN_PAGE_PX + 12) return 1;
+  const full = Math.floor(h / PLAN_PAGE_PX);
+  const remainder = h - full * PLAN_PAGE_PX;
+  if(remainder <= PLAN_PAGE_TAIL_MERGE_PX) return Math.max(1, full);
+  return full + 1;
+}
+
+function layoutPlanPages(doc){
+  if(!doc || doc.querySelector('.placeholder-msg')) return 1;
+  doc.querySelectorAll('.pdf-page-spacer').forEach(el => el.remove());
+  doc.style.minHeight = '';
+
+  const estimates = doc.querySelector('.doc-estimations');
+  if(estimates){
+    const top = yInPreview(estimates, doc);
+    const height = estimates.offsetHeight;
+    const pageIndex = Math.floor(Math.max(0, top) / PLAN_PAGE_PX);
+    const offsetInPage = top - pageIndex * PLAN_PAGE_PX;
+    const fitsOnePage = doc.scrollHeight <= PLAN_PAGE_PX + 8;
+    const overflow = offsetInPage + height - (PLAN_PAGE_PX - 8);
+    const shouldSplitSection = overflow > 0 && (overflow >= 48 || offsetInPage > PLAN_PAGE_PX * 0.62);
+    if(!fitsOnePage && height <= PLAN_PAGE_PX - PLAN_PAGE_TOP_PAD && shouldSplitSection){
+      const spacer = document.createElement('div');
+      spacer.className = 'pdf-page-spacer';
+      spacer.style.height = `${Math.max(0, PLAN_PAGE_PX - offsetInPage + PLAN_PAGE_TOP_PAD)}px`;
+      estimates.parentNode.insertBefore(spacer, estimates);
+    }
+  }
+
+  const contentHeight = doc.scrollHeight;
+  doc.style.minHeight = `${Math.max(PLAN_PAGE_PX, contentHeight)}px`;
+  return planPageCount(contentHeight);
+}
+
+function addImageToPdfPages(pdf, canvas, pageCount){
+  const pages = Math.max(1, pageCount || 1);
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  const sliceH = canvas.height / pages;
+  for(let i = 0; i < pages; i++){
+    const sy = i * sliceH;
+    const sh = (i === pages - 1) ? (canvas.height - sy) : sliceH;
+    const pageCanvas = document.createElement('canvas');
+    pageCanvas.width = canvas.width;
+    pageCanvas.height = Math.max(1, Math.round(sh));
+    const ctx = pageCanvas.getContext('2d');
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
+    ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+    if(i > 0) pdf.addPage();
+    pdf.addImage(pageCanvas.toDataURL('image/png'), 'PNG', 0, 0, pageWidth, pageHeight);
+  }
+}
+
 document.getElementById('downloadBtn').addEventListener('click', async () => {
   const doc = document.getElementById('docPreview');
   if(doc.querySelector('.placeholder-msg')){
@@ -8114,14 +10851,20 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
   const originalText = btn.textContent;
   btn.textContent = 'جاري التجهيز...';
   try{
-    const canvas = await html2canvas(doc, {scale:2, backgroundColor:'#ffffff'});
-    const imgData = canvas.toDataURL('image/png');
+    const pageCount = layoutPlanPages(doc);
+    const captureHeight = doc.scrollHeight;
+    const canvas = await html2canvas(doc, {
+      scale:2,
+      backgroundColor:'#ffffff',
+      width: doc.offsetWidth,
+      height: captureHeight,
+      windowWidth: doc.offsetWidth,
+      windowHeight: doc.scrollHeight
+    });
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'pt', 'a4');
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-    pdf.save('frontend-implementation-plan.pdf');
+    addImageToPdfPages(pdf, canvas, pageCount);
+    pdf.save(buildPlanDownloadName());
     showSuccessModal();
   }catch(err){
     alert('تعذّر إنشاء ملف PDF: ' + err.message);
