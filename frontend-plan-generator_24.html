@@ -1025,6 +1025,160 @@
     opacity:.5;
     cursor:default;
   }
+  .toolbar a.toolbar-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border:1px solid var(--border);
+    padding:9px 16px;
+    border-radius:8px;
+    font-family:'Tajawal',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:var(--navy);
+    text-decoration:none;
+  }
+  .toolbar a.toolbar-link[hidden]{display:none;}
+  button#clickupSendBtn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  button#clickupSendBtn[hidden]{display:none !important;}
+  button#clickupSendBtn .clickup-logo-mark{
+    width:16px;
+    height:16px;
+  }
+  button#clickupSendBtn .clickup-logo{width:16px; height:16px; display:block;}
+  .clickup-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(15,17,71,.48);
+    align-items:center;
+    justify-content:center;
+    z-index:126;
+    padding:20px;
+  }
+  .clickup-overlay.open{display:flex;}
+  .clickup-modal{
+    position:relative;
+    background:#fff;
+    border-radius:18px;
+    width:min(440px, 100%);
+    direction:rtl;
+    font-family:'Tajawal', sans-serif;
+    box-shadow:0 14px 44px rgba(15,17,71,.22);
+    padding:26px 24px 20px;
+    animation:popIn .25s ease;
+  }
+  .clickup-modal h2{
+    margin:0 0 6px;
+    color:var(--navy);
+    font-size:21px;
+  }
+  .clickup-lead{
+    margin:0 0 16px;
+    color:#6b7280;
+    font-size:13px;
+    line-height:1.7;
+  }
+  .clickup-field label{
+    display:block;
+    margin-bottom:6px;
+    font-size:12px;
+    font-weight:700;
+    color:var(--navy);
+  }
+  .clickup-field select{
+    width:100%;
+    box-sizing:border-box;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:10px 12px;
+    font-family:inherit;
+    font-size:13.5px;
+    color:var(--text);
+    background:#fff;
+  }
+  .clickup-linked-note{
+    margin:0 0 14px;
+    padding:10px 12px;
+    background:#f5f8fc;
+    border:1px solid #dbeafe;
+    border-radius:10px;
+    color:#1f4e8c;
+    font-size:12.5px;
+    line-height:1.6;
+  }
+  .clickup-status{
+    min-height:20px;
+    margin:12px 0 0;
+    font-size:13px;
+    line-height:1.6;
+    color:#6b7280;
+  }
+  .clickup-status.is-progress{color:var(--blue);}
+  .clickup-status.is-error{color:#c0392b;}
+  .clickup-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    margin-top:16px;
+  }
+  .clickup-actions button,
+  .clickup-actions a{
+    border:none;
+    border-radius:9px;
+    padding:10px 16px;
+    font-family:inherit;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .clickup-primary{background:var(--blue); color:#fff;}
+  .clickup-secondary{
+    background:#fff;
+    color:var(--navy);
+    border:1px solid var(--border);
+  }
+  .clickup-success{
+    text-align:center;
+    padding:8px 0 4px;
+  }
+  .clickup-success p{
+    margin:0 0 16px;
+    color:#059669;
+    font-size:15px;
+    font-weight:700;
+  }
+  .clickup-success-note{
+    margin-top:-8px !important;
+    font-size:13px !important;
+    font-weight:600 !important;
+    color:#0f766e !important;
+  }
+  .clickup-overlay.is-busy .clickup-modal{pointer-events:none;}
+  .clickup-close{
+    position:absolute;
+    top:14px;
+    left:14px;
+    width:34px;
+    height:34px;
+    border:1px solid var(--border);
+    background:#fff;
+    border-radius:9px;
+    color:var(--navy);
+    font-size:18px;
+    line-height:1;
+    cursor:pointer;
+  }
 
   /* ---- Document ---- */
   #docPreview{
@@ -4833,6 +4987,7 @@
         <option value="فريق تصميم تجربة المستخدم">فريق تصميم تجربة المستخدم</option>
         <option value="فريق تطوير الويب">فريق تطوير الويب</option>
         <option value="فريق تطوير الموبايل">فريق تطوير الموبايل</option>
+        <option value="فريق الجودة">فريق الجودة</option>
       </select>
     </div>
 
@@ -4971,6 +5126,13 @@
     <div class="toolbar">
       <button id="downloadBtn" class="primary" disabled>تنزيل الخطة</button>
       <button id="planEmailBtn" type="button" hidden disabled>صياغة الإيميل</button>
+      <button id="clickupSendBtn" type="button" hidden disabled>
+        <span class="clickup-logo-mark" aria-hidden="true">
+          <svg class="clickup-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M2 18.439l3.69-2.828c1.917 1.637 4.378 2.632 7.054 2.632 2.68 0 5.145-.998 7.062-2.632L24 18.439C21.237 21.294 17.761 23 13.745 23c-4.02 0-7.495-1.706-10.258-4.561h.513zm9.728-5.41c-2.68 0-5.145-.998-7.062-2.632L0 12.828C2.763 15.683 6.239 17.389 10.258 17.389c4.02 0 7.492-1.706 10.258-4.561l-3.69-2.828c-1.917 1.634-4.38 2.629-7.06 2.629h-.038zM13.717 0L6.975 10.163l3.805 2.912c1.882-1.403 2.713-1.87 4.351-1.87 1.115 0 1.908.247 3.06 1.042l3.852-2.943L13.717 0z"/></svg>
+        </span>
+        إرسال إلى ClickUp
+      </button>
+      <a id="clickupOpenBtn" class="toolbar-link" hidden target="_blank" rel="noopener noreferrer">فتح في ClickUp</a>
     </div>
     <div id="docPreview">
       <div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>
@@ -5163,6 +5325,35 @@
   </div>
 </div>
 
+<div id="clickupOverlay" class="clickup-overlay" role="dialog" aria-modal="true" aria-labelledby="clickupModalTitle">
+  <div class="clickup-modal">
+    <button type="button" class="clickup-close" id="clickupClose" aria-label="إغلاق">×</button>
+    <h2 id="clickupModalTitle">إرسال إلى ClickUp</h2>
+    <p class="clickup-lead">اختاري مشروع ClickUp في كل مرة. نفس المشروع يحدّث المهمة الحالية، ومشروع ثاني يرسل الخطة من جديد.</p>
+    <div id="clickupFormState">
+      <p class="clickup-linked-note" id="clickupLinkedNote" hidden></p>
+      <div class="clickup-field" id="clickupParentField">
+        <label for="clickupParentSelect">اختر مشروع ClickUp</label>
+        <select id="clickupParentSelect">
+          <option value="">اختر المشروع</option>
+        </select>
+      </div>
+      <p class="clickup-status" id="clickupStatus" role="status" aria-live="polite"></p>
+      <div class="clickup-actions">
+        <button type="button" class="clickup-primary" id="clickupSubmitBtn">إرسال الخطة</button>
+      </div>
+    </div>
+    <div id="clickupSuccessState" class="clickup-success" hidden>
+      <p id="clickupSuccessTitle">تم إرسال الخطة إلى ClickUp بنجاح</p>
+      <p class="clickup-success-note" id="clickupSuccessNote" hidden>وتم إرفاق ملف PDF الخطة في المهمة.</p>
+      <div class="clickup-actions">
+        <a id="clickupOpenCreated" class="clickup-primary" target="_blank" rel="noopener noreferrer">فتح في ClickUp</a>
+        <button type="button" class="clickup-secondary" id="clickupDoneBtn">تم</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="planEmailOverlay" class="plan-email-overlay" role="dialog" aria-modal="true" aria-labelledby="planEmailTitle" hidden>
   <div class="plan-email-modal">
     <button type="button" class="plan-email-close" id="planEmailClose" aria-label="إغلاق">×</button>
@@ -5197,6 +5388,10 @@
   </div>
 </div>
 
+<script src="clickup/clickup.types.js"></script>
+<script src="clickup/clickup.mapper.js"></script>
+<script src="clickup/clickup.client.js"></script>
+<script src="clickup/clickup.ui.js"></script>
 <script>
 const ELM_LOGO_FIXED = "data:image/png;base64,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";
 let logoDataUrl = null; // product logo (optional, per-project)
@@ -6820,7 +7015,8 @@ function escapeHtml(str){
 const TEAM_NAME_EN = {
   'فريق تصميم تجربة المستخدم': 'UX/UI Team',
   'فريق تطوير الويب': 'Web Development',
-  'فريق تطوير الموبايل': 'Mobile Development'
+  'فريق تطوير الموبايل': 'Mobile Development',
+  'فريق الجودة': 'Quality'
 };
 
 function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCount, includeFeatures, startDate, endDate, tbdEnd, assigned, totalWorkingDays, feedbackDays, costAmount, dependencies, lang, createdDate, holidays}){
@@ -7653,12 +7849,14 @@ function summarizePlanChanges(oldVersion, newVersion){
 }
 
 function applyLatestFieldsToPlan(plan, payload, when){
+  const clickup = plan.clickup;
   Object.assign(plan, payload, {
     id: plan.id,
     createdAt: plan.createdAt || when,
     updatedAt: when,
     currentVersion: plan.currentVersion
   });
+  if(clickup && payload.clickup === undefined) plan.clickup = clickup;
 }
 
 function createPlanVersion(planId, data){
@@ -7746,6 +7944,91 @@ function sprintCardLabel(sprintNum){
   const match = String(sprintNum).match(/(\d+)/);
   if(match) return `${match[1]} Sprints`;
   return sprintNum;
+}
+
+function clickupItemKey(kind, name, index){
+  const slugFn = window.KhuttaClickUpMapper && KhuttaClickUpMapper.slug;
+  const slug = slugFn ? slugFn(name) : String(name || 'item').trim().toLowerCase().replace(/\s+/g, '-');
+  return `${kind}:${slug}:${index}`;
+}
+
+function collectClickUpPlanPayload(){
+  const form = collectFormSnapshot();
+  const teamTag = form.teamTag || '';
+  const teamNameEn = TEAM_NAME_EN[teamTag] || 'Frontend';
+  const productName = form.productNameValue || form.projectName || '';
+  const projectName = form.projectName || productName;
+  const ticketNum = String(form.ticketNum || '').replace(/^DSBI-/i, '');
+  const ticketId = ticketNum ? 'DSBI-' + ticketNum : '';
+  const scopeItems = getScopedReqItems(form.reqItems);
+  const includeFeatures = shouldIncludeFeatures(form, 0);
+  const local = buildLocalPlan(scopeItems, form.dependencies, 'en', includeFeatures);
+  const tasks = appendFixedReleasePhases(local.tasks, teamTag);
+  const holidaysArr = Array.isArray(form.selectedHolidays) ? form.selectedHolidays : [];
+  let workingDays = null;
+  if(!form.tbdEnd && form.endDate && form.startDate){
+    workingDays = workingDaysBetween(form.startDate, form.endDate, holidaysArr);
+  }
+  return {
+    planId: activeSavedPlanId || '',
+    planName: `${teamNameEn} Implementation Plan`,
+    productName,
+    projectName,
+    scopeName: projectName || productName,
+    ticketId,
+    startDate: form.startDate || '',
+    dueDate: form.tbdEnd ? '' : (form.endDate || ''),
+    workingDays,
+    featureCount: includeFeatures ? sumScopeFeatures(scopeItems) : null,
+    includeFeatures,
+    teamMembers: Array.isArray(form.selectedAssignees) ? form.selectedAssignees.slice() : [],
+    teamTag,
+    notes: form.dependencies || '',
+    sprintLabel: form.sprintNum || '',
+    milestones: [],
+    phases: selectedReleasePhases(teamTag).map(phase => ({
+      id: phase.id,
+      name: phase.text,
+      startDate: phase.startDate || '',
+      dueDate: phase.endDate || ''
+    })),
+    dependencies: form.dependencies || '',
+    tasks: tasks.map((task, index) => ({
+      key: task.fixedPhase
+        ? `phase:${task.id || clickupItemKey('phase', task.text, index)}`
+        : clickupItemKey('scope', task.text, index),
+      name: task.text,
+      startDate: task.startDate || form.startDate || '',
+      dueDate: task.endDate || (form.tbdEnd ? '' : (form.endDate || '')),
+      features: task.features || 0,
+      kind: task.fixedPhase ? 'phase' : 'scope'
+    }))
+  };
+}
+
+function getPlanClickUpBinding(){
+  if(!activeSavedPlanId) return null;
+  const plan = findPlanRecord(activeSavedPlanId);
+  return (plan && plan.clickup) || null;
+}
+
+function savePlanClickUpBinding(binding){
+  if(!activeSavedPlanId || !binding) return null;
+  const plans = getSavedPlans();
+  const plan = plans.find(item => item.id === activeSavedPlanId);
+  if(!plan) return null;
+  plan.clickup = {
+    taskId: binding.taskId,
+    url: binding.url || '',
+    parentTaskId: binding.parentTaskId || '',
+    parentTaskName: binding.parentTaskName || '',
+    listId: binding.listId || '',
+    lastSyncedAt: binding.lastSyncedAt || new Date().toISOString(),
+    children: Array.isArray(binding.children) ? binding.children : []
+  };
+  plan.updatedAt = new Date().toISOString();
+  persistPlans(plans);
+  return plan.clickup;
 }
 
 function collectFormSnapshot(){
@@ -8185,6 +8468,7 @@ function startNewPlan(){
   document.getElementById('docPreview').innerHTML = '<div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>';
   document.getElementById('downloadBtn').disabled = true;
   syncPlanEmailBtn();
+  if(window.KhuttaClickUpUI) KhuttaClickUpUI.sync();
   document.getElementById('generateBtn').textContent = 'توليد الخطة';
   document.getElementById('status').textContent = '';
   document.getElementById('status').className = '';
@@ -8225,6 +8509,7 @@ function revealGeneratedPlan(planHtml){
   document.getElementById('downloadBtn').disabled = false;
   document.getElementById('generateBtn').textContent = 'تحديث الخطة';
   syncPlanEmailBtn();
+  if(window.KhuttaClickUpUI) KhuttaClickUpUI.sync();
 }
 
 function openSavedPlan(id, mode){
@@ -8267,6 +8552,7 @@ function duplicateSavedPlan(id){
   copy.projectName = `نسخة من ${sourceName}`;
   copy.projectCode = '';
   copy.status = src.status || 'جاهزة';
+  delete copy.clickup;
   if(copy.form){
     copy.form.ticketNum = '';
     copy.form.productNameValue = copy.projectName;
@@ -8323,6 +8609,7 @@ function confirmDeleteSavedPlan(){
     delete preview.dataset.projectName;
     document.getElementById('downloadBtn').disabled = true;
     syncPlanEmailBtn();
+    if(window.KhuttaClickUpUI) KhuttaClickUpUI.sync();
     document.getElementById('generateBtn').textContent = 'توليد الخطة';
     document.getElementById('status').textContent = '';
     document.getElementById('status').className = '';
@@ -10312,6 +10599,7 @@ function generatePlan(){
   btn.textContent = 'تحديث الخطة';
   document.getElementById('downloadBtn').disabled = false;
   syncPlanEmailBtn();
+  if(window.KhuttaClickUpUI) KhuttaClickUpUI.sync();
 
   if(!statusEl.classList.contains('error')){
     const saved = saveGeneratedPlan({
@@ -10820,11 +11108,13 @@ function layoutPlanPages(doc){
   return planPageCount(contentHeight);
 }
 
-function addImageToPdfPages(pdf, canvas, pageCount){
+function addImageToPdfPages(pdf, canvas, pageCount, opts){
   const pages = Math.max(1, pageCount || 1);
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   const sliceH = canvas.height / pages;
+  const format = (opts && opts.format) || 'PNG';
+  const quality = opts && opts.quality;
   for(let i = 0; i < pages; i++){
     const sy = i * sliceH;
     const sh = (i === pages - 1) ? (canvas.height - sy) : sliceH;
@@ -10836,8 +11126,44 @@ function addImageToPdfPages(pdf, canvas, pageCount){
     ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
     ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
     if(i > 0) pdf.addPage();
-    pdf.addImage(pageCanvas.toDataURL('image/png'), 'PNG', 0, 0, pageWidth, pageHeight);
+    const dataUrl = format === 'JPEG'
+      ? pageCanvas.toDataURL('image/jpeg', quality == null ? 0.8 : quality)
+      : pageCanvas.toDataURL('image/png');
+    pdf.addImage(dataUrl, format === 'JPEG' ? 'JPEG' : 'PNG', 0, 0, pageWidth, pageHeight);
   }
+}
+
+async function exportPlanPdf(opts){
+  const doc = document.getElementById('docPreview');
+  if(!doc || doc.querySelector('.placeholder-msg')){
+    throw new Error('الرجاء توليد الخطة أولاً.');
+  }
+  const compact = !!(opts && opts.compact);
+  const pageCount = layoutPlanPages(doc);
+  const captureHeight = doc.scrollHeight;
+  const canvas = await html2canvas(doc, {
+    scale: compact ? 1.35 : 2,
+    backgroundColor:'#ffffff',
+    width: doc.offsetWidth,
+    height: captureHeight,
+    windowWidth: doc.offsetWidth,
+    windowHeight: doc.scrollHeight
+  });
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF('p', 'pt', 'a4');
+  addImageToPdfPages(pdf, canvas, pageCount, compact ? { format: 'JPEG', quality: 0.78 } : null);
+  return pdf;
+}
+
+async function buildClickUpPlanPdf(){
+  const pdf = await exportPlanPdf({ compact: true });
+  const dataUri = pdf.output('datauristring');
+  const comma = dataUri.indexOf(',');
+  return {
+    filename: buildPlanDownloadName(),
+    mimeType: 'application/pdf',
+    contentBase64: comma >= 0 ? dataUri.slice(comma + 1) : dataUri
+  };
 }
 
 document.getElementById('downloadBtn').addEventListener('click', async () => {
@@ -10851,19 +11177,7 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
   const originalText = btn.textContent;
   btn.textContent = 'جاري التجهيز...';
   try{
-    const pageCount = layoutPlanPages(doc);
-    const captureHeight = doc.scrollHeight;
-    const canvas = await html2canvas(doc, {
-      scale:2,
-      backgroundColor:'#ffffff',
-      width: doc.offsetWidth,
-      height: captureHeight,
-      windowWidth: doc.offsetWidth,
-      windowHeight: doc.scrollHeight
-    });
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF('p', 'pt', 'a4');
-    addImageToPdfPages(pdf, canvas, pageCount);
+    const pdf = await exportPlanPdf();
     pdf.save(buildPlanDownloadName());
     showSuccessModal();
   }catch(err){
@@ -10873,6 +11187,17 @@ document.getElementById('downloadBtn').addEventListener('click', async () => {
     btn.textContent = originalText;
   }
 });
+
+if(window.KhuttaClickUpUI){
+  KhuttaClickUpUI.init({
+    collectPlan: collectClickUpPlanPayload,
+    getBinding: getPlanClickUpBinding,
+    saveBinding: savePlanClickUpBinding,
+    buildPdf: buildClickUpPlanPdf,
+    isReady: hasGeneratedOnce,
+    escapeHtml
+  });
+}
 </script>
 </body>
 </html>
