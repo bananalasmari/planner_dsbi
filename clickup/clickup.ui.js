@@ -147,9 +147,19 @@
         : 'خطتك جاهزة في ClickUp — تقدر تكمل المتابعة من هناك.';
       if (!(result && result.attachment)) note.hidden = false;
     }
-    if (open && result && (result.url || result.taskId)) {
-      open.href = result.url || ('https://app.clickup.com/t/' + result.taskId);
+    if (open) {
+      if (result && (result.url || result.taskId)) {
+        open.href = result.url || ('https://app.clickup.com/t/' + result.taskId);
+        open.hidden = false;
+      } else {
+        open.hidden = true;
+        open.removeAttribute('href');
+      }
     }
+    const overlay = $('clickupOverlay');
+    const submit = $('clickupSubmitBtn');
+    if (overlay) overlay.classList.remove('is-busy');
+    if (submit) submit.disabled = true;
   }
 
   async function loadProjects() {
@@ -255,7 +265,11 @@
       setStatus(err.message || 'ما قدرنا نرسل الخطة لـ ClickUp.', 'error');
     } finally {
       sending = false;
-      if (!succeeded) setBusy(false);
+      setBusy(false);
+      if (succeeded) {
+        const submit = $('clickupSubmitBtn');
+        if (submit) submit.disabled = true;
+      }
     }
   }
 
