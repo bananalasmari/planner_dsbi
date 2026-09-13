@@ -162,7 +162,10 @@
     try {
       const health = await client.health();
       if (!health.configured) {
-        throw new Error('لم يتم ضبط CLICKUP_API_TOKEN على الخادم. أضفه في ملف .env ثم أعد تشغيل السيرفر.');
+        const onNetlify = typeof location !== 'undefined' && !/localhost|127\.0\.0\.1/.test(location.hostname);
+        throw new Error(onNetlify
+          ? 'لم يتم ضبط CLICKUP_API_TOKEN على Netlify. أضفه في Environment variables ثم أعد نشر الموقع.'
+          : 'لم يتم ضبط CLICKUP_API_TOKEN على الخادم. أضفه في ملف .env ثم أعد تشغيل السيرفر.');
       }
       const data = await client.listProjects();
       projectsCache = data.projects || [];
