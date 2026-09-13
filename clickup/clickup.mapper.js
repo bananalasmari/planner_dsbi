@@ -62,46 +62,42 @@
   }
 
   function buildDescription(plan) {
-    const sections = [
-      '## خطة من خُطّة',
+    const source = plan && typeof plan === 'object' ? plan : {};
+    const headerLines = [
       '',
-      line('اسم الخطة', plan.planName),
-      line('اسم المنتج', plan.productName || plan.projectName),
-      line('Scope', plan.scopeName || plan.projectName || plan.productName),
-      line('رقم الطلب', plan.ticketId),
-      line('Start Date', plan.startDate),
-      line('Due Date', plan.dueDate || 'TBD'),
-      line('عدد أيام العمل', plan.workingDays == null ? '' : String(plan.workingDays)),
-      line('عدد المميزات', plan.includeFeatures && plan.featureCount != null ? String(plan.featureCount) : ''),
-      line('Team Members', formatMembers(plan.teamMembers)),
-      line('Sprint', plan.sprintLabel),
-      line('Notes', plan.notes || plan.dependencies)
+      line('اسم الخطة', source.planName),
+      line('اسم المنتج', source.productName || source.projectName),
+      line('Scope', source.scopeName || source.projectName || source.productName),
+      line('رقم الطلب', source.ticketId),
+      line('عدد المميزات', source.includeFeatures && source.featureCount != null ? String(source.featureCount) : ''),
+      line('Sprint', source.sprintLabel),
+      line('Notes', source.notes || source.dependencies)
     ].filter(Boolean);
 
-    const taskLines = (plan.tasks || [])
+    const taskLines = (source.tasks || [])
       .filter(task => task && task.kind !== 'phase')
       .map(task => {
         const dates = [task.startDate, task.dueDate].filter(isIsoDate).join(' → ');
-        const feats = plan.includeFeatures && task.features ? ` · ${task.features} features` : '';
+        const feats = source.includeFeatures && task.features ? ` · ${task.features} features` : '';
         return `${task.name}${dates ? ` (${dates})` : ''}${feats}`;
       });
 
     const phaseLines = [
-      ...((plan.phases || []).map(phase => phase.name)),
-      ...((plan.tasks || []).filter(task => task && task.kind === 'phase').map(task => task.name))
+      ...((source.phases || []).map(phase => phase.name)),
+      ...((source.tasks || []).filter(task => task && task.kind === 'phase').map(task => task.name))
     ].filter(Boolean);
 
-    const milestoneLines = (plan.milestones || []).map(item => item.name || item).filter(Boolean);
+    const milestoneLines = (source.milestones || []).map(item => item.name || item).filter(Boolean);
 
-    const extra = [
+    const detailBlocks = [
       listBlock('Milestones', milestoneLines),
-      listBlock('Sprints', plan.sprintLabel ? [plan.sprintLabel] : []),
+      listBlock('Sprints', source.sprintLabel ? [source.sprintLabel] : []),
       listBlock('Phases', phaseLines),
-      listBlock('Dependencies', plan.dependencies ? [plan.dependencies] : []),
+      listBlock('Dependencies', source.dependencies ? [source.dependencies] : []),
       listBlock('Tasks', taskLines)
     ].filter(Boolean);
 
-    return [...sections, '', ...extra].join('\n').trim();
+    return [...headerLines, ...(detailBlocks.length ? ['', ...detailBlocks] : [])].join('\n').trim();
   }
 
   function toTaskNode(task, plan, index) {

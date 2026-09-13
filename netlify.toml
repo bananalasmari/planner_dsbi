@@ -9,9 +9,17 @@
 [functions.clickup]
   timeout = 26
 
+[functions.jira]
+  timeout = 26
+
 [[redirects]]
   from = "/api/clickup/*"
   to = "/.netlify/functions/clickup/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/jira/*"
+  to = "/.netlify/functions/jira/:splat"
   status = 200
 
 [[redirects]]

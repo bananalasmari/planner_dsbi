@@ -6,6 +6,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const { handleClickUpRequest } = require('./api/clickup');
+const { handleJiraRequest } = require('./api/jira');
 
 const PORT = Number(process.env.PORT) || 3456;
 const ROOT = __dirname;
@@ -49,6 +50,10 @@ const server = http.createServer((req, res) => {
     handleClickUpRequest(req, res);
     return;
   }
+  if (url.startsWith('/api/jira')) {
+    handleJiraRequest(req, res);
+    return;
+  }
   const filePath = safeJoin(ROOT, url);
   if (!filePath) {
     res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -59,7 +64,13 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  const configured = !!(process.env.CLICKUP_API_TOKEN || process.env.CLICKUP_TOKEN);
+  const clickupConfigured = !!(process.env.CLICKUP_API_TOKEN || process.env.CLICKUP_TOKEN);
+  const jiraConfigured = !!(
+    process.env.JIRA_BASE_URL &&
+    (process.env.JIRA_API_TOKEN || process.env.JIRA_TOKEN) &&
+    (process.env.JIRA_USERNAME || process.env.JIRA_EMAIL)
+  );
   console.log(`خُطّة running on http://localhost:${PORT}`);
-  console.log(`ClickUp token: ${configured ? 'loaded from environment' : 'missing — add CLICKUP_API_TOKEN to .env'}`);
+  console.log(`ClickUp token: ${clickupConfigured ? 'loaded from environment' : 'missing — add CLICKUP_API_TOKEN to .env'}`);
+  console.log(`Jira token: ${jiraConfigured ? 'loaded from environment' : 'missing — add JIRA_* vars to .env'}`);
 });

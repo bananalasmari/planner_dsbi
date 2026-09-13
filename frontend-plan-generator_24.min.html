@@ -1073,16 +1073,38 @@
     padding:26px 24px 20px;
     animation:popIn .25s ease;
   }
+  .clickup-modal-head{
+    display:flex;
+    justify-content:center;
+    margin:0 0 12px;
+  }
+  .clickup-modal-logo-wrap{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+    background:linear-gradient(145deg,#7b68ee 0%,#49ccf9 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 10px 24px rgba(91,95,238,.22);
+  }
+  .clickup-modal-logo-wrap svg{
+    width:24px;
+    height:24px;
+    display:block;
+  }
   .clickup-modal h2{
     margin:0 0 6px;
     color:var(--navy);
     font-size:21px;
+    text-align:center;
   }
   .clickup-lead{
     margin:0 0 16px;
     color:#6b7280;
     font-size:13px;
-    line-height:1.7;
+    line-height:1.75;
+    text-align:center;
   }
   .clickup-field label{
     display:block;
@@ -1143,27 +1165,49 @@
     justify-content:center;
   }
   .clickup-primary{background:var(--blue); color:#fff;}
+  .clickup-primary:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+  }
   .clickup-secondary{
     background:#fff;
     color:var(--navy);
     border:1px solid var(--border);
   }
+  .clickup-actions button:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+  }
+  .clickup-close:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+  }
   .clickup-success{
     text-align:center;
-    padding:8px 0 4px;
+    padding:2px 0 0;
+  }
+  .clickup-success-visual{
+    width:76px;
+    height:76px;
+    margin:0 auto 14px;
+    display:block;
   }
   .clickup-success p{
-    margin:0 0 16px;
-    color:#059669;
-    font-size:15px;
+    margin:0 0 8px;
+    color:var(--navy);
+    font-size:17px;
     font-weight:700;
+    line-height:1.55;
   }
   .clickup-success-note{
-    margin-top:-8px !important;
+    margin:0 0 18px !important;
     font-size:13px !important;
-    font-weight:600 !important;
-    color:#0f766e !important;
+    font-weight:500 !important;
+    color:#6b7280 !important;
+    line-height:1.75;
   }
+  .clickup-modal.is-success .clickup-lead,
+  .clickup-modal.is-success .clickup-modal-head{display:none;}
   .clickup-overlay.is-busy .clickup-modal{pointer-events:none;}
   .clickup-close{
     position:absolute;
@@ -5130,9 +5174,9 @@
         <span class="clickup-logo-mark" aria-hidden="true">
           <svg class="clickup-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M2 18.439l3.69-2.828c1.917 1.637 4.378 2.632 7.054 2.632 2.68 0 5.145-.998 7.062-2.632L24 18.439C21.237 21.294 17.761 23 13.745 23c-4.02 0-7.495-1.706-10.258-4.561h.513zm9.728-5.41c-2.68 0-5.145-.998-7.062-2.632L0 12.828C2.763 15.683 6.239 17.389 10.258 17.389c4.02 0 7.492-1.706 10.258-4.561l-3.69-2.828c-1.917 1.634-4.38 2.629-7.06 2.629h-.038zM13.717 0L6.975 10.163l3.805 2.912c1.882-1.403 2.713-1.87 4.351-1.87 1.115 0 1.908.247 3.06 1.042l3.852-2.943L13.717 0z"/></svg>
         </span>
-        إرسال إلى ClickUp
+        أرسل لـ ClickUp
       </button>
-      <a id="clickupOpenBtn" class="toolbar-link" hidden target="_blank" rel="noopener noreferrer">فتح في ClickUp</a>
+      <a id="clickupOpenBtn" class="toolbar-link" hidden target="_blank" rel="noopener noreferrer">افتحها في ClickUp</a>
     </div>
     <div id="docPreview">
       <div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>
@@ -5328,27 +5372,41 @@
 <div id="clickupOverlay" class="clickup-overlay" role="dialog" aria-modal="true" aria-labelledby="clickupModalTitle">
   <div class="clickup-modal">
     <button type="button" class="clickup-close" id="clickupClose" aria-label="إغلاق">×</button>
-    <h2 id="clickupModalTitle">إرسال إلى ClickUp</h2>
-    <p class="clickup-lead">اختاري مشروع ClickUp في كل مرة. نفس المشروع يحدّث المهمة الحالية، ومشروع ثاني يرسل الخطة من جديد.</p>
+    <div class="clickup-modal-head" id="clickupModalHead">
+      <div class="clickup-modal-logo-wrap" aria-hidden="true">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M2 18.439l3.69-2.828c1.917 1.637 4.378 2.632 7.054 2.632 2.68 0 5.145-.998 7.062-2.632L24 18.439C21.237 21.294 17.761 23 13.745 23c-4.02 0-7.495-1.706-10.258-4.561h.513zm9.728-5.41c-2.68 0-5.145-.998-7.062-2.632L0 12.828C2.763 15.683 6.239 17.389 10.258 17.389c4.02 0 7.492-1.706 10.258-4.561l-3.69-2.828c-1.917 1.634-4.38 2.629-7.06 2.629h-.038zM13.717 0L6.975 10.163l3.805 2.912c1.882-1.403 2.713-1.87 4.351-1.87 1.115 0 1.908.247 3.06 1.042l3.852-2.943L13.717 0z"/></svg>
+      </div>
+    </div>
+    <h2 id="clickupModalTitle">أرسل خطتك لـ ClickUp</h2>
+    <p class="clickup-lead">اختر المشروع اللي تبي تربط فيه خطتك. نفس المشروع يحدّث اللي أرسلته، ومشروع ثاني يعني إرسال جديد.</p>
     <div id="clickupFormState">
       <p class="clickup-linked-note" id="clickupLinkedNote" hidden></p>
       <div class="clickup-field" id="clickupParentField">
-        <label for="clickupParentSelect">اختر مشروع ClickUp</label>
+        <label for="clickupParentSelect">المشروع في ClickUp</label>
         <select id="clickupParentSelect">
-          <option value="">اختر المشروع</option>
+          <option value="">— اختر المشروع —</option>
         </select>
       </div>
       <p class="clickup-status" id="clickupStatus" role="status" aria-live="polite"></p>
       <div class="clickup-actions">
-        <button type="button" class="clickup-primary" id="clickupSubmitBtn">إرسال الخطة</button>
+        <button type="button" class="clickup-primary" id="clickupSubmitBtn">أرسل الخطة</button>
       </div>
     </div>
     <div id="clickupSuccessState" class="clickup-success" hidden>
-      <p id="clickupSuccessTitle">تم إرسال الخطة إلى ClickUp بنجاح</p>
-      <p class="clickup-success-note" id="clickupSuccessNote" hidden>وتم إرفاق ملف PDF الخطة في المهمة.</p>
+      <svg class="clickup-success-visual" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="40" cy="40" r="38" fill="#ecfdf5"/>
+        <circle cx="40" cy="40" r="30" fill="#d1fae5"/>
+        <path d="M27 41.5 35.2 49.7 53.5 31.5" fill="none" stroke="#059669" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M56 24 62 18" stroke="#7b68ee" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
+        <path d="M18 26 14 22" stroke="#49ccf9" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
+        <circle cx="61" cy="17" r="2" fill="#7b68ee" opacity=".45"/>
+        <circle cx="15" cy="21" r="2" fill="#49ccf9" opacity=".45"/>
+      </svg>
+      <p id="clickupSuccessTitle">تمام — خطتك صارت في ClickUp</p>
+      <p class="clickup-success-note" id="clickupSuccessNote" hidden>ورفقنا PDF الخطة مع المهمة، تقدر تشوفه من هناك.</p>
       <div class="clickup-actions">
-        <a id="clickupOpenCreated" class="clickup-primary" target="_blank" rel="noopener noreferrer">فتح في ClickUp</a>
-        <button type="button" class="clickup-secondary" id="clickupDoneBtn">تم</button>
+        <a id="clickupOpenCreated" class="clickup-primary" target="_blank" rel="noopener noreferrer">افتحها في ClickUp</a>
+        <button type="button" class="clickup-secondary" id="clickupDoneBtn">تمام</button>
       </div>
     </div>
   </div>
@@ -11198,6 +11256,7 @@ if(window.KhuttaClickUpUI){
     escapeHtml
   });
 }
+
 </script>
 </body>
 </html>
