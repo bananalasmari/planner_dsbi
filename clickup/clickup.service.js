@@ -353,10 +353,8 @@ async function sendPlan({ plan, parentTaskId, existing, pdf }) {
   const sprintsField = resolveSprintsField(customFields);
   const itemNodes = (tree.children || []).filter(node => String((node && node.name) || '').trim());
 
-  async function createPlanTask(asSubtaskOfProject) {
-    const body = mapper.toTaskBody(tree, asSubtaskOfProject ? parentId : undefined);
-    if (!asSubtaskOfProject) body.links_to = parentId;
-    return createTask(listId, body);
+  async function createPlanTask() {
+    return createTask(listId, mapper.toTaskBody(tree, parentId));
   }
 
   async function applyPlanFields(taskId) {
@@ -367,11 +365,8 @@ async function sendPlan({ plan, parentTaskId, existing, pdf }) {
   let root;
   if (existing && existing.taskId) {
     root = await updateTask(existing.taskId, mapper.toTaskBody(tree));
-  } else if (itemNodes.length) {
-    // Keep the plan as a regular task so البنود can be created as its subtasks.
-    root = await createPlanTask(false);
   } else {
-    root = await createPlanTask(true);
+    root = await createPlanTask();
   }
   await applyPlanFields(root.id);
 
@@ -386,11 +381,10 @@ async function sendPlan({ plan, parentTaskId, existing, pdf }) {
     });
   } catch (err) {
     if (!isNestingError(err)) throw err;
-    root = await createPlanTask(false);
-    await applyPlanFields(root.id);
+    // If plan → item nesting is blocked, attach البنود directly under the project.
     children = await syncPlanSubtasks({
       listId,
-      planTaskId: root.id,
+      planTaskId: parentId,
       nodes: itemNodes,
       childMap: {},
       featuresField
