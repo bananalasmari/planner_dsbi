@@ -1,0 +1,11 @@
+{
+  "name": "khutta-planner",
+  "private": true,
+  "description": "خُطّة — frontend plan generator with ClickUp integration",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7"
+  }
+}
