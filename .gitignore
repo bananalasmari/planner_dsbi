@@ -1,6 +1,7 @@
 node_modules/
 .env
 .DS_Store
+data/
 *.min.js
 package.min.json
 package-lock.min.json

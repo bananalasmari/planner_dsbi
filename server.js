@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const { handleClickUpRequest } = require('./api/clickup');
 const { handleJiraRequest } = require('./api/jira');
+const { handleStoreRequest } = require('./api/store');
 
 const PORT = Number(process.env.PORT) || 3456;
 const ROOT = __dirname;
@@ -44,14 +45,34 @@ function sendFile(res, filePath) {
   });
 }
 
+function setApiCors(req, res) {
+  const origin = (req.headers && req.headers.origin) || '*';
+  res.setHeader('Access-Control-Allow-Origin', origin);
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Vary', 'Origin');
+}
+
 const server = http.createServer((req, res) => {
   const url = req.url || '/';
+  if (url.startsWith('/api/')) {
+    setApiCors(req, res);
+    if (String(req.method || '').toUpperCase() === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+  }
   if (url.startsWith('/api/clickup')) {
     handleClickUpRequest(req, res);
     return;
   }
   if (url.startsWith('/api/jira')) {
     handleJiraRequest(req, res);
+    return;
+  }
+  if (url.startsWith('/api/store')) {
+    handleStoreRequest(req, res);
     return;
   }
   const filePath = safeJoin(ROOT, url);
@@ -73,4 +94,5 @@ server.listen(PORT, () => {
   console.log(`خُطّة running on http://localhost:${PORT}`);
   console.log(`ClickUp token: ${clickupConfigured ? 'loaded from environment' : 'missing — add CLICKUP_API_TOKEN to .env'}`);
   console.log(`Jira token: ${jiraConfigured ? 'loaded from environment' : 'missing — add JIRA_* vars to .env'}`);
+  console.log('Cloud store: /api/store (users + plans)');
 });

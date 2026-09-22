@@ -24,6 +24,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/store/*"
+  to = "/.netlify/functions/store/:splat"
+  status = 200
+
+[[redirects]]
   from = "/"
   to = "/frontend-plan-generator_24.html"
   status = 200

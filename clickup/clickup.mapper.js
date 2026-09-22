@@ -70,7 +70,9 @@
       line('Scope', source.scopeName || source.projectName || source.productName),
       line('رقم الطلب', source.ticketId),
       line('عدد المميزات', source.includeFeatures && source.featureCount != null ? String(source.featureCount) : ''),
-      line('Sprint', source.sprintLabel),
+      line('Sprint', Array.isArray(source.sprintLabels) && source.sprintLabels.length
+        ? source.sprintLabels.join(', ')
+        : source.sprintLabel),
       line('Notes', source.notes || source.dependencies)
     ].filter(Boolean);
 
@@ -91,7 +93,9 @@
 
     const detailBlocks = [
       listBlock('Milestones', milestoneLines),
-      listBlock('Sprints', source.sprintLabel ? [source.sprintLabel] : []),
+      listBlock('Sprints', Array.isArray(source.sprintLabels) && source.sprintLabels.length
+        ? source.sprintLabels
+        : (source.sprintLabel ? [source.sprintLabel] : [])),
       listBlock('Phases', phaseLines),
       listBlock('Dependencies', source.dependencies ? [source.dependencies] : []),
       listBlock('Tasks', taskLines)

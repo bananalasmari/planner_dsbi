@@ -8,10 +8,24 @@
   'use strict';
 
   const DEFAULT_BASE = '/api/jira';
+  const DEFAULT_API_ORIGIN = 'http://127.0.0.1:3456';
+  const STATIC_PREVIEW_PORTS = new Set(['5500', '5501', '5502', '5173', '8080', '3000']);
+
+  function isStaticPreviewHost() {
+    if (typeof window === 'undefined' || !window.location) return false;
+    if (window.location.protocol === 'file:') return true;
+    return STATIC_PREVIEW_PORTS.has(String(window.location.port || ''));
+  }
 
   function resolveBase() {
     if (typeof window !== 'undefined' && window.KHUTTA_JIRA_API) {
       return String(window.KHUTTA_JIRA_API).replace(/\/$/, '');
+    }
+    if (isStaticPreviewHost()) {
+      const origin = (typeof window !== 'undefined' && window.KHUTTA_API_ORIGIN)
+        ? String(window.KHUTTA_API_ORIGIN).replace(/\/$/, '')
+        : DEFAULT_API_ORIGIN;
+      return origin + DEFAULT_BASE;
     }
     return DEFAULT_BASE;
   }

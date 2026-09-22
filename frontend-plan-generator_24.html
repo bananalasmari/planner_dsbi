@@ -527,9 +527,19 @@
     color:#8a8d9a;
     font-weight:600;
   }
-  .req-meta-field input{
+  .req-meta-field input,
+  .req-meta-field select{
     padding:6px 8px;
     font-size:12px;
+  }
+  .req-sprint-field select{
+    font-family:inherit;
+    color:var(--navy);
+    cursor:pointer;
+    width:100%;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:#fff;
   }
   .release-phases-list{
     display:flex;
@@ -558,6 +568,49 @@
     position:relative;
   }
   .release-phase-dates .req-meta-field{flex:1; min-width:0;}
+  .sprint-fields-list{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:8px;
+  }
+  .sprint-fields-list[hidden],
+  #sprintFieldsHint[hidden],
+  #sprintSimpleWrap[hidden],
+  #sprintFieldsWrap[hidden],
+  #reqSprintAssignHint[hidden]{display:none !important;}
+  .sprint-field-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(140px,1.1fr) 34px;
+    gap:8px;
+    align-items:start;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    background:#fafbfc;
+  }
+  .sprint-field-row .sprint-name-input{
+    width:100%;
+    padding:8px 10px;
+    font-size:13px;
+    font-weight:600;
+  }
+  .sprint-field-dates{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    position:relative;
+    min-width:0;
+  }
+  .sprint-field-row .req-remove{
+    margin-top:2px;
+  }
+  @media (max-width:720px){
+    .sprint-field-row{
+      grid-template-columns:minmax(0,1fr) 34px;
+    }
+    .sprint-field-dates{grid-column:1 / -1;}
+  }
   .req-remove{
     flex-shrink:0;
     width:30px;
@@ -1265,7 +1318,7 @@
     z-index:1;
   }
   .doc-topline{height:5px; background:var(--navy);}
-  .doc-header{padding:22px 46px 18px;}
+  .doc-header{padding:26px 46px 20px;}
   .doc-tag{
     display:inline-block;
     background:var(--navy);
@@ -1324,18 +1377,18 @@
     color:#5b6470;
     letter-spacing:.2px;
   }
-  .doc-body{padding:8px 46px 0;}
+  .doc-body{padding:14px 46px 36px;}
   .doc-section-title{
     font-size:22px;
     color:var(--navy);
     font-weight:500;
-    margin:22px 0 4px;
+    margin:26px 0 6px;
   }
   .doc-section-underline{
     width:70px;
     height:4px;
     background:var(--blue);
-    margin-bottom:14px;
+    margin-bottom:16px;
   }
   table.doc-table{
     width:100%;
@@ -1347,27 +1400,35 @@
     background:var(--blue);
     color:#fff;
     font-weight:600;
-    padding:10px 14px;
+    padding:12px 16px;
     text-align:center;
     font-size:13px;
     border:1px solid #c9d0dc;
   }
   table.doc-table td{
     background:var(--gray-row);
-    padding:10px 14px;
-    vertical-align:top;
+    padding:12px 16px;
+    vertical-align:middle;
     border:1px solid #c9d0dc;
+    line-height:1.45;
   }
   table.doc-table td.center{text-align:center; vertical-align:middle;}
   table.doc-table td.task-num,
   table.doc-table th.task-num{
-    width:46px;
+    width:52px;
     text-align:center;
     vertical-align:middle;
     font-weight:700;
     white-space:nowrap;
   }
   table.doc-table td.task-text{text-align:left; vertical-align:middle;}
+  table.doc-table th.task-features,
+  table.doc-table td.task-features{
+    width:14%;
+    text-align:center;
+    vertical-align:middle;
+    font-weight:600;
+  }
   table.doc-table td.task-date{
     text-align:center;
     vertical-align:middle;
@@ -1391,6 +1452,52 @@
   tr.feedback-row td.label{text-align:left; font-weight:700;}
   tr.cost-row td{background:#e6f7ee; font-weight:600; text-align:center;}
   tr.cost-row td.label{text-align:left; font-weight:700;}
+  tr.sprint-row td{
+    background:#fff;
+    text-align:center;
+    vertical-align:middle;
+    font-weight:600;
+  }
+  tr.sprint-row td.sprint-name{
+    text-align:left;
+    color:var(--navy);
+    font-weight:700;
+  }
+  tr.sprint-summary td{
+    background:#eef2ff;
+    font-weight:700;
+    text-align:center;
+  }
+  tr.sprint-summary td.label{text-align:left;}
+  .doc-sprint-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+    margin:0 0 10px;
+    font-size:12px;
+    color:#5b6475;
+  }
+  .doc-sprint-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 10px;
+    border-radius:999px;
+    background:var(--blue-light);
+    color:var(--navy);
+    font-weight:700;
+    font-size:11.5px;
+  }
+  tr.task-sprint-group td{
+    background:#eef2ff;
+    color:var(--navy);
+    font-weight:700;
+    font-size:12.5px;
+    text-align:left;
+    padding:10px 12px;
+    border-top:2px solid #c7d2fe;
+  }
   .doc-deps{margin:8px 0 0; padding-inline-start:18px; font-size:12.5px;}
   .doc-note{font-size:11px; color:#8a8d9a; margin-top:14px;}
   .placeholder-msg{
@@ -5024,9 +5131,21 @@
           <input type="text" id="ticketId" placeholder="12345" inputmode="numeric">
         </div>
       </div>
-      <div class="field">
-        <label>رقم السبرنت (اختياري)</label>
+      <div class="field" id="sprintSimpleWrap">
+        <label>السبرنت (اختياري)</label>
         <input type="text" id="sprintNum" placeholder="Sprint 3">
+      </div>
+    </div>
+
+    <div class="field optional-field" id="sprintFieldsField">
+      <div class="checkbox-line leave-toggle">
+        <input type="checkbox" id="includeSprintFields">
+        <label for="includeSprintFields">إضافة حقل لكل سبرنت <span class="optional-badge">اختياري</span></label>
+      </div>
+      <div class="hint" id="sprintFieldsHint" hidden>أضيفي سبرنت سبرنت، وحددي تاريخه إذا تبين. بعد تفعيلها يطلع اختيار السبرنت داخل كل بند من نطاق العمل. إذا ما حطيتي تاريخ، يتوزع تلقائيًا على فترة المشروع.</div>
+      <div id="sprintFieldsWrap" hidden>
+        <div class="sprint-fields-list" id="sprintFieldsList"></div>
+        <button type="button" id="addSprintBtn" class="add-item-btn">+ إضافة سبرنت</button>
       </div>
     </div>
 
@@ -5049,6 +5168,7 @@
 
     <div class="field" id="tourScope">
       <label>نطاق العمل / المتطلبات</label>
+      <div class="hint" id="reqSprintAssignHint" hidden>فعّلي «إضافة حقل لكل سبرنت» فوق، ثم اختاري السبرنت لكل بند من القائمة داخل البند.</div>
       <div id="tourFeatures">
       <div class="req-toolbar" id="reqToolbar" hidden>
         <span class="req-count" id="reqCount"></span>
@@ -5188,7 +5308,7 @@
   <div class="auth-modal">
     <button type="button" class="welcome-close" id="authClose" aria-label="إغلاق">×</button>
     <h2 id="authTitle">حياك في خُطّة</h2>
-    <p class="auth-lead" id="authLead">سجّل دخولك عشان خططك تبقى عندك، حتى بعد ما تسكّر المتصفح.</p>
+    <p class="auth-lead" id="authLead">سجّل دخولك عشان خططك تبقى معك على الجوال واللابتوب، وأي تعديل يتزامن تلقائيًا.</p>
     <p class="auth-guest-note" id="authGuestNote" hidden>لازم تسجّل دخول قبل إنشاء أو حفظ الخطة، حتى ما تضيع خططك.</p>
     <div class="auth-tabs" role="tablist">
       <button type="button" class="auth-tab is-on" id="authTabLogin" role="tab" aria-selected="true">دخول</button>
@@ -5438,6 +5558,7 @@
   </div>
 </div>
 
+<script src="store/store.client.js"></script>
 <script src="clickup/clickup.types.js"></script>
 <script src="clickup/clickup.mapper.js"></script>
 <script src="clickup/clickup.client.js"></script>
@@ -5445,7 +5566,7 @@
 <script>
 const ELM_LOGO_FIXED = "data:image/png;base64,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";
 let logoDataUrl = null; // product logo (optional, per-project)
-let reqItems = [{text:'', features:'', startDate:'', endDate:''}];
+let reqItems = [{text:'', features:'', startDate:'', endDate:'', sprintId:''}];
 let expandedReqIndex = 0;
 let reqSearchQuery = '';
 let rangePickerState = {
@@ -5511,11 +5632,62 @@ function filterReqCards(){
   });
   box.classList.toggle('is-empty-filter', !!q && visible === 0);
 }
+function blankReqItem(overrides){
+  return {
+    text: '',
+    features: '',
+    startDate: '',
+    endDate: '',
+    sprintId: '',
+    ...(overrides || {})
+  };
+}
+
+function getAssignableSprints(){
+  if(typeof isDetailedSprintsEnabled !== 'function' || !isDetailedSprintsEnabled()) return [];
+  if(typeof getActiveSprintItems !== 'function') return [];
+  return getActiveSprintItems();
+}
+
+function resolveReqSprintLabel(item){
+  const id = item && item.sprintId ? String(item.sprintId) : '';
+  if(!id) return '';
+  const sprint = getAssignableSprints().find(s => s.id === id);
+  return sprint ? sprint.label : (item.sprintLabel || '');
+}
+
+function pruneReqSprintIds(){
+  const valid = new Set(getAssignableSprints().map(s => s.id));
+  reqItems.forEach(item => {
+    if(item.sprintId && !valid.has(item.sprintId)) item.sprintId = '';
+  });
+}
+
+function syncReqSprintAssignHint(){
+  const hint = document.getElementById('reqSprintAssignHint');
+  if(!hint) return;
+  const enabled = typeof isDetailedSprintsEnabled === 'function' && isDetailedSprintsEnabled();
+  const assignable = getAssignableSprints();
+  if(!enabled){
+    hint.hidden = false;
+    hint.textContent = 'عشان تربطين البنود بالسبرنتات: فعّلي «إضافة حقل لكل سبرنت» فوق، ثم اختاري السبرنت داخل كل بند.';
+    return;
+  }
+  hint.hidden = false;
+  hint.textContent = assignable.length
+    ? 'اختاري السبرنت لكل بند من القائمة داخل البند — تظهر مجمّعة في خطة العمل.'
+    : 'أضيفي سبرنت واحد على الأقل عشان تربطين البنود.';
+}
+
 function renderReqList(opts){
   if(typeof closeRangePicker === 'function') closeRangePicker(true);
+  pruneReqSprintIds();
+  syncReqSprintAssignHint();
   const box = document.getElementById('reqList');
   if(!box) return;
   const focusIndex = opts && opts.focusIndex;
+  const assignableSprints = getAssignableSprints();
+  const showSprintAssign = assignableSprints.length > 0;
   box.innerHTML = '';
   box.classList.toggle('is-scroll', reqItems.length >= 8);
   const empty = document.createElement('div');
@@ -5557,10 +5729,16 @@ function renderReqList(opts){
       const n = featVal !== '' && Number(featVal) > 0 ? Number(featVal) : 1;
       featChip.textContent = `${n} ميزة`;
     }
+    const sprintChip = document.createElement('span');
+    sprintChip.className = 'req-chip';
+    const sprintLabel = resolveReqSprintLabel(item);
+    sprintChip.hidden = !showSprintAssign || !sprintLabel;
+    if(!sprintChip.hidden) sprintChip.textContent = sprintLabel;
     const dateChip = document.createElement('span');
     dateChip.className = 'req-chip';
     syncReqDateChip(dateChip, item);
     chips.appendChild(featChip);
+    chips.appendChild(sprintChip);
     chips.appendChild(dateChip);
 
     const chevron = document.createElement('span');
@@ -5588,7 +5766,7 @@ function renderReqList(opts){
         if(expandedReqIndex === i) expandedReqIndex = Math.min(i, reqItems.length - 1);
         else if(expandedReqIndex > i) expandedReqIndex -= 1;
       }else{
-        reqItems[0] = {text:'', features:'', startDate:'', endDate:''};
+        reqItems[0] = blankReqItem();
         expandedReqIndex = 0;
       }
       renderReqList();
@@ -5630,7 +5808,7 @@ function renderReqList(opts){
       const end = input.selectionEnd || 0;
       const current = reqItems[i].text || '';
       reqItems[i].text = (current.slice(0, start) + lines[0] + current.slice(end)).trim();
-      const extras = lines.slice(1).map(text => ({text, features:'', startDate:'', endDate:''}));
+      const extras = lines.slice(1).map(text => blankReqItem({text}));
       reqItems.splice(i + 1, 0, ...extras);
       expandedReqIndex = i + extras.length;
       reqSearchQuery = '';
@@ -5643,11 +5821,44 @@ function renderReqList(opts){
     meta.className = 'req-item-body-meta';
     meta.classList.toggle('has-features', isFeaturesEnabled());
     meta.classList.toggle('has-dates', isTaskDatesEnabled());
+    meta.classList.toggle('has-sprint', showSprintAssign);
 
     const main = document.createElement('div');
     main.className = 'req-item-main';
     const metaRow = document.createElement('div');
     metaRow.className = 'req-item-meta';
+
+    if(showSprintAssign){
+      const sprintWrap = document.createElement('div');
+      sprintWrap.className = 'req-meta-field req-sprint-field';
+      const sprintLabelEl = document.createElement('label');
+      sprintLabelEl.textContent = 'السبرنت';
+      const sprintSelect = document.createElement('select');
+      const noneOpt = document.createElement('option');
+      noneOpt.value = '';
+      noneOpt.textContent = '— اختر السبرنت —';
+      sprintSelect.appendChild(noneOpt);
+      assignableSprints.forEach(sprint => {
+        const opt = document.createElement('option');
+        opt.value = sprint.id;
+        opt.textContent = sprint.label;
+        sprintSelect.appendChild(opt);
+      });
+      sprintSelect.value = item.sprintId && assignableSprints.some(s => s.id === item.sprintId)
+        ? item.sprintId
+        : '';
+      sprintSelect.addEventListener('change', () => {
+        reqItems[i].sprintId = sprintSelect.value || '';
+        const label = resolveReqSprintLabel(reqItems[i]);
+        sprintChip.hidden = !label;
+        sprintChip.textContent = label || '';
+        if(typeof scheduleRegen === 'function') scheduleRegen(200);
+      });
+      sprintWrap.appendChild(sprintLabelEl);
+      sprintWrap.appendChild(sprintSelect);
+      metaRow.appendChild(sprintWrap);
+    }
+
     const featuresWrap = document.createElement('div');
     featuresWrap.className = 'req-meta-field';
     const featuresLabel = document.createElement('label');
@@ -5726,7 +5937,7 @@ function renderReqList(opts){
     meta.appendChild(main);
     meta.appendChild(datesCol);
     body.appendChild(textWrap);
-    if(isFeaturesEnabled() || isTaskDatesEnabled()){
+    if(isFeaturesEnabled() || isTaskDatesEnabled() || showSprintAssign){
       body.appendChild(meta);
     }
 
@@ -5750,7 +5961,7 @@ function renderReqList(opts){
 
 function addReqItem(afterIndex){
   const insertAt = afterIndex == null ? reqItems.length : afterIndex + 1;
-  reqItems.splice(insertAt, 0, {text:'', features:'', startDate:'', endDate:''});
+  reqItems.splice(insertAt, 0, blankReqItem());
   expandedReqIndex = insertAt;
   reqSearchQuery = '';
   renderReqList({focusIndex: insertAt});
@@ -6640,6 +6851,10 @@ function syncAllDateLimits(){
     const dateInputs = row.querySelectorAll('input[type=date]');
     syncDatePair(dateInputs[0], dateInputs[1], true);
   });
+  document.querySelectorAll('#sprintFieldsList .sprint-field-row').forEach((row) => {
+    const dateInputs = row.querySelectorAll('input[type=date]');
+    syncDatePair(dateInputs[0], dateInputs[1], true);
+  });
 }
 
 function projectDatesOutOfOrder(){
@@ -6647,7 +6862,9 @@ function projectDatesOutOfOrder(){
   const end = document.getElementById('endDate').value;
   const tbdEnd = document.getElementById('tbdEnd').checked;
   if(start && end && !tbdEnd && start > end) return true;
-  return (isTaskDatesEnabled() && reqItems.some(itemDatesOutOfOrder)) || selectedReleasePhases().some(itemDatesOutOfOrder);
+  return (isTaskDatesEnabled() && reqItems.some(itemDatesOutOfOrder))
+    || selectedReleasePhases().some(itemDatesOutOfOrder)
+    || (isDetailedSprintsEnabled() && sprintItems.some(itemDatesOutOfOrder));
 }
 
 function showDateOrderError(){
@@ -6702,6 +6919,17 @@ function paintDateErrors(){
     const trigger = row.querySelector('.range-picker-trigger');
     if(trigger) trigger.classList.toggle('date-invalid', invalid);
   });
+
+  document.querySelectorAll('#sprintFieldsList .sprint-field-row').forEach((row) => {
+    const dateInputs = row.querySelectorAll('input[type=date]');
+    const err = row.querySelector('.date-error');
+    const sprint = sprintItems.find(item => item.id === row.dataset.sprintId);
+    const invalid = isDetailedSprintsEnabled() && itemDatesOutOfOrder(sprint);
+    if(err) err.classList.toggle('show', invalid);
+    dateInputs.forEach(input => input.classList.toggle('date-invalid', invalid));
+    const trigger = row.querySelector('.range-picker-trigger');
+    if(trigger) trigger.classList.toggle('date-invalid', invalid);
+  });
 }
 
 function validateAllDates(){
@@ -6738,6 +6966,15 @@ document.getElementById('includeReleasePhases').addEventListener('change', () =>
   renderReleasePhases();
   validateAllDates();
   if(typeof scheduleRegen === 'function') scheduleRegen(200);
+});
+
+document.getElementById('includeSprintFields').addEventListener('change', () => {
+  syncSprintFieldsMode();
+  if(typeof renderReqList === 'function') renderReqList();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+});
+document.getElementById('addSprintBtn').addEventListener('click', () => {
+  addSprintItem();
 });
 
 syncLeaveCalendarVisibility();
@@ -7026,15 +7263,21 @@ function appendFixedReleasePhases(tasks, teamTag){
 function buildLocalPlan(scopeItems, depsNotes, lang, includeFeatures){
   const showFeatures = includeFeatures !== false && (includeFeatures || isFeaturesEnabled());
   const showDates = isTaskDatesEnabled();
+  const sprintLookup = Object.fromEntries(
+    (typeof getAssignableSprints === 'function' ? getAssignableSprints() : []).map(s => [s.id, s.label])
+  );
   const tasks = scopeItems.map(item => {
     const featNum = Number(item.features);
+    const sprintId = item.sprintId || '';
     return {
       text: item.text.trim(),
       startDate: showDates ? (item.startDate || '') : '',
       endDate: showDates ? (item.endDate || '') : '',
       features: showFeatures
         ? (Number.isFinite(featNum) && featNum > 0 ? featNum : 1)
-        : 0
+        : 0,
+      sprintId,
+      sprintLabel: (sprintId && sprintLookup[sprintId]) || item.sprintLabel || ''
     };
   });
   const totalFeatures = showFeatures ? sumScopeFeatures(scopeItems) : 0;
@@ -7116,7 +7359,11 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
     deps: 'التبعيات / الملاحظات',
     tbd: 'غير محدد',
     workingDays: 'يوم عمل',
-    created: 'تاريخ الإنشاء'
+    created: 'تاريخ الإنشاء',
+    sprintPlan: 'توزيع السبرنتات',
+    sprintDays: 'أيام العمل',
+    overall: 'إجمالي الفترة',
+    unassigned: 'بدون سبرنت'
   } : {
     planTitle: 'Frontend Implementation Plan',
     working: 'Working Plan',
@@ -7136,7 +7383,11 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
     deps: 'Dependencies / Buffer Notes',
     tbd: 'TBD',
     workingDays: 'Working Days',
-    created: 'Created'
+    created: 'Created',
+    sprintPlan: 'Sprint Breakdown',
+    sprintDays: 'Working Days',
+    overall: 'Overall Period',
+    unassigned: 'Unassigned'
   };
 
   const productLogoHtml = logoDataUrl ? `<img class="doc-logo-left" src="${logoDataUrl}">` : '<span></span>';
@@ -7151,28 +7402,104 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
     return isTaskDatesEnabled();
   });
 
-  const taskRows = (tasks || []).map((t, i) => {
+  const sprintSchedule = buildSprintSchedule({
+    sprintNum,
+    sprintItems: typeof getActiveSprintItems === 'function' ? getActiveSprintItems() : null,
+    startDate,
+    endDate,
+    tbdEnd,
+    holidays: holidayList
+  });
+
+  const taskColCount = 2 + (showTaskDates ? 2 : 0) + (includeFeatures ? 1 : 0);
+
+  function renderTaskRow(t, num){
     const text = typeof t === 'string' ? t : (t.text || '');
     const dateText = typeof t === 'string' ? '' : fmtTaskDate(t.startDate, t.endDate);
     const daysText = typeof t === 'string' ? '' : fmtTaskDays(t.startDate, t.endDate, holidayList);
     const feat = typeof t === 'string' ? '' : t.features;
     const isFixed = typeof t === 'object' && t && t.fixedPhase;
     const featCell = includeFeatures
-      ? `<td class="center">${isFixed ? '—' : (Number.isFinite(Number(feat)) && Number(feat) > 0 ? Number(feat) : 1)}</td>`
+      ? `<td class="center task-features">${isFixed ? '—' : (Number.isFinite(Number(feat)) && Number(feat) > 0 ? Number(feat) : 1)}</td>`
       : '';
     const dateCells = showTaskDates
       ? `<td class="task-date">${escapeHtml(dateText)}</td><td class="task-days">${escapeHtml(daysText)}</td>`
       : '';
     return `<tr>
-      <td class="task-num">${i + 1}</td>
+      <td class="task-num">${num}</td>
       <td class="task-text">${escapeHtml(text)}</td>
       ${dateCells}
       ${featCell}
     </tr>`;
-  }).join('');
+  }
+
+  const taskList = Array.isArray(tasks) ? tasks.slice() : [];
+  const hasSprintAssignment = taskList.some(t =>
+    t && typeof t === 'object' && !t.fixedPhase && (t.sprintId || t.sprintLabel)
+  );
+  let taskRows = '';
+  if(hasSprintAssignment){
+    const order = [];
+    const seen = new Set();
+    (sprintSchedule.rows || []).forEach(row => {
+      const key = `id:${row.id || ''}|label:${row.label || ''}`;
+      if(seen.has(key)) return;
+      seen.add(key);
+      order.push({id: row.id || '', label: row.label || '', key});
+    });
+    (typeof getAssignableSprints === 'function' ? getAssignableSprints() : []).forEach(sprint => {
+      const key = `id:${sprint.id}|label:${sprint.label}`;
+      if(seen.has(key)) return;
+      seen.add(key);
+      order.push({id: sprint.id, label: sprint.label, key});
+    });
+    const buckets = new Map();
+    order.forEach(entry => buckets.set(entry.key, []));
+    const unassigned = [];
+    const fixed = [];
+    taskList.forEach(task => {
+      if(task && typeof task === 'object' && task.fixedPhase){
+        fixed.push(task);
+        return;
+      }
+      const sprintId = task && typeof task === 'object' ? (task.sprintId || '') : '';
+      const sprintLabel = task && typeof task === 'object' ? (task.sprintLabel || '') : '';
+      let matched = null;
+      if(sprintId) matched = order.find(entry => entry.id && entry.id === sprintId);
+      if(!matched && sprintLabel) matched = order.find(entry => entry.label === sprintLabel);
+      if(matched) buckets.get(matched.key).push(task);
+      else if(sprintId || sprintLabel){
+        const orphanKey = `id:${sprintId}|label:${sprintLabel || 'Sprint'}`;
+        if(!buckets.has(orphanKey)){
+          buckets.set(orphanKey, []);
+          order.push({id: sprintId, label: sprintLabel || 'Sprint', key: orphanKey});
+        }
+        buckets.get(orphanKey).push(task);
+      }else{
+        unassigned.push(task);
+      }
+    });
+    let num = 1;
+    const parts = [];
+    order.forEach(entry => {
+      const group = buckets.get(entry.key) || [];
+      if(!group.length) return;
+      parts.push(`<tr class="task-sprint-group"><td colspan="${taskColCount}">${escapeHtml(entry.label)}</td></tr>`);
+      group.forEach(task => {
+        parts.push(renderTaskRow(task, num++));
+      });
+    });
+    if(unassigned.length){
+      parts.push(`<tr class="task-sprint-group"><td colspan="${taskColCount}">${escapeHtml(L.unassigned || 'Unassigned')}</td></tr>`);
+      unassigned.forEach(task => parts.push(renderTaskRow(task, num++)));
+    }
+    fixed.forEach(task => parts.push(renderTaskRow(task, num++)));
+    taskRows = parts.join('');
+  }else{
+    taskRows = taskList.map((t, i) => renderTaskRow(t, i + 1)).join('');
+  }
 
   const featuresTotal = Number(featureCount) || 0;
-  const taskColCount = 2 + (showTaskDates ? 2 : 0) + (includeFeatures ? 1 : 0);
   const featuresTotalRow = includeFeatures
     ? `<tr class="total-row">
          <td class="label" colspan="${taskColCount - 1}">${escapeHtml(L.totalFeatures)}</td>
@@ -7201,6 +7528,71 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
        <ul class="doc-deps">${dependencies.map(d => `<li>${escapeHtml(d)}</li>`).join('')}</ul>`
     : '';
 
+  const sprintMetaHtml = sprintSchedule.multi
+    ? `<div class="doc-sprint-meta">
+         <span class="doc-sprint-pill">${escapeHtml(String(sprintSchedule.labels.length))} Sprints</span>
+         <span>${escapeHtml(sprintSchedule.labels.join(' · '))}</span>
+       </div>`
+    : '';
+  const sprintRowsHtml = sprintSchedule.multi
+    ? sprintSchedule.rows.map(row => `
+        <tr class="sprint-row">
+          <td class="sprint-name">${escapeHtml(row.label)}</td>
+          <td class="center">${row.startDate ? fmtDate(row.startDate) : L.tbd}</td>
+          <td class="center">${row.endDate ? fmtDate(row.endDate) : L.tbd}</td>
+          <td class="center">${row.days == null ? L.tbd : `${row.days} ${Number(row.days) === 1 ? 'Day' : 'Days'}`}</td>
+        </tr>`).join('')
+    : '';
+  const estimationsTableHtml = sprintSchedule.multi
+    ? `<table class="doc-table">
+        <tr>
+          <th>${L.sprint}</th>
+          <th>${L.start}</th>
+          <th>${L.end}</th>
+          <th>${L.sprintDays}</th>
+        </tr>
+        ${sprintRowsHtml}
+        <tr class="sprint-summary">
+          <td class="label">${escapeHtml(L.overall)}</td>
+          <td class="center">${fmtDate(startDate)}</td>
+          <td class="center">${tbdEnd ? L.tbd : fmtDate(endDate)}</td>
+          <td class="center">${totalDaysDisplay}</td>
+        </tr>
+        <tr>
+          <td class="label" style="font-weight:700; text-align:left;">${L.assigned}</td>
+          <td class="center" colspan="3">${escapeHtml(assigned || 'TBD')}</td>
+        </tr>
+        <tr class="total-row">
+          <td class="label">${L.totalDays}</td>
+          <td colspan="2">${totalDaysDisplay}</td>
+          <td>${L.excl}</td>
+        </tr>
+        <tr class="feedback-row">
+          <td class="label">${L.feedback}</td>
+          <td colspan="3">${feedbackDisplay}</td>
+        </tr>
+        ${costRowHtml}
+      </table>`
+    : `<table class="doc-table">
+        <tr><th>${L.sprint}</th><th>${L.start}</th><th>${L.end}</th><th>${L.assigned}</th></tr>
+        <tr>
+          <td class="center">${escapeHtml(sprintSchedule.summaryLabel || sprintNum || 'TBD')}</td>
+          <td class="center">${fmtDate(startDate)}</td>
+          <td class="center">${tbdEnd ? L.tbd : fmtDate(endDate)}</td>
+          <td class="center">${escapeHtml(assigned || 'TBD')}</td>
+        </tr>
+        <tr class="total-row">
+          <td class="label">${L.totalDays}</td>
+          <td colspan="2">${totalDaysDisplay}</td>
+          <td>${L.excl}</td>
+        </tr>
+        <tr class="feedback-row">
+          <td class="label">${L.feedback}</td>
+          <td colspan="3">${feedbackDisplay}</td>
+        </tr>
+        ${costRowHtml}
+      </table>`;
+
   return `
     <div class="doc-topline"></div>
     <div class="doc-header">
@@ -7225,34 +7617,17 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
           <th class="task-num">#</th>
           <th>${L.task}</th>
           ${showTaskDates ? `<th>${L.date}</th><th class="task-days">${L.days}</th>` : ''}
-          ${includeFeatures ? `<th style="width:18%">${L.features}</th>` : ''}
+          ${includeFeatures ? `<th class="task-features" style="width:14%">${L.features}</th>` : ''}
         </tr>
         ${taskRows}
         ${featuresTotalRow}
       </table>
 
       <div class="doc-estimations">
-      <div class="doc-section-title">${L.estimations}</div>
+      <div class="doc-section-title">${sprintSchedule.multi ? L.sprintPlan : L.estimations}</div>
       <div class="doc-section-underline"></div>
-      <table class="doc-table">
-        <tr><th>${L.sprint}</th><th>${L.start}</th><th>${L.end}</th><th>${L.assigned}</th></tr>
-        <tr>
-          <td class="center">${escapeHtml(sprintNum || 'TBD')}</td>
-          <td class="center">${fmtDate(startDate)}</td>
-          <td class="center">${tbdEnd ? L.tbd : fmtDate(endDate)}</td>
-          <td class="center">${escapeHtml(assigned || 'TBD')}</td>
-        </tr>
-        <tr class="total-row">
-          <td class="label">${L.totalDays}</td>
-          <td colspan="2">${totalDaysDisplay}</td>
-          <td>${L.excl}</td>
-        </tr>
-        <tr class="feedback-row">
-          <td class="label">${L.feedback}</td>
-          <td colspan="3">${feedbackDisplay}</td>
-        </tr>
-        ${costRowHtml}
-      </table>
+      ${sprintMetaHtml}
+      ${estimationsTableHtml}
       ${depsHtml}
       </div>
     </div>
@@ -7396,7 +7771,7 @@ const userRepository = {
 const sessionRepository = {
   get(){
     const session = KhuttaStorage.getJson(KhuttaStorage.keys.session, null);
-    if(!session || !session.userId) return null;
+    if(!session || !(session.token || session.userId)) return null;
     return session;
   },
   set(session){
@@ -7405,6 +7780,10 @@ const sessionRepository = {
   },
   clear(){
     KhuttaStorage.remove(KhuttaStorage.keys.session);
+  },
+  getToken(){
+    const session = this.get();
+    return session && session.token ? String(session.token) : '';
   }
 };
 
@@ -7436,8 +7815,106 @@ const planRepository = {
   readLegacy(){
     const raw = KhuttaStorage.getJson(KhuttaStorage.keys.legacyPlans, []);
     return Array.isArray(raw) ? raw : [];
+  },
+  collectAllLocal(){
+    const byId = new Map();
+    const absorb = (list) => {
+      (Array.isArray(list) ? list : []).forEach(plan => {
+        if(!plan || !plan.id) return;
+        const prev = byId.get(plan.id);
+        if(!prev){
+          byId.set(plan.id, plan);
+          return;
+        }
+        const prevTime = Date.parse(prev.updatedAt || prev.createdAt || 0) || 0;
+        const nextTime = Date.parse(plan.updatedAt || plan.createdAt || 0) || 0;
+        if(nextTime >= prevTime) byId.set(plan.id, plan);
+      });
+    };
+    absorb(this.readLegacy());
+    try{
+      for(let i = 0; i < localStorage.length; i++){
+        const key = localStorage.key(i);
+        if(!key || !key.startsWith(KhuttaStorage.keys.plansPrefix)) continue;
+        absorb(KhuttaStorage.getJson(key, []));
+      }
+    }catch(_err){ /* ignore */ }
+    return [...byId.values()];
   }
 };
+
+function mergePlanLists(...lists){
+  const byId = new Map();
+  lists.flat().forEach(plan => {
+    if(!plan || !plan.id) return;
+    const prev = byId.get(plan.id);
+    if(!prev){
+      byId.set(plan.id, plan);
+      return;
+    }
+    const prevTime = Date.parse(prev.updatedAt || prev.createdAt || 0) || 0;
+    const nextTime = Date.parse(plan.updatedAt || plan.createdAt || 0) || 0;
+    if(nextTime >= prevTime) byId.set(plan.id, plan);
+  });
+  return [...byId.values()];
+}
+
+let cloudSyncTimer = null;
+let cloudHydrating = false;
+
+function getStoreClient(){
+  return window.KhuttaStoreClient || null;
+}
+
+async function pushPlansToCloud(plans){
+  const client = getStoreClient();
+  const token = sessionRepository.getToken();
+  if(!client || !token) return;
+  try{
+    await client.putPlans(token, Array.isArray(plans) ? plans : []);
+  }catch(err){
+    console.warn('تعذّر مزامنة الخطط للسحابة', err);
+  }
+}
+
+function scheduleCloudPlansSync(plans){
+  clearTimeout(cloudSyncTimer);
+  cloudSyncTimer = setTimeout(() => {
+    pushPlansToCloud(plans);
+  }, 450);
+}
+
+async function hydratePlansFromCloud(){
+  const client = getStoreClient();
+  const token = sessionRepository.getToken();
+  const session = sessionRepository.get();
+  if(!client || !token || !session || !session.userId || cloudHydrating) return getSavedPlans();
+  cloudHydrating = true;
+  try{
+    const remote = await client.getPlans(token);
+    const remotePlans = Array.isArray(remote.plans) ? remote.plans : [];
+    const localPlans = planRepository.collectAllLocal();
+    const merged = mergePlanLists(remotePlans, localPlans).map(plan => ({
+      ...plan,
+      userId: session.userId
+    }));
+    const compact = merged.map(compactPlanForStorage);
+    planRepository.saveForUser(session.userId, compact);
+    if(JSON.stringify(remotePlans.map(compactPlanForStorage)) !== JSON.stringify(compact)){
+      await client.putPlans(token, compact);
+    }
+    return merged;
+  }catch(err){
+    console.warn('تعذّر جلب الخطط من السحابة', err);
+    if(err && (err.status === 401 || err.code === 'UNAUTHORIZED')){
+      sessionRepository.clear();
+      if(typeof syncHeaderAuth === 'function') syncHeaderAuth();
+    }
+    return getSavedPlans();
+  }finally{
+    cloudHydrating = false;
+  }
+}
 
 function bytesToHex(buffer){
   return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -7478,6 +7955,13 @@ const authService = {
   currentUser(){
     const session = sessionRepository.get();
     if(!session) return null;
+    if(session.token && session.userId){
+      return publicUser({
+        id: session.userId,
+        name: session.name || '',
+        email: session.email || ''
+      });
+    }
     const user = userRepository.findById(session.userId);
     if(!user){
       sessionRepository.clear();
@@ -7489,35 +7973,32 @@ const authService = {
     return !!this.currentUser();
   },
   async register({name, email, password}){
-    const cleanName = String(name || '').trim();
-    const cleanEmail = String(email || '').trim().toLowerCase();
-    if(!cleanName) throw new Error('اكتب اسمك');
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) throw new Error('الإيميل غير صحيح');
-    if(String(password || '').length < 6) throw new Error('كلمة المرور لازم 6 خانات على الأقل');
-    if(userRepository.findByEmail(cleanEmail)) throw new Error('هذا الإيميل مسجّل مسبقًا');
-    const salt = createEntityId('salt');
-    const passwordHash = await hashSecret(password, salt);
-    const user = userRepository.create({
-      id: createEntityId('usr'),
-      name: cleanName,
-      email: cleanEmail,
-      passwordHash,
-      salt,
-      createdAt: new Date().toISOString()
+    const client = getStoreClient();
+    if(!client) throw new Error('خدمة الحسابات غير متاحة حاليًا.');
+    const result = await client.register({ name, email, password });
+    sessionRepository.set({
+      token: result.token,
+      userId: result.user.id,
+      name: result.user.name,
+      email: result.user.email
     });
-    sessionRepository.set({ userId: user.id, name: user.name, email: user.email });
-    migrateLegacyPlansToUser(user.id);
-    return publicUser(user);
+    await hydratePlansFromCloud();
+    migrateLegacyPlansToUser(result.user.id);
+    return publicUser(result.user);
   },
   async login({email, password}){
-    const cleanEmail = String(email || '').trim().toLowerCase();
-    const user = userRepository.findByEmail(cleanEmail);
-    if(!user) throw new Error('الإيميل أو كلمة المرور غير صحيحة');
-    const passwordHash = await hashSecret(password, user.salt || '');
-    if(passwordHash !== user.passwordHash) throw new Error('الإيميل أو كلمة المرور غير صحيحة');
-    sessionRepository.set({ userId: user.id, name: user.name, email: user.email });
-    migrateLegacyPlansToUser(user.id);
-    return publicUser(user);
+    const client = getStoreClient();
+    if(!client) throw new Error('خدمة الحسابات غير متاحة حاليًا.');
+    const result = await client.login({ email, password });
+    sessionRepository.set({
+      token: result.token,
+      userId: result.user.id,
+      name: result.user.name,
+      email: result.user.email
+    });
+    await hydratePlansFromCloud();
+    migrateLegacyPlansToUser(result.user.id);
+    return publicUser(result.user);
   },
   logout(){
     sessionRepository.clear();
@@ -7683,6 +8164,7 @@ function writePlansStore(plans){
       console.warn('تعذّر حفظ الخطط محليًا', e);
     }
   }
+  scheduleCloudPlansSync(sorted);
   return getSavedPlans();
 }
 
@@ -7801,7 +8283,8 @@ function getPlanComparePayload(source){
     text: String(item.text || '').trim(),
     features: Number(item.features) || 0,
     startDate: item.startDate || '',
-    endDate: item.endDate || ''
+    endDate: item.endDate || '',
+    sprintId: item.sprintId || ''
   }));
   const team = source.team || {};
   const assignees = [...(team.assignees || form.selectedAssignees || [])].map(String).sort();
@@ -8020,11 +8503,265 @@ function formatRelativeAr(iso){
   return fmtShortDate(iso.slice(0, 10));
 }
 
-function sprintCardLabel(sprintNum){
-  if(!sprintNum) return '';
-  const match = String(sprintNum).match(/(\d+)/);
-  if(match) return `${match[1]} Sprints`;
-  return sprintNum;
+function listWorkingDayDates(startStr, endStr, holidaysArr){
+  const start = new Date(startStr + 'T00:00:00');
+  const end = new Date(endStr + 'T00:00:00');
+  if(isNaN(start) || isNaN(end) || end < start) return [];
+  const holidays = Array.isArray(holidaysArr) ? holidaysArr : [];
+  const days = [];
+  const cursor = new Date(start);
+  while(cursor <= end){
+    const iso = toIsoDate(cursor);
+    if(isWorkingDay(cursor) && !holidays.includes(iso)) days.push(iso);
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  return days;
+}
+
+function normalizeSprintLabel(value, index){
+  const raw = String(value || '').trim().replace(/\s+/g, ' ');
+  if(!raw) return `Sprint ${index + 1}`;
+  if(/^\d+$/.test(raw)) return `Sprint ${raw}`;
+  if(/^s(print)?\s*\d+$/i.test(raw)){
+    const n = raw.match(/\d+/)[0];
+    return `Sprint ${n}`;
+  }
+  return raw;
+}
+
+function parseSprintLabels(sprintNum){
+  const raw = String(sprintNum || '').trim();
+  if(!raw) return [];
+
+  const countOnly = raw.match(/^\s*(\d{1,2})\s*(?:sprints?|سبرنتات?|سبوينتات?)?\s*$/i);
+  if(countOnly){
+    const count = Math.min(20, Math.max(1, Number(countOnly[1])));
+    return Array.from({ length: count }, (_, i) => `Sprint ${i + 1}`);
+  }
+
+  const rangeMatch = raw.match(/^(?:sprint\s*)?(\d+)\s*[-–—إلىto]+\s*(?:sprint\s*)?(\d+)$/i);
+  if(rangeMatch){
+    let from = Number(rangeMatch[1]);
+    let to = Number(rangeMatch[2]);
+    if(from > to) [from, to] = [to, from];
+    if(to - from > 19) to = from + 19;
+    return Array.from({ length: to - from + 1 }, (_, i) => `Sprint ${from + i}`);
+  }
+
+  const parts = raw
+    .split(/\s*(?:,|،|\/|&| و | and )\s*/i)
+    .map(part => part.trim())
+    .filter(Boolean);
+  if(parts.length > 1){
+    return parts.map((part, i) => normalizeSprintLabel(part, i));
+  }
+
+  return [normalizeSprintLabel(raw, 0)];
+}
+
+function buildSprintSchedule({ sprintNum, sprintItems, startDate, endDate, tbdEnd, holidays }){
+  let entries = [];
+  if(Array.isArray(sprintItems) && sprintItems.length){
+    entries = sprintItems
+      .map((item, index) => ({
+        id: item.id || '',
+        label: normalizeSprintLabel(item.label || item.text || item.name, index),
+        startDate: item.startDate || '',
+        endDate: item.endDate || ''
+      }))
+      .filter(item => item.label);
+  }else{
+    entries = parseSprintLabels(sprintNum).map(label => ({
+      id: '',
+      label,
+      startDate: '',
+      endDate: ''
+    }));
+  }
+  if(!entries.length){
+    return {
+      labels: [],
+      rows: [],
+      multi: false,
+      summaryLabel: ''
+    };
+  }
+  const workingDays = (!tbdEnd && startDate && endDate)
+    ? listWorkingDayDates(startDate, endDate, holidays)
+    : [];
+  const anyManualDates = entries.some(item => item.startDate || item.endDate);
+  const rows = entries.map((entry, index) => {
+    if(anyManualDates){
+      const days = (entry.startDate && entry.endDate)
+        ? workingDaysBetween(entry.startDate, entry.endDate, holidays || [])
+        : null;
+      return {
+        label: entry.label,
+        id: entry.id || '',
+        startDate: entry.startDate || '',
+        endDate: entry.endDate || '',
+        days
+      };
+    }
+    if(!workingDays.length){
+      return {
+        label: entry.label,
+        id: entry.id || '',
+        startDate: index === 0 ? (startDate || '') : '',
+        endDate: '',
+        days: null
+      };
+    }
+    const n = entries.length;
+    const startIdx = Math.floor(index * workingDays.length / n);
+    const endIdx = Math.floor((index + 1) * workingDays.length / n) - 1;
+    const safeStart = Math.min(startIdx, workingDays.length - 1);
+    const safeEnd = Math.max(safeStart, Math.min(endIdx, workingDays.length - 1));
+    const slice = workingDays.slice(safeStart, safeEnd + 1);
+    return {
+      label: entry.label,
+      id: entry.id || '',
+      startDate: slice[0] || '',
+      endDate: slice[slice.length - 1] || '',
+      days: slice.length
+    };
+  });
+  const labels = rows.map(row => row.label);
+  return {
+    labels,
+    rows,
+    multi: labels.length > 1,
+    summaryLabel: labels.length > 1
+      ? `${labels.length} Sprints`
+      : labels[0]
+  };
+}
+
+function sprintCardLabel(sprintNum, sprintItems){
+  const schedule = buildSprintSchedule({
+    sprintNum,
+    sprintItems: isDetailedSprintsEnabled() ? sprintItems : null
+  });
+  if(!schedule.labels.length) return '';
+  if(schedule.labels.length > 1) return `${schedule.labels.length} Sprints`;
+  return schedule.labels[0];
+}
+
+let sprintItems = [];
+
+function isDetailedSprintsEnabled(){
+  const box = document.getElementById('includeSprintFields');
+  return !!(box && box.checked);
+}
+
+function defaultSprintItem(index){
+  return {
+    id: createEntityId('sprint'),
+    label: `Sprint ${index + 1}`,
+    startDate: '',
+    endDate: ''
+  };
+}
+
+function ensureSprintItems(count){
+  const n = Math.max(1, Number(count) || 1);
+  while(sprintItems.length < n) sprintItems.push(defaultSprintItem(sprintItems.length));
+  if(sprintItems.length > n) sprintItems = sprintItems.slice(0, n);
+  return sprintItems;
+}
+
+function getActiveSprintItems(){
+  if(!isDetailedSprintsEnabled()) return [];
+  return sprintItems
+    .map((item, index) => ({
+      id: item.id || createEntityId('sprint'),
+      label: String(item.label || '').trim() || `Sprint ${index + 1}`,
+      startDate: item.startDate || '',
+      endDate: item.endDate || ''
+    }))
+    .filter(item => item.label);
+}
+
+function syncSprintFieldsMode(){
+  const enabled = isDetailedSprintsEnabled();
+  const simple = document.getElementById('sprintSimpleWrap');
+  const wrap = document.getElementById('sprintFieldsWrap');
+  const hint = document.getElementById('sprintFieldsHint');
+  if(simple) simple.hidden = enabled;
+  if(wrap) wrap.hidden = !enabled;
+  if(hint) hint.hidden = !enabled;
+  if(enabled){
+    if(!sprintItems.length) ensureSprintItems(1);
+    renderSprintFields();
+  }
+  syncReqSprintAssignHint();
+}
+
+function renderSprintFields(){
+  if(typeof closeRangePicker === 'function') closeRangePicker(true);
+  const box = document.getElementById('sprintFieldsList');
+  if(!box) return;
+  if(!sprintItems.length) ensureSprintItems(1);
+  box.innerHTML = sprintItems.map((item, index) => `
+    <div class="sprint-field-row" data-sprint-id="${escapeHtml(item.id)}">
+      <input type="text" class="sprint-name-input" data-sprint-field="label" value="${escapeHtml(item.label || `Sprint ${index + 1}`)}" placeholder="Sprint ${index + 1}">
+      <div class="sprint-field-dates">
+        <button type="button" class="range-picker-trigger${item.startDate || item.endDate ? '' : ' is-empty'}" aria-haspopup="dialog" aria-expanded="false">
+          <span class="range-picker-label">${escapeHtml(rangeTriggerLabel(item.startDate, item.endDate))}</span>
+          ${rangePickerIconHtml()}
+        </button>
+        <input type="date" class="range-picker-hidden" data-sprint-date="start" tabindex="-1" aria-hidden="true" value="${escapeHtml(item.startDate || '')}">
+        <input type="date" class="range-picker-hidden" data-sprint-date="end" tabindex="-1" aria-hidden="true" value="${escapeHtml(item.endDate || '')}">
+        <div class="date-error">سلامات شيك ع التواريخ</div>
+      </div>
+      <button type="button" class="req-remove" data-sprint-remove aria-label="حذف السبرنت">×</button>
+    </div>
+  `).join('');
+
+  box.querySelectorAll('.sprint-field-row').forEach(row => {
+    const sprint = sprintItems.find(item => item.id === row.dataset.sprintId);
+    if(!sprint) return;
+    const labelInput = row.querySelector('[data-sprint-field="label"]');
+    const startInput = row.querySelector('[data-sprint-date="start"]');
+    const endInput = row.querySelector('[data-sprint-date="end"]');
+    const trigger = row.querySelector('.range-picker-trigger');
+    const removeBtn = row.querySelector('[data-sprint-remove]');
+    labelInput.addEventListener('input', () => {
+      sprint.label = labelInput.value;
+      if(typeof scheduleRegen === 'function') scheduleRegen(400);
+    });
+    labelInput.addEventListener('change', () => {
+      if(typeof renderReqList === 'function') renderReqList();
+    });
+    const onDateInput = (which) => {
+      if(which === 'start') sprint.startDate = startInput.value;
+      else sprint.endDate = endInput.value;
+      syncAllDateLimits();
+      validateAllDates();
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    };
+    startInput.addEventListener('input', () => onDateInput('start'));
+    endInput.addEventListener('input', () => onDateInput('end'));
+    bindRangePicker(trigger, startInput, endInput);
+    removeBtn.addEventListener('click', () => {
+      if(sprintItems.length <= 1){
+        sprintItems[0] = defaultSprintItem(0);
+      }else{
+        sprintItems = sprintItems.filter(item => item.id !== sprint.id);
+      }
+      renderSprintFields();
+      if(typeof renderReqList === 'function') renderReqList();
+      if(typeof scheduleRegen === 'function') scheduleRegen(200);
+    });
+  });
+  syncAllDateLimits();
+}
+
+function addSprintItem(){
+  sprintItems.push(defaultSprintItem(sprintItems.length));
+  renderSprintFields();
+  if(typeof renderReqList === 'function') renderReqList();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
 }
 
 function clickupItemKey(kind, name, index){
@@ -8065,7 +8802,10 @@ function collectClickUpPlanPayload(){
     teamMembers: Array.isArray(form.selectedAssignees) ? form.selectedAssignees.slice() : [],
     teamTag,
     notes: form.dependencies || '',
-    sprintLabel: form.sprintNum || '',
+    sprintLabel: sprintCardLabel(form.sprintNum, form.sprintItems) || form.sprintNum || '',
+    sprintLabels: isDetailedSprintsEnabled()
+      ? getActiveSprintItems().map(item => item.label)
+      : parseSprintLabels(form.sprintNum),
     milestones: [],
     phases: selectedReleasePhases(teamTag).map(phase => ({
       id: phase.id,
@@ -8124,6 +8864,13 @@ function collectFormSnapshot(){
     teamTag: document.getElementById('teamTag').value,
     ticketNum: document.getElementById('ticketId').value.trim(),
     sprintNum: document.getElementById('sprintNum').value.trim(),
+    includeSprintFields: isDetailedSprintsEnabled(),
+    sprintItems: sprintItems.map(item => ({
+      id: item.id,
+      label: item.label || '',
+      startDate: item.startDate || '',
+      endDate: item.endDate || ''
+    })),
     productNameValue,
     projectName: document.getElementById('projectName').value.trim(),
     reqItems: reqItems.map(item => ({...item})),
@@ -8160,6 +8907,29 @@ function applyFormSnapshot(form){
     document.getElementById('teamTag').value = data.teamTag || '';
     document.getElementById('ticketId').value = data.ticketNum || '';
     document.getElementById('sprintNum').value = data.sprintNum || '';
+    const sprintFieldsToggle = document.getElementById('includeSprintFields');
+    sprintItems = Array.isArray(data.sprintItems)
+      ? data.sprintItems.map((item, index) => ({
+          id: item.id || createEntityId('sprint'),
+          label: item.label || item.text || `Sprint ${index + 1}`,
+          startDate: item.startDate || '',
+          endDate: item.endDate || ''
+        }))
+      : [];
+    if(sprintFieldsToggle){
+      sprintFieldsToggle.checked = data.includeSprintFields != null
+        ? !!data.includeSprintFields
+        : sprintItems.length > 1 || sprintItems.some(item => item.startDate || item.endDate);
+    }
+    if(sprintFieldsToggle && sprintFieldsToggle.checked && !sprintItems.length && data.sprintNum){
+      sprintItems = parseSprintLabels(data.sprintNum).map((label, index) => ({
+        id: createEntityId('sprint'),
+        label,
+        startDate: '',
+        endDate: ''
+      }));
+    }
+    syncSprintFieldsMode();
 
     productNameValue = data.productNameValue || data.projectName || '';
     document.getElementById('projectName').value = data.projectName || data.projectNameEn || data.productNameValue || '';
@@ -8170,9 +8940,10 @@ function applyFormSnapshot(form){
           text: item.text || '',
           features: item.features == null ? '' : item.features,
           startDate: item.startDate || '',
-          endDate: item.endDate || ''
+          endDate: item.endDate || '',
+          sprintId: item.sprintId || ''
         }))
-      : [{text:'', features:'', startDate:'', endDate:''}];
+      : [blankReqItem()];
     expandedReqIndex = defaultExpandedReqIndex();
     reqSearchQuery = '';
 
@@ -8559,7 +9330,7 @@ function startNewPlan(){
   resetVersionWorkspace();
   applyFormSnapshot({
     startDate: toIsoDate(new Date()),
-    reqItems: [{text:'', features:'', startDate:'', endDate:''}]
+    reqItems: [blankReqItem()]
   });
   document.getElementById('logoInput').value = '';
   document.getElementById('docPreview').innerHTML = '<div class="placeholder-msg">ستظهر الخطة هنا بعد الضغط على "توليد الخطة"</div>';
@@ -9697,7 +10468,7 @@ function setAuthMode(mode){
   document.getElementById('authTitle').textContent = isRegister ? 'أنشئ حسابك' : 'حياك في خُطّة';
   document.getElementById('authLead').textContent = isRegister
     ? 'حساب محلي على هذا المتصفح، وخططك مربوطة فيه.'
-    : 'سجّل دخولك عشان خططك تبقى عندك، حتى بعد ما تسكّر المتصفح.';
+    : 'سجّل دخولك عشان خططك تبقى معك على الجوال واللابتوب، وأي تعديل يتزامن تلقائيًا.';
   document.getElementById('authSwitchLine').innerHTML = isRegister
     ? 'عندك حساب؟ <button type="button" id="authSwitchBtn">ادخل</button>'
     : 'ما عندك حساب؟ <button type="button" id="authSwitchBtn">أنشئ حساب</button>';
@@ -10608,6 +11379,13 @@ migrateSavedPlansStorage();
 syncGamificationWithSavedPlans();
 syncHeaderAuth();
 renderSavedPlansUI();
+syncSprintFieldsMode();
+if(authService.isLoggedIn() && sessionRepository.getToken()){
+  hydratePlansFromCloud().then(() => {
+    renderSavedPlansUI();
+    syncGamificationWithSavedPlans();
+  });
+}
 
 function generatePlan(){
   if(isRestoringPlan) return;
@@ -11210,28 +11988,43 @@ function layoutPlanPages(doc){
 }
 
 function addImageToPdfPages(pdf, canvas, pageCount, opts){
-  const pages = Math.max(1, pageCount || 1);
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
-  const sliceH = canvas.height / pages;
+  // Slice by real A4 aspect ratio so pages never stretch/squash.
+  const pageSlicePx = Math.max(1, Math.round(canvas.width * (pageHeight / pageWidth)));
   const format = (opts && opts.format) || 'PNG';
   const quality = opts && opts.quality;
-  for(let i = 0; i < pages; i++){
-    const sy = i * sliceH;
-    const sh = (i === pages - 1) ? (canvas.height - sy) : sliceH;
+  let y = 0;
+  let pageIndex = 0;
+  while(y < canvas.height - 0.5){
+    const sh = Math.min(pageSlicePx, canvas.height - y);
     const pageCanvas = document.createElement('canvas');
     pageCanvas.width = canvas.width;
     pageCanvas.height = Math.max(1, Math.round(sh));
     const ctx = pageCanvas.getContext('2d');
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-    ctx.drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
-    if(i > 0) pdf.addPage();
+    ctx.drawImage(canvas, 0, y, canvas.width, sh, 0, 0, canvas.width, sh);
+    if(pageIndex > 0) pdf.addPage();
     const dataUrl = format === 'JPEG'
-      ? pageCanvas.toDataURL('image/jpeg', quality == null ? 0.8 : quality)
+      ? pageCanvas.toDataURL('image/jpeg', quality == null ? 0.82 : quality)
       : pageCanvas.toDataURL('image/png');
-    pdf.addImage(dataUrl, format === 'JPEG' ? 'JPEG' : 'PNG', 0, 0, pageWidth, pageHeight);
+    const imgWidth = pageWidth;
+    const imgHeight = pageWidth * (sh / canvas.width);
+    pdf.addImage(
+      dataUrl,
+      format === 'JPEG' ? 'JPEG' : 'PNG',
+      0,
+      0,
+      imgWidth,
+      Math.min(imgHeight, pageHeight)
+    );
+    y += sh;
+    pageIndex += 1;
+    // Safety against infinite loops on tiny remainders
+    if(pageIndex > 40) break;
   }
+  return Math.max(1, pageIndex || pageCount || 1);
 }
 
 async function exportPlanPdf(opts){
@@ -11240,20 +12033,46 @@ async function exportPlanPdf(opts){
     throw new Error('الرجاء توليد الخطة أولاً.');
   }
   const compact = !!(opts && opts.compact);
-  const pageCount = layoutPlanPages(doc);
-  const captureHeight = doc.scrollHeight;
-  const canvas = await html2canvas(doc, {
-    scale: compact ? 1.35 : 2,
-    backgroundColor:'#ffffff',
-    width: doc.offsetWidth,
-    height: captureHeight,
-    windowWidth: doc.offsetWidth,
-    windowHeight: doc.scrollHeight
-  });
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'pt', 'a4');
-  addImageToPdfPages(pdf, canvas, pageCount, compact ? { format: 'JPEG', quality: 0.78 } : null);
-  return pdf;
+  const prevTransform = doc.style.transform;
+  const prevOrigin = doc.style.transformOrigin;
+  const prevShadow = doc.style.boxShadow;
+  doc.style.transform = 'none';
+  doc.style.transformOrigin = 'top left';
+  doc.style.boxShadow = 'none';
+  try{
+    layoutPlanPages(doc);
+    // Pad to full A4 pages so short content keeps clean bottom whitespace (no stretch).
+    const naturalHeight = doc.scrollHeight;
+    const pagesNeeded = planPageCount(naturalHeight);
+    doc.style.minHeight = `${pagesNeeded * PLAN_PAGE_PX}px`;
+    const captureHeight = Math.max(doc.scrollHeight, pagesNeeded * PLAN_PAGE_PX);
+    const canvas = await html2canvas(doc, {
+      scale: compact ? 1.6 : 2.4,
+      backgroundColor: '#ffffff',
+      width: doc.offsetWidth,
+      height: captureHeight,
+      windowWidth: doc.offsetWidth,
+      windowHeight: captureHeight,
+      useCORS: true,
+      onclone: (clonedDoc) => {
+        const cloned = clonedDoc.getElementById('docPreview');
+        if(!cloned) return;
+        cloned.style.transform = 'none';
+        cloned.style.transformOrigin = 'top left';
+        cloned.style.boxShadow = 'none';
+        cloned.style.minHeight = `${captureHeight}px`;
+      }
+    });
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p', 'pt', 'a4');
+    addImageToPdfPages(pdf, canvas, pagesNeeded, compact ? { format: 'JPEG', quality: 0.84 } : null);
+    return pdf;
+  }finally{
+    doc.style.transform = prevTransform;
+    doc.style.transformOrigin = prevOrigin;
+    doc.style.boxShadow = prevShadow;
+    layoutPlanPages(doc);
+  }
 }
 
 async function buildClickUpPlanPdf(){
