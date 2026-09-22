@@ -92,9 +92,31 @@ async function handleClickUpEvent({ method, route, body }) {
       plan: payload.plan,
       parentTaskId: payload.parentTaskId,
       existing: payload.existing || null,
-      pdf: payload.pdf || null
+      // PDF attaches in a follow-up /attach call so large plans don't hit gateway inactivity timeouts.
+      pdf: null
     });
     return { status: 200, body: result };
+  }
+
+  if (action === 'attach' && verb === 'POST') {
+    if (!clickupService.isConfigured()) {
+      return {
+        status: 500,
+        body: {
+          error: 'not_configured',
+          message: 'لم يتم ضبط CLICKUP_API_TOKEN على الخادم. أضفه في Environment Variables ثم أعد النشر.'
+        }
+      };
+    }
+    const payload = body && typeof body === 'object' ? body : {};
+    if (!payload.taskId) {
+      return {
+        status: 400,
+        body: { error: 'missing_task', message: 'معرّف مهمة ClickUp مطلوب لإرفاق PDF.' }
+      };
+    }
+    const attachment = await clickupService.attachPdfToTask(payload.taskId, payload.pdf);
+    return { status: 200, body: { attachment } };
   }
 
   return {

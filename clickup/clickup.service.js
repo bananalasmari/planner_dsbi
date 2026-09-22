@@ -40,7 +40,7 @@ function isNestingError(err) {
   return /subtask|nested|parent|SUBTASK|NEST/i.test(text);
 }
 
-async function clickupFetch(pathname, { method = 'GET', body } = {}) {
+async function clickupFetch(pathname, { method = 'GET', body } = {}, attempt = 0) {
   const token = getToken();
   if (!token) {
     const err = new Error('لم يتم ضبط CLICKUP_API_TOKEN على الخادم. أضفه في ملف .env ثم أعد تشغيل السيرفر.');
@@ -63,6 +63,14 @@ async function clickupFetch(pathname, { method = 'GET', body } = {}) {
   } catch (_err) {
     data = { err: text };
   }
+  if (res.status === 429 && attempt < 4) {
+    const headerWait = Number(res.headers.get('retry-after'));
+    const waitMs = Number.isFinite(headerWait) && headerWait > 0
+      ? headerWait * 1000
+      : 200 * Math.pow(2, attempt);
+    await sleep(waitMs);
+    return clickupFetch(pathname, { method, body }, attempt + 1);
+  }
   if (!res.ok) {
     const err = new Error(mapClickUpError(res.status, data));
     err.status = res.status;
@@ -70,6 +78,22 @@ async function clickupFetch(pathname, { method = 'GET', body } = {}) {
     throw err;
   }
   return data;
+}
+
+async function mapLimit(items, limit, fn) {
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) return [];
+  const results = new Array(list.length);
+  let cursor = 0;
+  const workers = Math.min(Math.max(1, limit), list.length);
+  await Promise.all(Array.from({ length: workers }, async () => {
+    while (cursor < list.length) {
+      const index = cursor;
+      cursor += 1;
+      results[index] = await fn(list[index], index);
+    }
+  }));
+  return results;
 }
 
 function toProject(task) {
@@ -308,27 +332,27 @@ async function applyFeaturesField(taskId, node, featuresField) {
 async function upsertNode(listId, parentId, node, childMap) {
   const existingId = childMap[node.key];
   const body = mapper.toTaskBody(node, existingId ? undefined : parentId);
-  const task = existingId
-    ? await updateTask(existingId, body)
-    : await createTask(listId, body);
-  await sleep(80);
-  return task;
+  return existingId
+    ? updateTask(existingId, body)
+    : createTask(listId, body);
 }
 
 async function syncPlanSubtasks({ listId, planTaskId, nodes, childMap, featuresField }) {
-  const children = [];
-  for (const node of nodes || []) {
-    const name = String((node && node.name) || '').trim();
-    if (!name) continue;
+  const queue = (nodes || []).filter(node => String((node && node.name) || '').trim());
+  // Large plans: skip per-task Features custom-field writes (root still gets them) to stay under gateway limits.
+  const writeChildFeatures = queue.length <= 20 && !!featuresField;
+  return mapLimit(queue, 6, async (node) => {
+    const name = String(node.name || '').trim();
     const created = await upsertNode(listId, planTaskId, node, childMap);
-    await applyFeaturesField(created.id, node, featuresField);
-    children.push({
+    if (writeChildFeatures) {
+      await applyFeaturesField(created.id, node, featuresField).catch(() => null);
+    }
+    return {
       key: node.key,
       taskId: String(created.id),
       name: created.name || name
-    });
-  }
-  return children;
+    };
+  });
 }
 
 async function sendPlan({ plan, parentTaskId, existing, pdf }) {
@@ -368,49 +392,72 @@ async function sendPlan({ plan, parentTaskId, existing, pdf }) {
   } else {
     root = await createPlanTask();
   }
-  await applyPlanFields(root.id);
+
+  // Run fields, subtasks, and PDF together — sequential calls were hitting the 26–30s Lambda limit
+  // after ClickUp already had the plan, so the UI never saw success.
+  const fieldsPromise = applyPlanFields(root.id).catch(() => null);
+  const pdfPromise = (pdf && pdf.contentBase64)
+    ? attachPdf(root.id, pdf).catch(() => null)
+    : Promise.resolve(null);
 
   let children = [];
   try {
-    children = await syncPlanSubtasks({
-      listId,
-      planTaskId: root.id,
-      nodes: itemNodes,
-      childMap,
-      featuresField
-    });
+    const [, synced, attachment] = await Promise.all([
+      fieldsPromise,
+      syncPlanSubtasks({
+        listId,
+        planTaskId: root.id,
+        nodes: itemNodes,
+        childMap,
+        featuresField
+      }),
+      pdfPromise
+    ]);
+    children = synced;
+    return {
+      taskId: String(root.id),
+      url: root.url || `https://app.clickup.com/t/${root.id}`,
+      parentTaskId: parentId,
+      parentTaskName: parent.name || '',
+      listId: String(listId),
+      lastSyncedAt: new Date().toISOString(),
+      children,
+      attachment
+    };
   } catch (err) {
-    if (!isNestingError(err)) throw err;
+    if (!isNestingError(err)) {
+      await pdfPromise.catch(() => null);
+      throw err;
+    }
     // If plan → item nesting is blocked, attach البنود directly under the project.
-    children = await syncPlanSubtasks({
-      listId,
-      planTaskId: parentId,
-      nodes: itemNodes,
-      childMap: {},
-      featuresField
-    });
+    const [attachment, synced] = await Promise.all([
+      pdfPromise,
+      syncPlanSubtasks({
+        listId,
+        planTaskId: parentId,
+        nodes: itemNodes,
+        childMap: {},
+        featuresField
+      })
+    ]);
+    children = synced;
+    return {
+      taskId: String(root.id),
+      url: root.url || `https://app.clickup.com/t/${root.id}`,
+      parentTaskId: parentId,
+      parentTaskName: parent.name || '',
+      listId: String(listId),
+      lastSyncedAt: new Date().toISOString(),
+      children,
+      attachment
+    };
   }
-
-  let attachment = null;
-  if (pdf && pdf.contentBase64) {
-    attachment = await attachPdf(root.id, pdf);
-  }
-
-  return {
-    taskId: String(root.id),
-    url: root.url || `https://app.clickup.com/t/${root.id}`,
-    parentTaskId: parentId,
-    parentTaskName: parent.name || '',
-    listId: String(listId),
-    lastSyncedAt: new Date().toISOString(),
-    children,
-    attachment
-  };
 }
 
 module.exports = {
   isConfigured,
   listParentProjects,
   sendPlan,
-  getTask
+  getTask,
+  attachPdfToTask: attachPdf
 };

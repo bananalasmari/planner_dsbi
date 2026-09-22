@@ -30,14 +30,34 @@
       error.code = 'NETWORK';
       throw error;
     }
+    const text = await res.text();
     let data = {};
     try {
-      data = await res.json();
+      data = text ? JSON.parse(text) : {};
     } catch (_err) {
-      data = {};
+      data = { raw: text };
     }
     if (!res.ok) {
-      const error = new Error(data.message || data.error || 'تعذر إكمال طلب ClickUp.');
+      const rawMessage = data.message || data.errorMessage || data.error || '';
+      const blob = `${rawMessage}\n${text || ''}`;
+      const timedOut = data.errorType === 'Sandbox.Timedout'
+        || res.status === 504
+        || res.status === 502
+        || res.status === 408
+        || /timed?\s*out/i.test(blob)
+        || /inactivity\s*timeout/i.test(blob)
+        || /too much time has passed without sending any data/i.test(blob);
+      if (timedOut) {
+        const error = new Error(
+          'الإرسال أخذ وقت أطول من المتوقع. غالبًا وصلت الخطة لـ ClickUp — تأكد هناك قبل ما تعيد الإرسال عشان ما تتكرر.'
+        );
+        error.code = 'TIMEOUT';
+        error.status = res.status;
+        error.payload = data;
+        error.likelySent = true;
+        throw error;
+      }
+      const error = new Error(rawMessage || 'تعذر إكمال طلب ClickUp.');
       error.status = res.status;
       error.payload = data;
       throw error;
@@ -54,6 +74,9 @@
     },
     sendPlan(payload) {
       return request('/send', { method: 'POST', body: payload });
+    },
+    attachPdf(payload) {
+      return request('/attach', { method: 'POST', body: payload });
     }
   };
 });

@@ -135,21 +135,33 @@
       // modalTitle.textContent = result && result.updated ? 'تم التحديث ✓' : 'تم بنجاح ✓';
     }
     if (title) {
-      title.textContent = result && result.updated
-        ? 'تمام — حدّثنا خطتك في ClickUp'
-        : 'تمام — خطتك صارت في ClickUp';
+      if (result && result.timedOut) {
+        title.textContent = 'يبدو إن الخطة وصلت ClickUp';
+      } else {
+        title.textContent = result && result.updated
+          ? 'تمام — حدّثنا خطتك في ClickUp'
+          : 'تمام — خطتك صارت في ClickUp';
+      }
     }
     const note = $('clickupSuccessNote');
     if (note) {
-      note.hidden = !(result && result.attachment);
-      note.textContent = result && result.attachment
-        ? 'ورفقنا PDF الخطة مع المهمة، تقدر تشوفه من هناك.'
-        : 'خطتك جاهزة في ClickUp — تقدر تكمل المتابعة من هناك.';
-      if (!(result && result.attachment)) note.hidden = false;
+      if (result && result.timedOut) {
+        note.hidden = false;
+        note.textContent = 'الرد من الخادم تأخر، بس الإرسال غالبًا اكتمل. افتح ClickUp وتأكد قبل ما تعيد الإرسال.';
+      } else {
+        note.hidden = !(result && result.attachment);
+        note.textContent = result && result.attachment
+          ? 'ورفقنا PDF الخطة مع المهمة، تقدر تشوفه من هناك.'
+          : 'خطتك جاهزة في ClickUp — تقدر تكمل المتابعة من هناك.';
+        if (!(result && result.attachment)) note.hidden = false;
+      }
     }
     if (open) {
       if (result && (result.url || result.taskId)) {
         open.href = result.url || ('https://app.clickup.com/t/' + result.taskId);
+        open.hidden = false;
+      } else if (result && result.timedOut) {
+        open.href = 'https://app.clickup.com';
         open.hidden = false;
       } else {
         open.hidden = true;
@@ -241,19 +253,19 @@
     }
     sending = true;
     setBusy(true);
-    setStatus('نجهّز لك PDF الخطة…', 'progress');
+    setStatus('نرسل خطتك لـ ClickUp…', 'progress');
     let succeeded = false;
     try {
-      if (!bridge.buildPdf) {
-        throw new Error('ما قدرنا نجهّز ملف PDF من الخطة الحالية.');
-      }
-      const pdf = await bridge.buildPdf();
-      setStatus('نرسل خطتك لـ ClickUp…', 'progress');
+      // Build PDF in parallel, but attach after tasks succeed — large PDF bodies were
+      // triggering gateway "Inactivity Timeout" before the function could respond.
+      const pdfPromise = bridge.buildPdf
+        ? bridge.buildPdf().catch(() => null)
+        : Promise.resolve(null);
+
       const result = await client.sendPlan({
         plan,
         parentTaskId,
-        existing: updating ? link : null,
-        pdf
+        existing: updating ? link : null
       });
       if (bridge.saveBinding) bridge.saveBinding(result);
       result.updated = updating;
@@ -261,8 +273,35 @@
       showSuccessState(result);
       setStatus('');
       succeeded = true;
+
+      const pdf = await pdfPromise;
+      if (pdf && result.taskId && client.attachPdf) {
+        const note = $('clickupSuccessNote');
+        if (note) {
+          note.hidden = false;
+          note.textContent = 'نرفق PDF الخطة…';
+        }
+        try {
+          const attached = await client.attachPdf({ taskId: result.taskId, pdf });
+          if (note) {
+            note.textContent = attached && attached.attachment
+              ? 'ورفقنا PDF الخطة مع المهمة، تقدر تشوفه من هناك.'
+              : 'خطتك جاهزة في ClickUp — تقدر تكمل المتابعة من هناك.';
+          }
+        } catch (_err) {
+          if (note) {
+            note.textContent = 'الخطة وصلت ClickUp، لكن إرفاق PDF تأخر أو فشل. تقدر تنزّل PDF من الزر فوق.';
+          }
+        }
+      }
     } catch (err) {
-      setStatus(err.message || 'ما قدرنا نرسل الخطة لـ ClickUp.', 'error');
+      if (err && (err.code === 'TIMEOUT' || err.likelySent)) {
+        showSuccessState({ timedOut: true, updated: updating });
+        setStatus('');
+        succeeded = true;
+      } else {
+        setStatus(err.message || 'ما قدرنا نرسل الخطة لـ ClickUp.', 'error');
+      }
     } finally {
       sending = false;
       setBusy(false);
