@@ -351,10 +351,14 @@
   }
   .req-item-body-meta{
     display:grid;
-    grid-template-columns:88px minmax(0,1fr);
+    grid-template-columns:1fr;
     gap:8px;
     align-items:start;
   }
+  .req-item-body-meta.has-features.has-dates{
+    grid-template-columns:minmax(88px, 120px) minmax(0,1fr);
+  }
+  .req-item-body-meta .req-dates-col[hidden]{display:none !important;}
   .req-item-main{min-width:0;}
   .req-item-main input[type=text]{width:100%;}
   .req-dates-col{
@@ -5069,6 +5073,17 @@
       </div>
     </div>
 
+    <div class="field optional-field">
+      <label>تواريخ البنود <span class="optional-badge">اختياري</span></label>
+      <div class="features-box">
+        <div class="checkbox-line">
+          <input type="checkbox" id="includeTaskDatesToggle">
+          <label for="includeTaskDatesToggle" style="font-weight:600; margin:0;">أضف تاريخ لكل بند</label>
+        </div>
+        <div class="hint">إذا فعلت الخيار، تقدر تحدد تاريخ لكل بند ويظهر عمود التاريخ والأيام في الخطة. وإذا ما فعلته، ما يظهر عمود التاريخ.</div>
+      </div>
+    </div>
+
 
     <div class="field project-dates-field" id="tourDates">
       <label>تاريخ البداية والنهاية</label>
@@ -5135,7 +5150,7 @@
         <input type="checkbox" id="includeReleasePhases">
         <label for="includeReleasePhases">مراحل الإغلاق <span class="optional-badge">اختياري</span></label>
       </div>
-      <div class="hint" id="releasePhasesHint" hidden>حط تاريخ المرحلة اللي تبيها في الخطة. اللي بدون تاريخ ما تنضاف. Store Review يظهر لفريق الموبايل فقط.</div>
+      <div class="hint" id="releasePhasesHint" hidden>حط تاريخ المرحلة اللي تبيها في الخطة. اللي بدون تاريخ ما تنضاف. تظهر لفريقي الويب والموبايل. Store Review يظهر لفريق الموبايل فقط.</div>
       <div class="release-phases-list" id="releasePhasesList" hidden></div>
     </div>
 
@@ -5460,6 +5475,11 @@ function reqPreviewDate(item){
 }
 function syncReqDateChip(chip, item){
   if(!chip) return;
+  if(!isTaskDatesEnabled()){
+    chip.textContent = '';
+    chip.hidden = true;
+    return;
+  }
   const text = reqPreviewDate(item);
   chip.textContent = text;
   chip.hidden = !text;
@@ -5621,6 +5641,8 @@ function renderReqList(opts){
 
     const meta = document.createElement('div');
     meta.className = 'req-item-body-meta';
+    meta.classList.toggle('has-features', isFeaturesEnabled());
+    meta.classList.toggle('has-dates', isTaskDatesEnabled());
 
     const main = document.createElement('div');
     main.className = 'req-item-main';
@@ -5654,6 +5676,7 @@ function renderReqList(opts){
 
     const datesCol = document.createElement('div');
     datesCol.className = 'req-dates-col';
+    datesCol.hidden = !isTaskDatesEnabled();
     const datesTitle = document.createElement('div');
     datesTitle.className = 'req-dates-title';
     datesTitle.textContent = 'التاريخ';
@@ -5703,7 +5726,9 @@ function renderReqList(opts){
     meta.appendChild(main);
     meta.appendChild(datesCol);
     body.appendChild(textWrap);
-    body.appendChild(meta);
+    if(isFeaturesEnabled() || isTaskDatesEnabled()){
+      body.appendChild(meta);
+    }
 
     card.appendChild(head);
     card.appendChild(body);
@@ -6621,7 +6646,7 @@ function projectDatesOutOfOrder(){
   const end = document.getElementById('endDate').value;
   const tbdEnd = document.getElementById('tbdEnd').checked;
   if(start && end && !tbdEnd && start > end) return true;
-  return reqItems.some(itemDatesOutOfOrder) || selectedReleasePhases().some(itemDatesOutOfOrder);
+  return (isTaskDatesEnabled() && reqItems.some(itemDatesOutOfOrder)) || selectedReleasePhases().some(itemDatesOutOfOrder);
 }
 
 function showDateOrderError(){
@@ -6656,7 +6681,7 @@ function paintDateErrors(){
     const dateInputs = card.querySelectorAll('.req-dates-fields input[type=date]');
     const err = card.querySelector('.date-error');
     const i = Number(card.dataset.reqIndex);
-    const invalid = itemDatesOutOfOrder(reqItems[i]);
+    const invalid = isTaskDatesEnabled() && itemDatesOutOfOrder(reqItems[i]);
     if(err) err.classList.toggle('show', invalid);
     dateInputs.forEach(input => input.classList.toggle('date-invalid', invalid));
     const trigger = card.querySelector('.range-picker-trigger');
@@ -6786,6 +6811,21 @@ document.getElementById('successOverlay').addEventListener('click', (e) => {
 function isFeaturesEnabled(){
   const toggle = document.getElementById('includeFeaturesToggle');
   return toggle ? toggle.checked : false;
+}
+
+function isTaskDatesEnabled(){
+  const toggle = document.getElementById('includeTaskDatesToggle');
+  return toggle ? toggle.checked : false;
+}
+
+function resolveIncludeTaskDatesFromForm(form, items){
+  if(!form || typeof form !== 'object'){
+    return (items || []).some(item => !!(item && (item.startDate || item.endDate)));
+  }
+  if(form.includeTaskDatesToggle != null) return !!form.includeTaskDatesToggle;
+  if(form.includeTaskDates != null) return !!form.includeTaskDates;
+  const list = Array.isArray(form.reqItems) ? form.reqItems : (items || []);
+  return list.some(item => !!(item && (item.startDate || item.endDate)));
 }
 
 function getScopedReqItems(items){
@@ -6984,12 +7024,13 @@ function appendFixedReleasePhases(tasks, teamTag){
 
 function buildLocalPlan(scopeItems, depsNotes, lang, includeFeatures){
   const showFeatures = includeFeatures !== false && (includeFeatures || isFeaturesEnabled());
+  const showDates = isTaskDatesEnabled();
   const tasks = scopeItems.map(item => {
     const featNum = Number(item.features);
     return {
       text: item.text.trim(),
-      startDate: item.startDate || '',
-      endDate: item.endDate || '',
+      startDate: showDates ? (item.startDate || '') : '',
+      endDate: showDates ? (item.endDate || '') : '',
       features: showFeatures
         ? (Number.isFinite(featNum) && featNum > 0 ? featNum : 1)
         : 0
@@ -7103,7 +7144,11 @@ function renderDoc({ticketId, projectName, teamTag, sprintNum, tasks, featureCou
   const planSubtitle = `${teamNameEn} Implementation Plan`;
 
   const holidayList = Array.isArray(holidays) ? holidays : [];
-  const showTaskDates = (tasks || []).some(taskHasDates);
+  const showTaskDates = (tasks || []).some(task => {
+    if(!taskHasDates(task)) return false;
+    if(task && typeof task === 'object' && task.fixedPhase) return true;
+    return isTaskDatesEnabled();
+  });
 
   const taskRows = (tasks || []).map((t, i) => {
     const text = typeof t === 'string' ? t : (t.text || '');
@@ -8033,8 +8078,14 @@ function collectClickUpPlanPayload(){
         ? `phase:${task.id || clickupItemKey('phase', task.text, index)}`
         : clickupItemKey('scope', task.text, index),
       name: task.text,
-      startDate: task.startDate || form.startDate || '',
-      dueDate: task.endDate || (form.tbdEnd ? '' : (form.endDate || '')),
+      startDate: task.fixedPhase
+        ? (task.startDate || '')
+        : (isTaskDatesEnabled() ? (task.startDate || form.startDate || '') : ''),
+      dueDate: task.fixedPhase
+        ? (task.endDate || '')
+        : (isTaskDatesEnabled()
+          ? (task.endDate || (form.tbdEnd ? '' : (form.endDate || '')))
+          : ''),
       features: task.features || 0,
       kind: task.fixedPhase ? 'phase' : 'scope'
     }))
@@ -8077,6 +8128,8 @@ function collectFormSnapshot(){
     reqItems: reqItems.map(item => ({...item})),
     includeFeaturesToggle: isFeaturesEnabled(),
     includeFeatures: isFeaturesEnabled(),
+    includeTaskDatesToggle: isTaskDatesEnabled(),
+    includeTaskDates: isTaskDatesEnabled(),
     startDate: document.getElementById('startDate').value,
     endDate: document.getElementById('endDate').value,
     tbdEnd: document.getElementById('tbdEnd').checked,
@@ -8121,13 +8174,18 @@ function applyFormSnapshot(form){
       : [{text:'', features:'', startDate:'', endDate:''}];
     expandedReqIndex = defaultExpandedReqIndex();
     reqSearchQuery = '';
-    renderReqList();
 
     const featuresToggle = document.getElementById('includeFeaturesToggle');
     if(featuresToggle){
       featuresToggle.checked = resolveIncludeFeaturesFromForm(data, data.featureCount);
     }
     syncFeaturesToggleState();
+
+    const taskDatesToggle = document.getElementById('includeTaskDatesToggle');
+    if(taskDatesToggle){
+      taskDatesToggle.checked = resolveIncludeTaskDatesFromForm(data, reqItems);
+    }
+    renderReqList();
 
     document.getElementById('startDate').value = data.startDate || '';
     document.getElementById('endDate').value = data.endDate || '';
@@ -8472,6 +8530,9 @@ function formFromPlan(plan){
   const form = plan && plan.form ? {...plan.form} : {};
   if(form.includeFeaturesToggle == null && resolveIncludeFeaturesFromForm(form, plan && plan.featureCount)){
     form.includeFeaturesToggle = true;
+  }
+  if(form.includeTaskDatesToggle == null && resolveIncludeTaskDatesFromForm(form, form.reqItems)){
+    form.includeTaskDatesToggle = true;
   }
   if(!form.ticketNum && plan && plan.projectCode){
     form.ticketNum = String(plan.projectCode).replace(/^DSBI-/i, '');
@@ -10684,6 +10745,10 @@ function showVersionCreatedToast(version){
 document.getElementById('generateBtn').addEventListener('click', generatePlan);
 document.getElementById('includeFeaturesToggle').addEventListener('change', () => {
   syncFeaturesToggleState();
+  renderReqList();
+  if(typeof scheduleRegen === 'function') scheduleRegen(200);
+});
+document.getElementById('includeTaskDatesToggle').addEventListener('change', () => {
   renderReqList();
   if(typeof scheduleRegen === 'function') scheduleRegen(200);
 });
