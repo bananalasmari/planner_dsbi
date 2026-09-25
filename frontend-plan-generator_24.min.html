@@ -11987,30 +11987,51 @@ function layoutPlanPages(doc){
   return planPageCount(contentHeight);
 }
 
+// ClickUp attachments reject files over 17 MiB (shown as ~17.825792 Mo).
+const CLICKUP_PDF_MAX_BYTES = 17 * 1024 * 1024;
+const CLICKUP_PDF_TARGET_BYTES = Math.floor(CLICKUP_PDF_MAX_BYTES * 0.88);
+
 function addImageToPdfPages(pdf, canvas, pageCount, opts){
   const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
+  const format = (opts && opts.format) || 'JPEG';
+  const quality = opts && opts.quality != null ? opts.quality : 0.82;
+  const maxWidth = opts && opts.maxWidth;
+  let drawWidth = canvas.width;
+  let drawHeight = canvas.height;
+  let sourceCanvas = canvas;
+  if(maxWidth && canvas.width > maxWidth){
+    const ratio = maxWidth / canvas.width;
+    drawWidth = Math.max(1, Math.round(canvas.width * ratio));
+    drawHeight = Math.max(1, Math.round(canvas.height * ratio));
+    const resized = document.createElement('canvas');
+    resized.width = drawWidth;
+    resized.height = drawHeight;
+    const rctx = resized.getContext('2d');
+    rctx.fillStyle = '#ffffff';
+    rctx.fillRect(0, 0, drawWidth, drawHeight);
+    rctx.drawImage(canvas, 0, 0, drawWidth, drawHeight);
+    sourceCanvas = resized;
+  }
   // Slice by real A4 aspect ratio so pages never stretch/squash.
-  const pageSlicePx = Math.max(1, Math.round(canvas.width * (pageHeight / pageWidth)));
-  const format = (opts && opts.format) || 'PNG';
-  const quality = opts && opts.quality;
+  const slicePx = Math.max(1, Math.round(drawWidth * (pageHeight / pageWidth)));
   let y = 0;
   let pageIndex = 0;
-  while(y < canvas.height - 0.5){
-    const sh = Math.min(pageSlicePx, canvas.height - y);
+  while(y < drawHeight - 0.5){
+    const sh = Math.min(slicePx, drawHeight - y);
     const pageCanvas = document.createElement('canvas');
-    pageCanvas.width = canvas.width;
+    pageCanvas.width = drawWidth;
     pageCanvas.height = Math.max(1, Math.round(sh));
     const ctx = pageCanvas.getContext('2d');
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, pageCanvas.width, pageCanvas.height);
-    ctx.drawImage(canvas, 0, y, canvas.width, sh, 0, 0, canvas.width, sh);
+    ctx.drawImage(sourceCanvas, 0, y, drawWidth, sh, 0, 0, drawWidth, sh);
     if(pageIndex > 0) pdf.addPage();
     const dataUrl = format === 'JPEG'
-      ? pageCanvas.toDataURL('image/jpeg', quality == null ? 0.82 : quality)
+      ? pageCanvas.toDataURL('image/jpeg', quality)
       : pageCanvas.toDataURL('image/png');
     const imgWidth = pageWidth;
-    const imgHeight = pageWidth * (sh / canvas.width);
+    const imgHeight = pageWidth * (sh / drawWidth);
     pdf.addImage(
       dataUrl,
       format === 'JPEG' ? 'JPEG' : 'PNG',
@@ -12027,12 +12048,33 @@ function addImageToPdfPages(pdf, canvas, pageCount, opts){
   return Math.max(1, pageIndex || pageCount || 1);
 }
 
+function pdfOutputBytes(pdf){
+  try{
+    const ab = pdf.output('arraybuffer');
+    return ab ? ab.byteLength : 0;
+  }catch(_err){
+    const dataUri = pdf.output('datauristring');
+    const comma = dataUri.indexOf(',');
+    const b64 = comma >= 0 ? dataUri.slice(comma + 1) : dataUri;
+    return Math.floor(b64.length * 0.75);
+  }
+}
+
 async function exportPlanPdf(opts){
   const doc = document.getElementById('docPreview');
   if(!doc || doc.querySelector('.placeholder-msg')){
     throw new Error('الرجاء توليد الخطة أولاً.');
   }
   const compact = !!(opts && opts.compact);
+  const scale = (opts && opts.scale) || (compact ? 1.15 : 1.8);
+  const imageOpts = Object.assign(
+    {
+      format: 'JPEG',
+      quality: compact ? 0.72 : 0.86,
+      maxWidth: compact ? 1200 : 1600
+    },
+    (opts && opts.image) || {}
+  );
   const prevTransform = doc.style.transform;
   const prevOrigin = doc.style.transformOrigin;
   const prevShadow = doc.style.boxShadow;
@@ -12047,7 +12089,7 @@ async function exportPlanPdf(opts){
     doc.style.minHeight = `${pagesNeeded * PLAN_PAGE_PX}px`;
     const captureHeight = Math.max(doc.scrollHeight, pagesNeeded * PLAN_PAGE_PX);
     const canvas = await html2canvas(doc, {
-      scale: compact ? 1.6 : 2.4,
+      scale,
       backgroundColor: '#ffffff',
       width: doc.offsetWidth,
       height: captureHeight,
@@ -12065,7 +12107,7 @@ async function exportPlanPdf(opts){
     });
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('p', 'pt', 'a4');
-    addImageToPdfPages(pdf, canvas, pagesNeeded, compact ? { format: 'JPEG', quality: 0.84 } : null);
+    addImageToPdfPages(pdf, canvas, pagesNeeded, imageOpts);
     return pdf;
   }finally{
     doc.style.transform = prevTransform;
@@ -12076,8 +12118,18 @@ async function exportPlanPdf(opts){
 }
 
 async function buildClickUpPlanPdf(){
-  const pdf = await exportPlanPdf({ compact: true });
-  const dataUri = pdf.output('datauristring');
+  const attempts = [
+    { compact: true, scale: 1.15, image: { format: 'JPEG', quality: 0.72, maxWidth: 1200 } },
+    { compact: true, scale: 1.0, image: { format: 'JPEG', quality: 0.62, maxWidth: 1000 } },
+    { compact: true, scale: 0.9, image: { format: 'JPEG', quality: 0.52, maxWidth: 860 } },
+    { compact: true, scale: 0.8, image: { format: 'JPEG', quality: 0.42, maxWidth: 720 } }
+  ];
+  let lastPdf = null;
+  for(const attempt of attempts){
+    lastPdf = await exportPlanPdf(attempt);
+    if(pdfOutputBytes(lastPdf) <= CLICKUP_PDF_TARGET_BYTES) break;
+  }
+  const dataUri = lastPdf.output('datauristring');
   const comma = dataUri.indexOf(',');
   return {
     filename: buildPlanDownloadName(),
