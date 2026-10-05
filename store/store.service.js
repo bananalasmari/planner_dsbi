@@ -43,7 +43,7 @@ function useNetlifyBlobs() {
 
 async function getBlobStore(name) {
   const { getStore } = require('@netlify/blobs');
-  return getStore({ name, consistency: 'strong' });
+  return getStore(name);
 }
 
 async function listUsers() {
