@@ -1,9 +1,11 @@
 'use strict';
 
+const { connectLambda } = require('@netlify/blobs');
 const { handleStoreEvent, routeNameFromPath } = require('../../api/store');
 
 exports.handler = async (event) => {
   try {
+    connectLambda(event);
     let body = {};
     if (event.body) {
       const raw = event.isBase64Encoded
