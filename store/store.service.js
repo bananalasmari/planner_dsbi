@@ -31,7 +31,14 @@ function writeJsonFile(file, value) {
 }
 
 function useNetlifyBlobs() {
-  return !!(process.env.NETLIFY || process.env.NETLIFY_DEV || process.env.NETLIFY_BLOBS_CONTEXT);
+  return !!(
+    process.env.NETLIFY ||
+    process.env.NETLIFY_DEV ||
+    process.env.NETLIFY_BLOBS_CONTEXT ||
+    process.env.AWS_LAMBDA_FUNCTION_NAME ||
+    process.env.AWS_EXECUTION_ENV ||
+    process.env.LAMBDA_TASK_ROOT
+  );
 }
 
 async function getBlobStore(name) {
